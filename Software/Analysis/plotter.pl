@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use Cwd;
 require 'fields.pl';
 
 ## Need to generate gps files separate from faster rate files
@@ -15,9 +16,9 @@ if ($#ARGV < 0) {
 $heading = -999;
 $tlast = 0;
 $heading_calibrate = 0;
-$null = 2010;
-$drift = -0.075;
-$scale = 6.0; ## in mv per degree per millisecond, 6mv/deg/sec
+$null = 2028;
+$drift = 0; # -0.075;
+$scale = 5.91; ## in mv per degree per millisecond, 6mv/deg/sec
 
 open(FIN, "<$ARGV[0]") || die "cant open $ARGV[0]\n";
 
@@ -26,14 +27,16 @@ $ARGV[0] =~ tr/A-Z/a-z/;
 ## Filter out the GPS fix data into a csv for GPSVisualizer
 ##
 $gpsfile = $ARGV[0];
-$gpsfile =~ s/^logger/gps/;
+$gpsfile =~ s/[a-z]+([0-9]+.csv)/gps$1/;
+
 open(GPS, ">$gpsfile") || die "cant open $gpsfile\n";
 printf GPS "%8s, %10s, %10s, %10s\n", 'Time(ms)', 'Latitude', 'Longitude', 'HDOP';
 
 ## Translate the csv into a simple data file for gnuplot
 ##
 $outfile = basename($ARGV[0]) . ".dat";
-$outfile =~ s/^logger/plot/;
+$outfile =~ s/^[a-z]+([0-9]+.dat)/plot$1/;
+
 open(DAT, ">$outfile") || die "cant open $outfile\n";
 printf DAT "# %8s %10s %10s %10s %10s %10s %10s\n", 'Time(ms)', 'GyroHeading', 'Gyro', 'Compass', 'Course', 'Speed', 'HDOP';
 
@@ -47,6 +50,8 @@ $htmlfile = basename($ARGV[0]) . ".htm";
 
 printf "Generating GPS and DAT files\n";
 
+$glast = -1;
+
 while (<FIN>) {
   s/[\r\n]+//g;
 
@@ -58,9 +63,18 @@ while (<FIN>) {
   ## Convert gyro to heading
   ##
   $delta_t = $data[$MILLIS] - $tlast;				## time delta for integration
-  $volts = ($data[$GYRO] - $null) * 5.0 / 4096.0;		## convert to volts based on 5V range, 12-bit ADC
+  $volts = ($data[$GYRO] - $null) * 5.0 / 4096.0;			## convert to volts based on 5V range, 12-bit ADC
+
   $deg_per_msec = $volts / $scale;
-  $heading += $deg_per_msec * $delta_t + $drift;		## delta_t is in ms
+
+  ## trapezoidal rule / 1st order interpolation fctn
+  ## data point 0 isn't going to have a last value
+  ## which will throw off the integration initially
+  ##
+  $glast = $deg_per_msec if ($glast < 1);
+  $heading += ($deg_per_msec+$glast)/2 * $delta_t + $drift;		## delta_t is in ms
+  $glast = $deg_per_msec;
+
   $heading -= 360.0 if ($heading >= 360.0);
   $heading += 360.0 if ($heading < 0); 
   $tlast = $data[$MILLIS];
@@ -136,16 +150,33 @@ close(HTML);
 printf "Generating PNG files with gnuplot and launching Google Chrome...\n";
 
 open(BAT, ">tmp.bat") || die "cant open batch file";
-printf BAT "\@echo off\r\n";
-printf BAT "\"C:\\Program Files\\gnuplot\\bin\\wgnuplot.exe\" %CD%\\$pltfile\r\n";
-print "\"C:\\Program Files\\gnuplot\\bin\\wgnuplot.exe\" %CD%\\$pltfile\r\n";
+#printf BAT "\"C:\\Program Files\\gnuplot\\bin\\wgnuplot.exe\" %CD%\\$pltfile\r\n";
+#print "\"C:\\Program Files\\gnuplot\\bin\\wgnuplot.exe\" %CD%\\$pltfile\r\n";
 printf BAT "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" \"file://%CD%/$htmlfile\"\r\n";
 print "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" \"file://%CD%/$htmlfile\"\r\n";
 close(BAT);
 
-system("cmd.exe /c tmp.bat");
+my $pid = fork();
+if ($pid) {
 
-printf "Done.\n";
+  # parent
+  waitpid($pid,0);
+  system("cmd /c tmp.bat");
+  printf "Done.\n";
+  exit 0;
+
+} elsif ($pid == 0) {
+
+  # child
+  print getcwd,"\n";
+  exec("/cygdrive/c/Program\ Files/gnuplot/bin/wgnuplot", "$pltfile");
+  exit 0;
+
+} else {
+  die "couldnt fork: $!\n";
+}
+
+
 
 ## Get the basename of a filename, ie, strip the extension
 ##
@@ -154,3 +185,4 @@ sub basename($) {
   $file =~ s!^(?:.*/)?(.+?)(?:\.[^.]*)?$!$1!;
   return $file;
 }
+
