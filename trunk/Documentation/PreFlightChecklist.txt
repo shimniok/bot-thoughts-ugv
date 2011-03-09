@@ -1,0 +1,40 @@
+Pre-Event Checklist
+===================
+
+[ ] Correct config used, waypoints, declination
+[ ] Tool kit inventory, load in vehicle
+
+Pre-Flight Checklist
+====================
+
+[ ] Wheels mounted tightly
+[ ] Gyro mounted and connected
+[ ] GPS mounted and connected
+[ ] Compass mounted and connected
+[ ] Battery connected
+
+Power on
+
+[ ] Wheel encoders working, not skipping
+
+Turn off logging, plug into USB
+
+[ ] Filesystem cleared
+
+Move to Staging Area
+
+[ ] Remote kill switch is off
+[ ] Camera powered on
+[ ] RECV/ESC powered up, operational
+[ ] MCU powered on, reset
+[ ] Motor power connected
+[ ] Servo operational
+[ ] File logging functioning
+[ ] GPS fix established
+[ ] Camera is filming
+[ ] Starter is "hot"
+
+Post-Fight Checklist
+====================
+[ ] charge battery
+[ ] remove data log and plot
