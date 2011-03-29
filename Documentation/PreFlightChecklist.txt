@@ -12,14 +12,13 @@ Pre-Flight Checklist
 [ ] GPS mounted and connected
 [ ] Compass mounted and connected
 [ ] Battery connected
+[ ] SD Card installed
 
 Power on
 
 [ ] Wheel encoders working, not skipping
-
-Turn off logging, plug into USB
-
-[ ] Filesystem cleared
+[ ] Gyro nominal ~ 2.5V ~2027 ADC
+[ ] Compass heading correct
 
 Move to Staging Area
 
@@ -38,3 +37,4 @@ Post-Fight Checklist
 ====================
 [ ] charge battery
 [ ] remove data log and plot
+[ ] download camera data
