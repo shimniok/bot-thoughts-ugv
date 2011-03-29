@@ -1,7 +1,0 @@
-Partlist exported from C:/Documents and Settings/Michael Shimniok/My Documents/eagle/Sparkfun AVC Robot/5V ADC mbed.sch at 2/16/2011 12:00:32 AM
-
-Ref Part Value          Attributes Package Description                Part Num          Manufacturer Name Vendor ID Vendor Part Number Description                           Price Quantity1
-  1 C1   1uF                       C0603   CAPACITOR, American symbol C1608X5R0J105K    TDK               NW        90R7665            CAPACITOR 0603 CERAMIC 1UF 6.3V X5R   0.018 ?        
-  2 C2   0.1uF                     C0603   CAPACITOR, American symbol CC0603ZRY5V7BB104 YAGEO             NW        68R4830            CAPACITOR 0603 CERAMIC 0.1UF 6.3V Y5V 0.011 ?        
-  3 C3   0.1uF                     C0603   CAPACITOR, American symbol CC0603ZRY5V7BB104 YAGEO             NW        68R4830            CAPACITOR 0603 CERAMIC 0.1UF 6.3V Y5V 0.011 ?        
-  4 U1   ADC128S102CIMT            TSSOP16 ADC128S102                 ADC128S102CIMT    National Semi     NW        60K8368            ADC 12BIT 1MSPS TSSOP-16              $5.69 ?        
