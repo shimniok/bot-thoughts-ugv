@@ -1,0 +1,26 @@
+Partlist exported from C:/Documents and Settings/Michael Shimniok/My Documents/eagle/Sparkfun AVC Robot/RC Kill Switch.sch at 3/28/2011 4:58:05 PM
+
+Ref Part Value     Attributes Package Description                           Part Num          Manufacturer Name Vendor ID Vendor Part Number Description                              Price Quantity1
+  1 C1   0.22uF               C0603   CAPACITOR, American symbol            SALVAGE           unknown           ME        SALVAGE            Salvaged part                            0.00  ?        
+  2 C2   4.7uF                E2-4    POLARIZED CAPACITOR, American symbol  SALVAGE           unknown           ME        SALVAGE            Salvaged part                            0.00  ?        
+  3 C3   0.1uF                C0603   CAPACITOR, American symbol            CC0603ZRY5V7BB104 YAGEO             NW        68R4830            CAPACITOR 0603 CERAMIC 0.1UF 6.3V Y5V    0.011 ?        
+  4 C4   0.1uF                C0603   CAPACITOR, American symbol            CC0603ZRY5V7BB104 YAGEO             NW        68R4830            CAPACITOR 0603 CERAMIC 0.1UF 6.3V Y5V    0.011 ?        
+  5 D1   1N4148               D-5     DIODE                                 ?                 ?                 ?         ?                  ?                                        ?     ?        
+  6 D2   Indicator            DUOLED  Duo LED                               1193970           unknown           AE        LED-67             LED 3mm RED/GREEN 3-pin                  0.35  ?        
+  7 IC1  LM258N               DIL08   OP AMP                                ?                 ?                 ?         ?                  ?                                        ?     ?        
+  8 IC2  74HC244N             DIL20   Octal BUFFER and LINE DRIVER, 3-state ?                 ?                 ?         ?                  ?                                        ?     ?        
+  9 JP1  MCU_STR              1X03    Header 3                              2211S-06G         MULTICOMP         NW        08N6748            BOARD-BOARD CONNECTOR HEADER, 6WAY, 1ROW 0.047 ?        
+ 10 JP3  RX_STR               1X03    Header 3                              2211S-06G         MULTICOMP         NW        08N6748            BOARD-BOARD CONNECTOR HEADER, 6WAY, 1ROW 0.047 ?        
+ 11 JP5  SERVO                1X03    Header 3                              2211S-06G         MULTICOMP         NW        08N6748            BOARD-BOARD CONNECTOR HEADER, 6WAY, 1ROW 0.047 ?        
+ 12 JP7  MCU                  1X03    Header 3                              2211S-06G         MULTICOMP         NW        08N6748            BOARD-BOARD CONNECTOR HEADER, 6WAY, 1ROW 0.047 ?        
+ 13 Q1   2N2222A              SOT-23  NPN Transistor                        ?                 ?                 ?         ?                  ?                                        ?     ?        
+ 14 Q2   2N2222A              SOT-23  NPN Transistor                        ?                 ?                 ?         ?                  ?                                        ?     ?        
+ 15 R1   10k                  R0603   RESISTOR, American symbol             CRCW060310K0JNEA  Vishay-Dale       NW        52K8066            RESISTOR 0603 THICK FILM 10KOHM 100mW 5% 0.022 ?        
+ 16 R2   10k                  R0603   RESISTOR, American symbol             CRCW060310K0JNEA  Vishay-Dale       NW        52K8066            RESISTOR 0603 THICK FILM 10KOHM 100mW 5% 0.022 ?        
+ 17 R3   10k                  R0603   RESISTOR, American symbol             CRCW060310K0JNEA  Vishay-Dale       NW        52K8066            RESISTOR 0603 THICK FILM 10KOHM 100mW 5% 0.022 ?        
+ 18 R4   4.7k                 R1206   RESISTOR, American symbol             SALVAGE           unknown           ME        SALVAGE            Salvaged part                            0.00  ?        
+ 19 R5   4.7k                 R0603   RESISTOR, American symbol             SALVAGE           unknown           ME        SALVAGE            Salvaged part                            0.00  ?        
+ 20 R6   10k                  R0603   RESISTOR, American symbol             CRCW060310K0JNEA  Vishay-Dale       NW        52K8066            RESISTOR 0603 THICK FILM 10KOHM 100mW 5% 0.022 ?        
+ 21 R7   4.7k                 R0603   RESISTOR, American symbol             SALVAGE           unknown           ME        SALVAGE            Salvaged part                            0.00  ?        
+ 22 R8   10k                  R1206   RESISTOR, American symbol             SALVAGE           unknown           ME        SALVAGE            Salvaged part                            0.00  ?        
+ 23 R9   330                  R0603   RESISTOR, American symbol             CRCW0603330RJNEA  Vishay-Dale       NW        59M6805            RESISTOR 0603 THICK FILM 330OHM 100mW 5% 0.036 ?        
