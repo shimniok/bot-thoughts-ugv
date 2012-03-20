@@ -61,7 +61,7 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
         text = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Serial ZigBee Graphical Network");
+        setTitle("Serial Terminal with file download");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -436,7 +436,7 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                                         System.out.println("Received CTRL_A");
                                     } else if (protoState == ARMED && c == 2) { // Control-B "Start of Text"
                                         protoState = FILENAME;
-                                        filename = new StringBuilder().append(System.getProperty("user.home").toString()).append("\\My Documents\\Downloads\\");
+                                        filename = downloadPath;
                                         System.out.println("Received CTRL_B");
                                     } else if (protoState == FILENAME) {
                                         if (c == 3) { // Control-C "End of Text"
@@ -452,7 +452,7 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                                                 System.err.println("Error: " + e.getMessage());
                                             }
                                         } else {
-                                            filename.append(c);
+                                            filename.append(c); // add the actual filename that we're being given
                                             // stop after length limit?
                                         }
                                     } else if (protoState == STARTED) {
@@ -513,6 +513,7 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new SerTermGUI().setVisible(true);
             }
@@ -561,5 +562,8 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
     private BufferedWriter out;
     private SimpleAttributeSet alertStyle = new SimpleAttributeSet();
     private StyledDocument doc;
+    // TODO: user input for download path
+    // TODO: save preferences (com port, baud, download path, etc
+    private StringBuilder downloadPath = new StringBuilder().append(System.getProperty("user.home").toString()).append("\\My Documents\\Downloads\\");
 
 }
