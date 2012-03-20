@@ -4,6 +4,14 @@
  * Created on November 5, 2007, 3:45 PM
  *
  * @author  Goldscott
+ * @author Michael Shimniok http://www.bot-thoughts.com/
+ * 
+ * Modified UI and equipped with a simple automatic file download protocol
+ * 
+ * Icon 
+ * Author   : mattahan
+ * HomePage : http://mattahan.deviantart.com
+ * License  : Free for personal non-commercial use, Includes a link back to author site. Zombie.jpg
  */
 
 //import java.io.FileDescriptor;
