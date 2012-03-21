@@ -22,6 +22,7 @@ import java.util.Enumeration;
 import java.util.TooManyListenersException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.text.*;
 //import javax.swing.JOptionPane;
 
@@ -29,8 +30,8 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
     
     /** Creates new form SerialGUI */
     public SerTermGUI() {
-        getPorts();
         initComponents();
+        getPorts();
         displayFormat = RxFormat.ASCII;
         setBaud();
         StyleConstants.setForeground(alertStyle, Color.RED);
@@ -74,7 +75,16 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
             }
         });
 
-        portBox.setModel(new javax.swing.DefaultComboBoxModel(portList));
+        portBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Port" }));
+        portBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                portBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
         portBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 portBoxActionPerformed(evt);
@@ -235,7 +245,7 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
     private void portToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portToggleActionPerformed
         //only open valid port. portList[0]="select port" - not a valid port
         //if ((String)portBox.getSelectedItem() == portList[0]) {
-        if (portBox.getSelectedItem().equals(portList[0])) {
+        if (portBox.getSelectedIndex() == 0) {//.getSelectedItem().equals(portList[0])) {
             append(">> Must Select Valid Port.\n", alertStyle );
             portToggle.setSelected(open);
             //JOptionPane.showMessageDialog(this, "Must Select Valid Port.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -273,7 +283,6 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
             portToggle.setText("Close Port");
             portBox.setEnabled(false);
             baudBox.setEnabled(false);
-            portName=(String)portBox.getSelectedItem();
             append(">> Opening Port: " +portName+", Baud Rate: "+baudRate+"\n", alertStyle );
             try {
                 connect(portName);
@@ -370,6 +379,10 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
             }
         }
     }//GEN-LAST:event_textKeyTyped
+
+    private void portBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_portBoxPopupMenuWillBecomeVisible
+        getPorts(); // update the list of com ports dynamically
+    }//GEN-LAST:event_portBoxPopupMenuWillBecomeVisible
     
     private void append(String str, SimpleAttributeSet style) {
         text.append(str);
@@ -377,26 +390,18 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
         text.getCaret().setVisible(true); // cursor
     }
     
-    //run before initializing GUI
-    //creates a string array of all the ports
-    //to be displayed in dropdown box upon opening program
+    // Populates the combobox model with a list of availble ports
+    // Updates combobox model dynamically. Call from popupWillBeVisible event
     private void getPorts() {
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
-        tempPortList = new String[MAX_PORTS]; //create array of 20 ports
-        int numports = 0;
-        int i;
-        tempPortList[0]="Select Port";
-        //fill up a temporary list of length MAX_PORTS with the portnames
-        while ( portEnum.hasMoreElements() ) 
-        {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) portBox.getModel();
+        model.removeAllElements();
+        model.addElement("Select Ports");
+        while ( portEnum.hasMoreElements() ) {
             portIdentifier = (CommPortIdentifier) portEnum.nextElement();
-            numports++;
-            tempPortList[numports]=portIdentifier.getName();
-        }
-        //make the actual port list only as long as necessary
-        portList = new String[numports];
-        for (i=0; i < numports; i++) {
-            portList[i] = tempPortList[i];
+            if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                model.addElement(portIdentifier.getName());
+            }
         }
     }
     
@@ -431,16 +436,16 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                                             Logger.getLogger(SerTermGUI.class.getName()).log(Level.SEVERE, null, ex);
                                         }
                                         text.setCaretPosition(text.getText().length()-1);
-                                    } else if (protoState == IDLE && c == 1) { // Control-A "Start of Heading"
-                                        protoState = ARMED;
+                                    } else if (protoState == ParseState.IDLE && c == 1) { // Control-A "Start of Heading"
+                                        protoState = ParseState.ARMED;
                                         System.out.println("Received CTRL_A");
-                                    } else if (protoState == ARMED && c == 2) { // Control-B "Start of Text"
-                                        protoState = FILENAME;
+                                    } else if (protoState == ParseState.ARMED && c == 2) { // Control-B "Start of Text"
+                                        protoState = ParseState.FILENAME;
                                         filename = downloadPath;
                                         System.out.println("Received CTRL_B");
-                                    } else if (protoState == FILENAME) {
+                                    } else if (protoState == ParseState.FILENAME) {
                                         if (c == 3) { // Control-C "End of Text"
-                                            protoState = STARTED;
+                                            protoState = ParseState.STARTED;
                                             System.out.println("Received CTRL_C " + filename);
                                             // open file
                                             try{
@@ -455,12 +460,12 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                                             filename.append(c); // add the actual filename that we're being given
                                             // stop after length limit?
                                         }
-                                    } else if (protoState == STARTED) {
+                                    } else if (protoState == ParseState.STARTED) {
                                         if (c == 4) { // Control-D "End of Transmission"
                                             append(">> Transfer complete.\n", alertStyle);
                                             // close the file
                                             out.close();
-                                            protoState = IDLE;
+                                            protoState = ParseState.IDLE;
 //                                            str = str.substring(str.lastIndexOf(4)+1); // trim off file contents to ^D
                                         } else {
                                             // write the character to the file
@@ -468,14 +473,26 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                                         }
                                     } else {
                                         // need an abort timer or something
-                                        protoState = IDLE;
+                                        protoState = ParseState.IDLE;
                                         buffer2[j++] = buffer[i];
                                     }
                                 }
                                 
                                 String str = new String(buffer2).substring(0,j);
-                                if (protoState == IDLE && j > 0) {
+                                if (protoState == ParseState.IDLE && j > 0) {
                                     //convert to string of size numBytes
+                                    switch (lineMode) {
+                                        case CR :
+                                            str=str.replace('\r', '\n'); //replace CR with Newline
+                                            break;
+                                        case LF :
+                                            break;
+                                        case CRLF :
+                                            str=str.replace("\r\n", "\n");
+                                            break;
+                                        default :
+                                            break;
+                                    }
                                     str=str.replace('\r','\n'); //replace CR with Newline
                                     append(str, null);
                                 }
@@ -523,10 +540,8 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
     //constants
     static final int MAX_PORTS = 20;    //maximum number of ports to look for
     static final int MAX_DATA = 64;//maximum length of serial data received
-    private int IDLE=0;
-    private int ARMED=1;
-    private int FILENAME=2;
-    private int STARTED=3;
+    private enum ParseState { IDLE, ARMED, FILENAME, STARTED; };
+    private enum LineMode { CRLF, CR, LF; };
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SendButton;
@@ -556,12 +571,13 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
     public enum RxFormat {ASCII, INT16;}
     private RxFormat displayFormat;
 
-    private int protoState = IDLE;
+    private ParseState protoState = ParseState.IDLE;
     private StringBuilder filename;
     private FileWriter fstream;
     private BufferedWriter out;
     private SimpleAttributeSet alertStyle = new SimpleAttributeSet();
     private StyledDocument doc;
+    private LineMode lineMode = LineMode.CRLF;
     // TODO: user input for download path
     // TODO: save preferences (com port, baud, download path, etc
     private StringBuilder downloadPath = new StringBuilder().append(System.getProperty("user.home").toString()).append("\\My Documents\\Downloads\\");
