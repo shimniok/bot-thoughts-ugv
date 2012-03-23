@@ -53,13 +53,10 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
         portToggle = new javax.swing.JToggleButton();
         clearButton = new javax.swing.JButton();
         SendButton = new javax.swing.JButton();
-        plainAscii = new javax.swing.JRadioButton();
-        int16 = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         baudBox = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         text = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Serial Terminal with file download");
@@ -112,25 +109,6 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
             }
         });
 
-        rxformat.add(plainAscii);
-        plainAscii.setSelected(true);
-        plainAscii.setText("Plain ASCII");
-        plainAscii.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                plainAsciiActionPerformed(evt);
-            }
-        });
-
-        rxformat.add(int16);
-        int16.setText("int16");
-        int16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                int16ActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Receive Display Format");
-
         baudBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "115200", "57600", "38400", "19200", "14400", "9600", "4800", "2400", "1200" }));
         baudBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,6 +127,8 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
         });
         jScrollPane2.setViewportView(text);
 
+        jButton1.setText("Set Dowload Path...");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,26 +137,21 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jScrollPane2)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(textbar)
                             .add(layout.createSequentialGroup()
                                 .add(clearButton)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 109, Short.MAX_VALUE)
+                                .add(jButton1)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                 .add(baudBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 103, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                 .add(portBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, portToggle, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, SendButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(int16)
-                            .add(plainAscii)
-                            .add(jLabel1))
-                        .add(0, 0, Short.MAX_VALUE)))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, SendButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -193,15 +168,8 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                     .add(portBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(portToggle)
                     .add(clearButton)
-                    .add(baudBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(plainAscii)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(int16)
+                    .add(baudBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jButton1))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -349,19 +317,6 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
             }
         }
     }//GEN-LAST:event_textbarActionPerformed
-
-    private void plainAsciiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plainAsciiActionPerformed
-        if (plainAscii.isSelected()) {
-            displayFormat = RxFormat.ASCII;
-        }
-
-}//GEN-LAST:event_plainAsciiActionPerformed
-
-    private void int16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_int16ActionPerformed
-        if (int16.isSelected()) {
-            displayFormat = RxFormat.INT16;
-        }
-    }//GEN-LAST:event_int16ActionPerformed
 
     private void baudBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baudBoxActionPerformed
         //only change baud when port is closed
@@ -547,12 +502,9 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
     private javax.swing.JButton SendButton;
     private javax.swing.JComboBox baudBox;
     private javax.swing.JButton clearButton;
-    private javax.swing.JRadioButton int16;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JRadioButton plainAscii;
     private javax.swing.JComboBox portBox;
     private javax.swing.JToggleButton portToggle;
     private javax.swing.ButtonGroup rxformat;
