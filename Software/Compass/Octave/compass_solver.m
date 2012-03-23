@@ -46,6 +46,14 @@ function Q=compass_solver(file)
 	Q=[ X(1:3); 100/X(4); 100/X(5); 100/X(6) ];
 	close all;
 	figure;
+	plot3(M2(:,1),M2(:,2),M2(:,3),'.');
+	xlabel("X");
+	ylabel("Y");
+	zlabel("Z");
+	axis([-100, 100, -100, 100, -100, 100]);
+	axis square;
+	grid on;
+	figure;
 	plot(M2(:,1),N2,'.');
 	axis([-110 110 80 120]);
 	title("X vs Magnitude", "fontsize", 16);
