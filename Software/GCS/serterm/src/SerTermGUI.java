@@ -369,7 +369,6 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                 byte[] buffer = new byte[MAX_DATA];   //create a buffer (enlarge if buffer overflow occurs)
                 byte[] buffer2 = new byte[MAX_DATA];
                 int numBytes;   //how many bytes read (smaller than buffer)
-                int int16value;
 
                 switch (displayFormat) {
                     case ASCII: {
@@ -396,7 +395,7 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                                         System.out.println("Received CTRL_A");
                                     } else if (protoState == ParseState.ARMED && c == 2) { // Control-B "Start of Text"
                                         protoState = ParseState.FILENAME;
-                                        filename = downloadPath;
+                                        filename = new StringBuilder(downloadPath);
                                         System.out.println("Received CTRL_B");
                                     } else if (protoState == ParseState.FILENAME) {
                                         if (c == 3) { // Control-C "End of Text"
@@ -457,12 +456,13 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                         }
                         break;
                     }
+                    /*
                     case INT16: {
                         readall(inputStream, buffer, 2); //put two bytes in buffer
                         int16value = 256*(int)buffer[1] + (int)buffer[0];
 //                        textWin.append(int16value + "\n");        //write to terminal
                         break;
-                    }
+                    }*/
                 }
                 //scroll terminal to bottom
                 text.setCaretPosition(text.getText().length());
