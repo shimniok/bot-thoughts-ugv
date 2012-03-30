@@ -4,9 +4,8 @@
 ##
 
 use Cwd;
-push(@INC, '/home/mes/lib/');
-require 'fields.pl';
-require 'geopos.pl';
+use lib "/home/mes/lib";
+use DATABUS::FIELDS;
 
 my @COLOR = (	"FF0000", # red
 				"009900", # green
@@ -54,9 +53,9 @@ foreach my $file (@ARGV) {
 
 	while (<$fin>) {
 	  s/[\r\n]+//g;
-	  my @data = split(/\s*,\s*/);
-	  next if ($data[$MILLIS] eq "Millis" || $data[$LAT] == 0);
-	  $coordinates .= sprintf "%.5f,%.5f ", $data[$LON], $data[$LAT];
+	  my %data = parseFields($_);
+	  next if ($data{"millis"} eq "Millis" || $data{"lat"} == 0);
+	  $coordinates .= sprintf "%.5f,%.5f ", $data{"lon"}, $data{"lat"};
 	}
 	close($fin);
 
@@ -82,18 +81,13 @@ sub header {
 "    <snippet></snippet>\n" .
 "    <visibility>1</visibility>\n" .
 "    <open>1</open>\n" .
-"    <Snippet><![CDATA[created using gps.pl]]></Snippet>\n" .
-"    <Folder id=\"Tracks\">\n" .
-"      <name>Tracks</name>\n" .
-"      <visibility>1</visibility>\n" .
-"      <open>0</open>\n";
+"    <Snippet><![CDATA[created using gps.pl]]></Snippet>\n";
 	  
 	return $h;
 }
 
 sub footer {
-	my $f = "    </Folder>\n" .
-"  </Document>\n" .
+	my $f = "  </Document>\n" .
 "</kml>\n";
 
 	return $f;
@@ -133,4 +127,64 @@ sub rgb2kmlcolor {
 	my ( $color ) = @_;
 	
 	return my $newcolor = "FF" . substr($color, 4, 2) . substr($color, 2, 2) . substr($color, 0, 2);
+}
+
+
+## Parses line of csv data and puts into a hash for easy data access
+##
+sub parseit2 {
+	my $x=0;
+	my %FIELD;
+	my %DATA;
+	
+	## defines the field order and keys
+	$FIELD{"millis"}=$x++;
+	$FIELD{"current"}=$x++;
+	$FIELD{"voltage"}=$x++;
+	$FIELD{"gx"}=$x++;
+	$FIELD{"gy"}=$x++;
+	$FIELD{"gz"}=$x++;
+	$FIELD{"gtemp"}=$x++;
+	$FIELD{"ax"}=$x++;
+	$FIELD{"ay"}=$x++;
+	$FIELD{"az"}=$x++;
+	$FIELD{"mx"}=$x++;
+	$FIELD{"my"}=$x++;
+	$FIELD{"mz"}=$x++;
+	$FIELD{"gheading"}=$x++;
+	$FIELD{"cheading"}=$x++;
+	$FIELD{"roll"}=$x++;
+	$FIELD{"pitch"}=$x++;
+	$FIELD{"yaw"}=$x++;
+	$FIELD{"lat"}=$x++;
+	$FIELD{"lon"}=$x++;
+	$FIELD{"course"}=$x++;
+	$FIELD{"speed"}=$x++;
+	$FIELD{"hdop"}=$x++;
+	$FIELD{"lrdist"}=$x++;
+	$FIELD{"rrdist"}=$x++;
+	$FIELD{"lrspeed"}=$x++;
+	$FIELD{"rrspeed"}=$x++;
+	$FIELD{"encheading"}=$x++;
+	$FIELD{"estheading"}=$x++;
+	$FIELD{"estlat"}=$x++;
+	$FIELD{"estlon"}=$x++;
+	$FIELD{"estnorthing"}=$x++;
+	$FIELD{"esteasting"}=$x++;
+	$FIELD{"estx"}=$x++;
+	$FIELD{"esty"}=$x++;
+	$FIELD{"nextwaypoint"}=$x++;
+	$FIELD{"bearing"}=$x++;
+	$FIELD{"distance"}=$x++;
+
+	## read the line of data
+	my @data = split(/\s*,\s*/);
+	
+	## convert array of data into a hash of data using keys
+	foreach $key (keys %FIELD) {
+		$DATA{$key} = $data[$FIELD{$key}];
+		#print "$key $FIELD{$key}\n";
+	}
+	  
+	return %DATA
 }
