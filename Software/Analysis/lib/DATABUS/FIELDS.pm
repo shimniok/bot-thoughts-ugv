@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+## Module for parsing DataBus logfiles
+##
 package DATABUS::FIELDS;
 require Exporter;
 @ISA               = qw(Exporter);
