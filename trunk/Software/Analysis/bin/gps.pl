@@ -32,7 +32,7 @@ my @COLOR = (	"FF0000", # red
 my $color = 0;
 
 if ($#ARGV < 0) {
-  printf "usage: plotter.pl infile [infile [...]]\n";
+  printf "usage: $0 infile [infile [...]]\n";
   exit(1);
 }
 
@@ -45,7 +45,7 @@ foreach my $file (@ARGV) {
 
 	my $trackColor = rgb2kmlcolor( $COLOR[$color++] );
 	
-	open my $fin, "<", "$file" || die "cant open $ARGV[0]\n";
+	open my $fin, "<", "$file" || die "cant open $file\n";
 	$file =~ tr/A-Z/a-z/;
 
 	my $coordinates = "";
