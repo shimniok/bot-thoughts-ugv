@@ -383,9 +383,9 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
                                     if (c == '\b') {                        // backspace is a special situation
                                         // for some reason this is removing one character from the model
                                         // but removing two characters from the display.
-                                        Document doc = text.getDocument();
+                                        Document myDoc = text.getDocument();
                                         try {
-                                            doc.remove(doc.getLength()-1, 1);
+                                            myDoc.remove(myDoc.getLength()-1, 1);
                                         } catch (BadLocationException ex) {
                                             Logger.getLogger(SerTermGUI.class.getName()).log(Level.SEVERE, null, ex);
                                         }
