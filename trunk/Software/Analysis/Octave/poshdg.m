@@ -32,31 +32,44 @@ function poshdg(PH)
 	a=0.98;
 	He=zeros(length(T),1);
 	He(1) = Hgps(1);
-	A=[];
+	O=zeros(length(T),4);
+	Gzc=zeros(length(T),1);
+	P = 0;
 	for i=2:length(T)
 		dt = T(i)-T(i-1);
-		r = Gz(i)/scale - offset;
-		H1 = r*dt+He(i-1);
+		Gzc(i) = Gz(i)/scale - offset + P;
+		H1 = Gzc(i)*dt+He(i-1);
 		H2 = Hgps(i);
 		if (H2-H1 > 180) 
 			H2 -= 360;
 		elseif (H2-H1 < -180)
 			H2 += 360;
 		end
-		H2-H1
+		P = -0.1*(H2 - H1);
+		offset -= 0.002*(H2 - H1);
+		O(i,:) = [T(i) H2-H1 P offset];
 		He(i) = fmod(a*H1 + (1-a)*H2, 360);
 	end
 	E = move([0 0], He, D);
+	% calculate corrected gyro heading
+	Hgc = fmod(cumtrapz(T, Gzc)+G0, 360);
 	close all;
+	%
+	% offset / error
+	%
+	figure;
+	plot(O(:,1),O(:,2), O(:,1),O(:,3), O(:,1),O(:,4));
+	title("PI Error correction", "fontsize", 22);
+	legend("Error", "P", "offset");
 	%
 	% Plot GPS course and gyro course
 	%
 	figure;
-	plot(T, Hgy, '.', T, Hgps, '.', T, He, '.');
-	title("Position estimates", "fontsize", 22);
+	plot(T,Hgy,'.', T,Hgps,'.', T,He,'.', T,Hgc,'.');
+	title("Heading", "fontsize", 22);
 	xlabel("Rel Lon", "fontsize", 18);
 	ylabel("Rel Lat", "fontsize", 18);
-	legend("GyroHdg+Odo", "GPSCourse+Odo", "Comp+Odo");
+	legend("Gyro Hdg", "GPS Course", "Filtered", "Gyro Corrected");
 	grid on;
 	% Plot GPS Course + Odo, Gyro Hdg + Odo
 	%
@@ -65,8 +78,8 @@ function poshdg(PH)
 	title("Position estimates", "fontsize", 22);
 	xlabel("Rel Lon", "fontsize", 18);
 	ylabel("Rel Lat", "fontsize", 18);
-	text(0, 1e-005, "Gyro scale -14.49787");
-	text(0, 2e-005, "Gyro offset -0.6");
+	text(0, 1, "Gyro scale -14.49787");
+	text(0, 2, "Gyro offset -0.6");
 	legend("GyroHdg+Odo", "GPSCourse+Odo", "Comp+Odo");
 	grid on;
 	%
