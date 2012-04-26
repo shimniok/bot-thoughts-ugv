@@ -2,7 +2,6 @@
  *
  */
 class GeoPosition {
-    float _R;          /** Earth's mean radius */
     float _latitude;   /** The position's latitude */
     float _longitude;  /** The position's longitude */
 
@@ -12,11 +11,17 @@ class GeoPosition {
      *  @param longitude is the longitude to set
      */
     GeoPosition(float latitude, float longitude) { 
-      _R = 6371000.0;
-      _latitude = latitude;
-      _longitude = longitude;
+      set(latitude, longitude);
     }
- 
+
+    GeoPosition(String latitude, String longitude) { 
+      set(latitude, longitude);
+    }
+    
+    GeoPosition(GeoPosition pos) {
+      set(pos);
+    }
+    
     /** Get the position's latitude
      *
      *  @returns the position's latitude
@@ -50,6 +55,11 @@ class GeoPosition {
     void set(float latitude, float longitude) {
       _latitude = latitude;
       _longitude = longitude;
+    }
+
+    void set(String latitude, String longitude) {
+      _latitude = float(latitude);
+      _longitude = float(longitude);
     }
     
     /** Move the location of the position by the specified distance and in
@@ -98,7 +108,7 @@ class GeoPosition {
                  sin(dLon/2.0) * sin(dLon/2.0);
       float c = 2.0 * atan2(sqrt(a), sqrt(1-a));
       
-      return _R * c;
+      return 6371000.0 * c;
     }
 
 };
