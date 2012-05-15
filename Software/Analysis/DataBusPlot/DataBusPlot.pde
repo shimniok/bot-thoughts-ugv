@@ -10,16 +10,18 @@
 //
 
 float minDist = 5;    // minimum size of distance line
-int padding = 200;    // pixel padding around waypoints at edges
-float lonMin=360.0;     // x minimum boundary
-float lonMax=-360.0;    // x maximum boundary
-float latMin=360.0;     // y minimum boundary
-float latMax=-360.0;    // y maximum boundary
+int padding = 400;    // pixel padding around waypoints at edges
+float lonMin=360.0;   // x minimum boundary
+float lonMax=-360.0;  // x maximum boundary
+float latMin=360.0;   // y minimum boundary
+float latMax=-360.0;  // y maximum boundary
 int sizeX=800;        // screen size, x
 int sizeY=600;        // screen size, y
+float AR;             // aspect ratio
 float scaleLon;       // Scale latitude to pixels
 float scaleLat;       // Scale longitude to pixels
-float scaleM;          // Scale meters to pixels
+float scaleMx;        // scale meters to pixels
+float scaleMy;
 float x = 0.0;        // Current x-coordinate
 float y = 0.0;        // Current y-coordinate
 float x0 = 0.0;
@@ -108,13 +110,13 @@ void draw()
     stroke(255);     // Set line drawing color to white
     // draw bearing indicator at least minDist in length
     if (dist < minDist) {
-      line(x, y, x+scaleM*minDist*x1, y+scaleM*minDist*y1);
+      line(x, y, x+scaleMx*minDist*x1, y+scaleMy*minDist*y1);
     } else {
-      line(x, y, x+scaleM*dist*x1, y+scaleM*dist*y1);
+      line(x, y, x+scaleMx*dist*x1, y+scaleMy*dist*y1);
     }
     // Draw distance target
     fill(green, 20);
-    ellipse(x+scaleM*dist*x1, y+scaleM*dist*y1, 20, 20);
+    ellipse(x+scaleMx*dist*x1, y+scaleMy*dist*y1, 20, 20);
     // Go to the next line for the next run through draw()
     index = index + 1;
   }
@@ -137,6 +139,10 @@ void drawCar(float x, float y, float h)
 
 void mapping() 
 {
+  // calculate the aspect ratio to square up the plot
+  AR=float(sizeY)/float(sizeX);
+  print("AR=");
+  println(AR);
   // Find the minimum and maximum bounds of lat and lon
   for (int i=1; i < waypoint.length; i++) {
     float Y = waypoint[i].latitude();
@@ -172,16 +178,16 @@ void mapping()
   print(Ydist);
   println();  
   // Figure out meters to pixels scale
-  if (Xdist > Ydist) {
-    scaleM = (sizeX-padding) / Xdist;
-  } else {
-    scaleM = (sizeY-padding) / Ydist;
-  }
+  scaleMx = AR * (sizeX-padding) / Xdist;
+  scaleMy = (sizeY-padding) / Ydist;
   // Now figure out the scaling from lat to meters to pixels and lon to meters to pixels
-  scaleLon = (sizeX-padding) / (lonMax - lonMin);
+  scaleLon = AR * (sizeX-padding) / (lonMax - lonMin);
   scaleLat = (sizeY-padding) / (latMax - latMin);
-  print("scaleM=");
-  print(scaleM);
+  print("scaleMx=");
+  print(scaleMx);
+  print(" scaleMy=");
+  print(scaleMy);
+  println();
   print(" scaleLon=");
   print(scaleLon);
   print(" scaleLat=");
