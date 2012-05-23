@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-## Pull GPS course, Magnetometer values into separate csv
+## Pull heading-related variables out: GPS course, Magnetometer, gyro, estimated heading
 
 use Cwd;
 use lib "/home/mes/lib";
@@ -11,17 +11,24 @@ if ($#ARGV < 0) {
   exit(1);
 }
 
+$lastCourse = 0;
 foreach my $file (@ARGV) {
 
 	open my $fin, "<", "$file" || die "cant open $file\n";
 	$file =~ tr/A-Z/a-z/;
 
-	printf "# Millis,Course,MX,MY,MZ\n";
+	printf "# Millis,course,mx,my,mz,estheading\n";
 	while (<$fin>) {
 		s/[\r\n]+//g;
 		my %data = parseFields($_);
 		next if ($data{"millis"} eq "Millis");
-		printf "%d,%.1f,%d,%d,%d,%.2f\n", $data{"millis"}, $data{"course"}, $data{"mx"}, $data{"my"}, $data{"mz"}, $data{"current"};
+		if ($data{"lat"} == 0 || $data{"lon"} == 0) {
+			$data{"course"} = $lastCourse;
+		} else {
+			$lastCourse = $data{"course"};
+		}
+
+		printf "%d,%.1f,%d,%d,%d,%d,%.2f\n", $data{"millis"}, $data{"course"}, $data{"mx"}, $data{"my"}, $data{"mz"}, $data{"gz"}, $data{"estheading"};
 	}
 	close($fin);
 

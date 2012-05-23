@@ -16,7 +16,7 @@ foreach my $file (@ARGV) {
 	open my $fin, "<", "$file" || die "cant open $file\n";
 	$file =~ tr/A-Z/a-z/;
 
-	printf "# Millis,GX,GY,GZ\n";
+	printf "# Millis,GX,GY,GZ,GTemp\n";
 	while (<$fin>) {
 		s/[\r\n]+//g;
 		my %data = parseFields($_);

@@ -1,43 +1,31 @@
 #!/usr/bin/perl
 
-use Getopt::Std;
-use Math::Trig;
-push(@INC, '/home/mes/lib/');
-require 'fields.pl';
+## Pull gyro bias
 
-my %opt;
-getopts('l:', \%opt);
+use Cwd;
+use lib "/home/mes/lib";
+use DATABUS::FIELDS;
 
-$lines = $opt{'l'};
-
-if ( !exists $opt{'l'} || $#ARGV < 0 || $lines <= 0) {
-  printf STDERR "usage: gbias.pl -l lines filename\n";
-  exit 1;
+if ($#ARGV < 0) {
+  printf "usage: $0 infile\n";
+  exit(1);
 }
 
+foreach my $file (@ARGV) {
 
-$filename = $ARGV[0];
+	open my $fin, "<", "$file" || die "cant open $file\n";
+	$file =~ tr/A-Z/a-z/;
 
-$count = 0;
-$sum = 0;
+	printf "# Millis,Course,MX,MY,MZ,A,lat,lon\n";
+	while (<$fin>) {
+		s/[\r\n]+//g;
+		my %data = parseFields($_);
+		next if ($data{"millis"} eq "Millis");
+		printf "%d,%.6f\n", 
+			$data{"millis"}, 
+			$data{"gbias"};
+	}
+	close($fin);
 
-open(FIN, "<$filename") || die "cant open $filename";
-while (<FIN>) {
-  next if /^\s*Millis/;
-
-  @data = split("\s*,\s*");
-
-  $sum += $data[$GYRO];
-
-  $count++;
-
-  printf "%d %d %d %d\n", $count, $data[$GYRO], $data[$LENC], $data[$RENC];
-
-  last if ($count >= $lines);
 }
 
-die "Zero lines found" if ($count == 0);
-
-printf "%.1f %d %.1f\n", $sum, $count, $sum/$count;
-
-exit 0;

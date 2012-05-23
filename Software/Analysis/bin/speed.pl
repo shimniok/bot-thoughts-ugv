@@ -11,6 +11,7 @@ if ($#ARGV < 0) {
   exit(1);
 }
 
+$lastSpeed = 0;
 foreach my $file (@ARGV) {
 
 	open my $fin, "<", "$file" || die "cant open $file\n";
@@ -21,7 +22,12 @@ foreach my $file (@ARGV) {
 		s/[\r\n]+//g;
 		my %data = parseFields($_);
 		next if ($data{"millis"} eq "Millis");
-		printf "%d,%.1f,%d,%d,%d\n", $data{"millis"}, $data{"speed"}, $data{"lrspeed"}, $data{"rrspeed"};
+		if ($data{"lat"} == 0) {
+			$data{"speed"} = $lastSpeed;
+		} else {
+			$lastSpeed = $data{"speed"};
+		}
+		printf "%d,%.2f,%.2f,%.2f\n", $data{"millis"}, $data{"speed"}, $data{"lrspeed"}, $data{"rrspeed"};
 	}
 	close($fin);
 
