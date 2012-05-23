@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-## Pull out GPS data from Data Bus logs and put into KML file for use with Google Earth
+## Pull out GPS data from Octave matrix file and put into KML file for use with Google Earth
 ##
 use Cwd;
 use lib "/home/mes/lib";
@@ -32,8 +32,21 @@ my @COLOR = (	"FF0000", # red
 my $color = 0;
 
 if ($#ARGV < 0) {
-  printf "usage: $0 infile [infile [...]]\n";
+  printf "usage: $0 [-e] infile [infile [...]]\n";
   exit(1);
+}
+
+# -e is the estimate flag, generates KML file for
+# estimated position
+if ($ARGV[0] eq '-e') {
+	shift @ARGV;
+	$mylat = "estlat";
+	$mylon = "estlon";
+	$est = "est ";
+} else {
+	$mylat = "lat";
+	$mylon = "lon";
+	$est = "";
 }
 
 my $filenames = join( ", ", @ARGV );
@@ -53,15 +66,16 @@ foreach my $file (@ARGV) {
 	while (<$fin>) {
 	  s/[\r\n]+//g;
 	  my %data = parseFields($_);
-	  next if ($data{"millis"} eq "Millis" || $data{"lat"} == 0);
-	  $coordinates .= sprintf "%.5f,%.5f ", $data{"lon"}, $data{"lat"};
+	  next if ($data{"millis"} eq "Millis");
+	  next if ($mylat eq "lat" && $data{"lat"} == 0);
+	  $coordinates .= sprintf "%.7f,%.7f ", $data{$mylon}, $data{$mylat};
 	}
 	close($fin);
 
 	my $placemark .= placemark();
 	$placemark =~ s/___COLOR___/$trackColor/g;
 	$placemark =~ s/___COORDINATES___/$coordinates/g;
-	$placemark =~ s/___NAME___/$file/g;
+	$placemark =~ s/___NAME___/$est$file/g;
 	
 	$kmlfile .= $placemark;
 }
