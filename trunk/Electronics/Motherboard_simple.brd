@@ -127,8 +127,8 @@
 <text x="66.675" y="33.655" size="1.016" layer="25" ratio="12" rot="R270">GND</text>
 <text x="66.675" y="29.845" size="1.016" layer="25" ratio="12" rot="R270">R</text>
 <text x="66.675" y="27.305" size="1.016" layer="25" ratio="12" rot="R270">L</text>
-<text x="54.483" y="49.276" size="1.016" layer="25" ratio="12" rot="R90">SPEED</text>
-<text x="60.579" y="49.276" size="1.016" layer="25" ratio="12" rot="R90">STEER</text>
+<text x="56.388" y="49.911" size="1.016" layer="25" ratio="12" rot="R90">SPEED</text>
+<text x="58.674" y="49.911" size="1.016" layer="25" ratio="12" rot="R90">STEER</text>
 <text x="53.975" y="47.879" size="1.016" layer="25" ratio="12" rot="R180">GND</text>
 <text x="55.499" y="10.668" size="1.016" layer="25" ratio="12" rot="R270">VOLT</text>
 <text x="58.039" y="10.668" size="1.016" layer="25" ratio="12" rot="R270">AMP</text>
@@ -987,13 +987,13 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="MPN" value="" x="64.77" y="27.94" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
 <element name="JP6" library="pinhead-2" package="1X04-S" value="UART3" x="49.53" y="5.715" smashed="yes">
-<attribute name="VALUE" x="55.245" y="5.08" size="1.27" layer="27" ratio="12"/>
+<attribute name="VALUE" x="43.815" y="6.35" size="1.27" layer="27" ratio="12" rot="R180"/>
 <attribute name="OC_NEWARK" value="unknown" x="49.53" y="5.715" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="49.53" y="5.715" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="49.53" y="5.715" size="1.778" layer="27" display="off"/>
 </element>
 <element name="JP4" library="pinhead-2" package="1X02-S" value="RST" x="21.59" y="10.16" smashed="yes">
-<attribute name="VALUE" x="22.733" y="8.255" size="1.27" layer="27" ratio="12" rot="R180"/>
+<attribute name="VALUE" x="19.812" y="12.065" size="1.27" layer="27" ratio="12"/>
 <attribute name="OC_NEWARK" value="unknown" x="21.59" y="10.16" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="21.59" y="10.16" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="21.59" y="10.16" size="1.778" layer="27" display="off"/>
@@ -1061,7 +1061,7 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="MPN" value="" x="29.21" y="5.715" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="29.21" y="5.715" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="DATABASE" value="./../../../eagle/PARTSDB.TXT" x="29.21" y="5.715" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="34.925" y="5.08" size="1.27" layer="27" ratio="12"/>
+<attribute name="VALUE" x="23.495" y="6.35" size="1.27" layer="27" ratio="12" rot="R180"/>
 </element>
 <element name="R9" library="rcl" package="0204/5" value="220" x="30.48" y="10.795" smashed="yes" rot="R270">
 <attribute name="OC_NEWARK" value="98K2621" x="30.48" y="10.795" size="1.778" layer="27" rot="R270" display="off"/>
