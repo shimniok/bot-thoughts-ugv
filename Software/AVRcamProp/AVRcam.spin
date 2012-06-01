@@ -23,22 +23,30 @@ CON
 
   BUFSIZ        = 128
 
-  BOXSIZ        = 5*8+1           ' 5 bytes per box, 8 boxes, 1st byte is the box count
+  BOXSIZ        = 5*8             ' 5 bytes per box, 8 boxes 
   COLSIZ        = 48              ' 3 colors (rgb) times 16 values = 48 bytes
-  DATSIZ        = BOXSIZ + COLSIZ ' box size = 20 boxes * 6 bytes, color size = 48
-  
-  
+  DATSIZ        = BOXSIZ+COLSIZ+1 ' box size = 20 boxes * 6 bytes, color size = 48, plus boxes count
+
+  ERR_FF        = $01
+  ERR_PG        = $02
+  ERR_SM        = $04
+  ERR_ET        = $08
+  ERR_TO        = $10
+
 VAR
+  long box_sem
   long cog
   long cambuf[BUFSIZ]
-  byte response[10]
+  byte response[BUFSIZ]
   long in
   long out
 
   ' Camera I2C Registers
+  byte boxes
   byte box[BOXSIZ]     ' boxes from 0 to BOXSIZ-1
   byte color[COLSIZ]   ' color map from BOXSIZ to BOXSIZ+COLSIZ-1
-
+  byte status
+  
   long stack1[BUFSIZ]
   long stack2[BUFSIZ]
   long camstack[BUFSIZ]
@@ -47,25 +55,22 @@ OBJ
   pc     : "FullDuplexSerial"
   cam    : "FullDuplexSerial"
   i2c    : "i2cslave"
-' S      : "String"
     
 PUB Main
+  box_sem := locknew
   cognew(DataHandler, @stack1)
-  cognew(CamRecvHandler, @camstack)
-  i2c.Start( SCL_PIN, SDA_PIN, I2CID, @box, DATSIZ )
+  'cognew(CamRecvHandler, @camstack)
+  i2c.Start( SCL_PIN, SDA_PIN, I2CID, @boxes, DATSIZ )
 
 PUB CamRecvHandler | c
   in := out := 0
-  box[0] := 9 ' bogus test init thingy
-  cam.start(CAM_RX, CAM_TX, 0, CAM_BAUD)
-  cam.rxflush
   repeat
     c := cam.rx
     cambuf[in] := c 
     in := (in+1)&(BUFSIZ-1)
     'fifoStat
 
-PUB DataPrinter | i
+PUB DataPrinter | i, j
   ' Print out data storage
   repeat  
     pc.str(String("ColorMap: "))
@@ -74,80 +79,126 @@ PUB DataPrinter | i
       pc.hex(color[i], 2)
     pc.lf
     pc.str(String("Boxes:    "))
-    repeat i from 0 to BOXSIZ
+    repeat until not lockset(box_sem)
+    pc.dec(boxes)
+    pc.lf
+    i := 0
+    repeat while (i < boxes)
+      j := i*5
       pc.space
-      pc.dec(box[i])
+      pc.dec(box[j]) ' color
+      pc.space
+      pc.tx("(")
+      pc.dec(box[j+1]) ' x1
+      pc.tx(",")
+      pc.dec(box[j+2]) ' y1
+      pc.str(String(") to ("))
+      pc.dec(box[j+3]) ' x2
+      pc.tx(",")
+      pc.dec(box[j+4]) ' y2
+      pc.tx(")")
+      pc.lf
+      i := i + 1
+    lockclr(box_sem)
+    pc.str(String("Status:   "))
+    pc.bin(status, 8)
+    pc.lf
     pc.lf
     waitcnt(clkfreq*2+cnt)
 
-PUB DataHandler | i
+PUB DataHandler | i, j, myBoxes, tmp[BOXSIZ], timeout
+  status := 0
+  cam.start(CAM_RX, CAM_TX, 0, CAM_BAUD)
   pc.start(RX_PIN, TX_PIN, 0, BAUD)
   ' Initialize Color Map
   ' r=144:176, b=32:64, g=16:48
   ' r 0 0 0 0 0 0 0 0 0 128 128 128 0 0 0 0
   ' g 0 0 128 128 128 0 0 0 0 0 0 0 0 0 0 0
   ' b 0 128 128 128 0 0 0 0 0 0 0 0 0 0 0 0
-  waitcnt(clkfreq*5+cnt) ' need to wait because stupid i2c routine zeros out the data
+  waitcnt(clkfreq*2+cnt) ' need to wait because stupid i2c routine zeros out the data
   repeat i from 0 to COLSIZ-1
     color[i] := 0
   color[9] := color[10] := color[11] := 128
   color[18] := color[19] := color[20] := 128
   color[33] := color[34] := color[35] := 128
+
+  ' Attempt to initialize camera
+
   ' Ping camera
-  pc.str(String("Pinging camera... "))
-  cam.str(String("PG"))
-  cam.cr
-  waitcnt(clkfreq+cnt)
-  if (gotAck)
-    pc.str(String("ok"))
-  else
-    pc.str(String("FAIL"))
-  pc.lf
+  repeat
+    pc.str(String("Disabling tracking..."))
+    cam.str(String("DT"))
+    cam.cr
+    gotAck
+    pc.str(String("Pinging camera..."))
+    cam.str(String("PG"))
+    cam.cr
+    if (gotAck == false)
+      status |= ERR_PG
+    else
+      status := 0
+      quit
+     
   ' send color map
+  pc.str(String("Sending color map..."))
   cam.str(String("SM"))
   repeat i from 0 to COLSIZ-1
     cam.space
-    cam.dec(color[i])  
+    cam.dec(color[i])
+    waitcnt(clkfreq/1000+cnt)
   cam.cr
-  pc.str(String("Sending color map..."))
-  waitcnt(clkfreq*2+cnt)
-  if (gotAck)
-    pc.str(String("ok"))
-  else
-    pc.str(String("FAIL"))
-  pc.lf
-  cam.str(String("ET")) ' enable tracking
-  cam.cr
+  if (gotAck == false)
+    status |= ERR_SM
+  ' enable tracking
   pc.str(String("Enabling tracking..."))
-  waitcnt(clkfreq*2+cnt) ' wait a little extra for the big ol' color map to transmit
-  if (gotAck)
-    pc.str(String("ok"))
-  else
-    pc.str(String("FAIL"))
+  cam.str(String("ET"))
+  cam.cr
+  if (gotAck == false)
+    status |= ERR_ET
   pc.lf
 
   ' Start printing out data
   cognew(DataPrinter, @stack2)
 
+  ' Start reading in tracking data
+  repeat
+  ' re-initialize box count
   ' Get Tracking Data
-  if (out <> in)
   ' Byte 0: 0x0A Indicating the start of a tracking packet
-    repeat until (cambuf[out] == $0A)
-      out := (out+1)&(BUFSIZ-1)
+  ' AVRcam sends no data until boxes are detected, so we timeout
+  ' and reset the number of boxes to 0 at some point
+    timeout := 80 ' timeout is 80ms
+    repeat until (cam.rxcheck == $0A)
+      if (timeout == 0)
+        repeat until not lockset(box_sem)
+        boxes := 0
+        lockclr(box_sem)
+        timeout := -1 ' no need to keep zeroing the box count
+      elseif (timeout > 0)
+        timeout := timeout - 1
+      waitcnt(clkfreq/1000+cnt) ' delay 1ms (17fps means ~59ms period)
   ' Byte 1: Number of tracked objects (0x00...0x08 are valid)
-    box[0] := cambuf[out]
-    out := (out+1)&(BUFSIZ-1)
-    repeat i from 1 to box[0]
-    ' Byte 2: Color of object tracked in bounding box 1
-    ' Byte 3: X upper left corner of bounding box 1
-    ' Byte 4: Y upper left corner of bouding box 1
-    ' Byte 5: X lower right corner of boudning box 1
-    ' Byte 6: Y lower right corner of boudning box 1
-    ' Byte 7: Color object tracked in bound box 2
-    ' ...
+    myBoxes := cam.rx
+    i := 0
+    repeat while (i < myBoxes)
+      ' Byte 2: Color of object tracked in bounding box 1
+      ' Byte 3: X upper left corner of bounding box 1
+      ' Byte 4: Y upper left corner of bouding box 1
+      ' Byte 5: X lower right corner of boudning box 1
+      ' Byte 6: Y lower right corner of boudning box 1
+      repeat j from 0 to 4
+        tmp[i*5+j] := cam.rx
+      i := i + 1
     ' Byte x: 0xFF (indicates the end of line, and will be sent after all tracking info
-
-
+    if (cam.rx <> $ff)
+      status |= ERR_FF
+  ' copy temporary data into central box data store
+    repeat until not lockset(box_sem)
+    boxes := myBoxes
+    repeat i from 0 to BOXSIZ-1
+      box[i] := tmp[i]
+    lockclr(box_sem)
+     
 PUB fifoStat
     ' print in and out fifo pointers
     pc.dec(in)
@@ -155,12 +206,33 @@ PUB fifoStat
     pc.dec(out)
     pc.lf
 
-PUB gotAck : ackReceived | i
-  repeat i from 0 to 9
-    response[i] := cambuf[out]
-    out := (out+1)&(BUFSIZ-1)
-    if (response[i] == 0 or in == out) ' quit on \0
+PUB gotAck : ackReceived | i, c, timeout
+  timeout := 10
+  ' read in data into the buffer
+  repeat i from 0 to BUFSIZ-1
+    ' keep checking until we get the next character
+    repeat
+      c := cam.rxcheck
+      if (c == -1)
+        waitcnt(clkfreq+cnt) ' wait 1 second
+        timeout := timeout - 1
+    until (c <> -1 or timeout == 0)
+
+    if (timeout == 0)
+      status |= ERR_TO
       quit
-    pc.tx(response[i])
+
+    pc.tx(c)
+    'pc.space
+    'pc.hex(c,2)
+    'pc.lf
+    response[i] := c
+      
+    if (c == $0A or c == $0D) ' quit on \r or \n
+      response[i] := 0
+      quit
+
+  pc.lf
+
   ackReceived := (response[0] == "A" and response[1] == "C" and response[2] == "K")
-          
+    
