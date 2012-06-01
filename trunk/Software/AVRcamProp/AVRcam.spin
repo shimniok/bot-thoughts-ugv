@@ -23,7 +23,8 @@ CON
 
   BUFSIZ        = 128
 
-  BOXSIZ        = 5*8             ' 5 bytes per box, 8 boxes 
+  BOXMAX        = 8
+  BOXSIZ        = 5*BOXMAX        ' 5 bytes per box, 8 boxes 
   COLSIZ        = 48              ' 3 colors (rgb) times 16 values = 48 bytes
   DATSIZ        = BOXSIZ+COLSIZ+1 ' box size = 20 boxes * 6 bytes, color size = 48, plus boxes count
 
