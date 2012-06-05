@@ -10,11 +10,12 @@
 
 // simulation variables
 float turnGain = 0.08;
-float intercept=0.12;
-float speed=6;
+float intercept=0.15;
+float speed=3;
 float lim=8; // curvature limit
 float slop=5; // curvature slop
-float bias=2; // curvature bias
+float bias=1; // curvature bias
+float hdgErr=0; // initial heading error
 
 // Pure Pursuit variables
 float u;
@@ -71,7 +72,7 @@ void setup()
   segNext = next = 1;
   x = Xw[0];
   y = Yw[0];
-  hdg = bearing(x, y, Xw[0], Yw[0]) + 5; // add initial heading error
+  hdg = bearing(x, y, Xw[0], Yw[0]) + hdgErr; // add initial heading error
   print("h0=");
   println(hdg);
 
@@ -79,13 +80,12 @@ void setup()
   background(0);
   noStroke();
   smooth();
-
 }
 
 void draw() 
 {
   // Path fadeout
-  fill(0, 20);
+  fill(0, 5);
   rectMode(CORNER);
   rect(0, 0, width, height);
   // Draw waypoints
@@ -127,19 +127,41 @@ void draw()
   /////////////////////////////////
   // Steering control
   /////////////////////////////////
-  // would be nice to add in some noise to heading info
-  float relBrg = brg-hdg;
-  if (relBrg < -180.0) 
-    relBrg += 360.0;
-  if (relBrg >= 180.0)
-    relBrg -= 360.0;
-  //print("relBrg=");
-  //print(relBrg);
 
+
+//  float c = purePursuit(x, y, hdg, prev, next);
+  float c = dumbPursuit(x, y, hdg, next);
+ 
+  print(" curvature=");
+  print(c);
+  println();
+  
+  // simulate sloppy steering with bias (misalignment)
+  if (c > -slop && c < slop)
+    c = bias;
+  
+  // Simulate limited turning radius (would be based on lateral g)
+  if (c > lim) c = lim;
+  if (c < -lim) c = -lim;
+
+  // Compute hdgRate from SA and speed
+  hdgRate = speed * c / radians(360);
+  
+  // Navigation calculations
+  if (distNext < lookAhead) {
+    prev = next;
+    next++;
+    if (next >= Xw.length) next = 0;
+    // calculate new line parameters
+  }
+}
+
+float purePursuit(float x, float y, float hdg, int prev, int next)
+{
   ////////////////////////////////////////////////////////////
   // Pure Pursuit
   ////////////////////////////////////////////////////////////
-    // Previous waypoint coordinates
+  // Previous waypoint coordinates
   float Ax = Xw[prev];
   float Ay = Yw[prev];
   // Robot coordinates
@@ -194,18 +216,25 @@ void draw()
  
   float BGx = (Gx-Bx)*cos(radians(hdg)) - (Gy-By)*sin(radians(hdg));
   float c = (2 * BGx) / lookAhead*lookAhead;
- 
-  print(" curvature=");
-  print(c);
-  println();
-  
-  // simulate sloppy steering with bias (misalignment)
-  if (c > -slop && c < slop)
-    c = bias;
-  
-  // Simulate limited turning radius (would be based on lateral g)
-  if (c > lim) c = lim;
-  if (c < -lim) c = -lim;
+
+  return c;
+}
+
+
+float dumbPursuit(float x, float y, float hdg, int next)
+{
+
+  float brg = bearing(x, y, Xw[next], Yw[next]);
+  float distNext = distance(x, y, Xw[next], Yw[next]);
+
+  // would be nice to add in some noise to heading info
+  float relBrg = brg-hdg;
+  if (relBrg < -180.0) 
+    relBrg += 360.0;
+  if (relBrg >= 180.0)
+    relBrg -= 360.0;
+  //print("relBrg=");
+  //print(relBrg);
   
   // steering angle <- relBrg, lookahead distance
   // turn radius <- steering angle & understeer factor, 
@@ -219,7 +248,6 @@ void draw()
   */
   
   // STEERING BASED ON RELATIVE BEARING & LOOKAHEAD DISTANCE
-/*+
   float theta = relBrg;
   
   // I haven't had time to work out why the equation is slightly offset such
@@ -236,31 +264,24 @@ void draw()
   if (theta > 90.0) theta = 90.0;
 
   // Compute radius based on intercept distance and specified angle    
-  float radius = intercept/(2*sin(radians(abs(theta))));
+  float radius = sign * intercept/(2*sin(radians(abs(theta))));
   float limit=10.0;
   // limit radius as specified
   if (radius > limit)  radius =  limit;
   if (radius < -limit) radius = -limit;
 
+   drawBearing(x, y, brg, distNext);
+   
   //print("  radius=");
   //print(radius);
 
   // Now calculate steering angle based on wheelbase and track width
-  float SA = degrees(asin(wheelbase / (radius - track/2)));
-  if (relBrg < 0) SA *= -1.0;
-*/
+  //float SA = degrees(asin(wheelbase / (radius - track/2)));
+  //if (relBrg < 0) SA *= -1.0;
 
-  // Compute hdgRate from SA and speed
-  hdgRate = speed * c / radians(360);
-  
-  // Navigation calculations
-  if (distNext < lookAhead) {
-    prev = next;
-    next++;
-    if (next >= Xw.length) next = 0;
-    // calculate new line parameters
-  }
+  return 1/radius;
 }
+
 
 void drawWaypoints()
 {
