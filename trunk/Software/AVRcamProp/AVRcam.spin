@@ -11,8 +11,8 @@ CON
   TX_PIN        = 16
   BAUD          = 9600
 
-  CAM_RX        = 26
-  CAM_TX        = 25
+  CAM_RX        = 17
+  CAM_TX        = 16
   CAM_BAUD      = 115200
 
   CHR_TYPE      = 0
@@ -20,6 +20,9 @@ CON
   DEC_TYPE      = 2
   HEX_TYPE      = 3
   BIN_TYPE      = 4
+
+  LED_RED       = 13
+  LED_GREEN     = 14
 
   BUFSIZ        = 128
 
@@ -125,9 +128,16 @@ PUB DataHandler | i, j, myBoxes, tmp[BOXSIZ], timeout
 
   ' Attempt to initialize camera
 
+  dira[LED_RED] := 1
+  dira[LED_GREEN] := 1
+  outa[LED_RED] := 1
+  outa[LED_GREEN] := 0
+
   ' Ping camera
   repeat
+    waitcnt(clkfreq/4+cnt)
     pc.str(String("Disabling tracking..."))
+    outa[LED_RED] := outa[LED_GREEN] := 1
     cam.str(String("DT"))
     cam.cr
     gotAck
@@ -136,12 +146,17 @@ PUB DataHandler | i, j, myBoxes, tmp[BOXSIZ], timeout
     cam.cr
     if (gotAck == false)
       status |= ERR_PG
+      outa[LED_GREEN] := 0
     else
+      outa[LED_RED] := 0
       status := 0
       quit
+
      
   ' send color map
+  waitcnt(clkfreq/4+cnt)
   pc.str(String("Sending color map..."))
+  outa[LED_RED] := outa[LED_GREEN] := 1
   cam.str(String("SM"))
   repeat i from 0 to COLSIZ-1
     cam.space
@@ -149,15 +164,30 @@ PUB DataHandler | i, j, myBoxes, tmp[BOXSIZ], timeout
     waitcnt(clkfreq/1000+cnt)
   cam.cr
   if (gotAck == false)
+    outa[LED_GREEN] := 0
     status |= ERR_SM
+  else
+    outa[LED_RED] := 0
+
   ' enable tracking
+  waitcnt(clkfreq/4+cnt)
   pc.str(String("Enabling tracking..."))
+  outa[LED_GREEN] := outa[LED_GREEN] := 1
   cam.str(String("ET"))
   cam.cr
   if (gotAck == false)
+    outa[LED_GREEN] := 0
     status |= ERR_ET
+  else
+    outa[LED_RED] := 0
+  
   pc.lf
 
+  waitcnt(clkfreq/2+cnt)
+
+  outa[LED_RED]   := (status <> 0)
+  outa[LED_GREEN] := (status == 0)
+     
   ' Start printing out data
   cognew(DataPrinter, @stack2)
 
@@ -208,7 +238,7 @@ PUB fifoStat
     pc.lf
 
 PUB gotAck : ackReceived | i, c, timeout
-  timeout := 10
+  timeout := 5 'seconds
   ' read in data into the buffer
   repeat i from 0 to BUFSIZ-1
     ' keep checking until we get the next character
@@ -223,7 +253,8 @@ PUB gotAck : ackReceived | i, c, timeout
       status |= ERR_TO
       quit
 
-    pc.tx(c)
+    if (c > 32 and c < 126)
+      pc.tx(c)
     'pc.space
     'pc.hex(c,2)
     'pc.lf
