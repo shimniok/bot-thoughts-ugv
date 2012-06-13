@@ -264,7 +264,7 @@ SendBit                 test    sclMask,INA WC
                   IF_C  jmp     #$-1
 
                         test    byt,#$80 WC
-                  IF_NC mov     DIRA,sdaMask
+                  IF_NC or      DIRA,sdaMask
                   
                         test    sclMask,INA WC
                   IF_NC jmp     #$-1
@@ -272,8 +272,8 @@ SendBit                 test    sclMask,INA WC
                         test    sclMask,INA WC
                   IF_C  jmp     #$-1
                   
-                        mov     DIRA,#0
-
+                        andn    DIRA,sclMask
+                        
 SendBit_Ret             ret
 
 '                       .-------------------------------------------------------------------------------.
