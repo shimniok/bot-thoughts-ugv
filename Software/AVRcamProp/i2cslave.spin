@@ -114,6 +114,9 @@ FirstParam              mov     sclMask,#1
 
                         mov     sxxMask,sclMask
                         or      sxxMask,sdaMask
+
+                        andn    dira, sxxMask    ' set hiz and output low
+                        andn    outa, sxxMask
                         
                         call    #GetParam                                       
                         andn    parArg,#1
@@ -200,7 +203,7 @@ Write                   call    #Ack                    ' Acknowledge the write 
                         call    #Ack                    ' ACknowledge we got the byte
                         
 :Loop                   call    #GetByte                ' Get the data byte ( aborts on stop bit )
-                        Call    #SaveByte               ' Save it
+                        call    #SaveByte               ' Save it
                         call    #Ack                    ' Acknowledge we saved it
                                                    
                         jmp     #:Loop                  ' Get next byte ( will abort on a stop bit )
@@ -223,7 +226,7 @@ SaveByte_Ret            ret
 '                       |       Handle load byte from I2C Ram                                           |
 '                       `-------------------------------------------------------------------------------'
 
-LoadByte                mov     idx,adr                 ' Address to write to
+LoadByte                mov     idx,adr                 ' Address to read from
 
                         and     idx,hubMsk
                         add     idx,hubPtr
@@ -272,7 +275,9 @@ SendBit                 test    sclMask,INA WC
                         test    sclMask,INA WC
                   IF_C  jmp     #$-1
                   
-                        andn    DIRA,sclMask
+                        andn    DIRA,sdaMask
+'                        andn    DIRA,sclMask
+'                        mov     DIRA, #0
                         
 SendBit_Ret             ret
 
