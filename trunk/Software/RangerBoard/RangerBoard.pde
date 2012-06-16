@@ -1,37 +1,42 @@
 #include <Wire.h>
 
 #define I2C_ADDR 0x11
-#define MAX_ADC 3 // I2C takes up ADC4,5
 
-uint16_t adcValue[8];
-float filt = 0.2; // exponential filter parameter; multiplied against current signal
+// ADC variables
+#define MAX_ADC 3 // I2C takes up ADC4,5
+#define FILT_A 0.2 // exponential filter; gain for current reading
+#define FILT_B 0.8 // gain for previous reading
+uint16_t adcValue[MAX_ADC];
+
+// UI modes
 enum modes { STANDARD, VALUES, MONITOR };
 int mode = STANDARD;
+char command;
+byte data[32];
+
+// Timer
+unsigned int tcnt2;
 
 void setup() {
   Serial.begin(9600);
   Wire.begin(I2C_ADDR);
   Wire.onRequest(handleI2CRequest); // register event
-  Wire.onReceive(handleI2CReceive); // register Receive event
+  //Wire.onReceive(handleI2CReceive); // register Receive event
+  timerSetup();
   delay(1000);
   Serial.println("ADC to I2C Ranger Interface");
   Serial.println("? for help");
+  DDRB |= _BV(5); // setup PB5 (Digital 13) as output
 }
 
 
 void loop() {
-  int b;
-  for (int j=0; j < 128; j++) {
-    for (int i=0; i < MAX_ADC; i++) {
-      adcValue[i] = filt*analogRead(i) + (1-filt)*adcValue[i]; 
-    }
-  }
-
   if (Serial.available()) {
     char c = Serial.read();
     switch (c) {
       case 'm' :
         mode = MONITOR;
+        Serial.println("Monitor mode enabled");
         break;
       case 'q' :
         printValues();
@@ -65,36 +70,30 @@ void printValues() {
 }
 
 
-// returns distance in m for Sharp GP2YOA710K0F
-// to get m and b, I wrote down volt vs. dist by eyeballing the
-// datasheet chart plot. Then used Excel to do linear regression
-//
-float irDistance(unsigned int adc)
-{
-    float b = 1.0934; // Intercept from Excel
-    float m = 1.4088; // Slope from Excel
-
-    return m / (((float) adc) * 4.95/1024 - b);
-}
-
-
-// returns distance in m for LV-EZ1 sonar
-//
-float sonarDistance(unsigned int adc)
-{
-    float distance = 9999.9;
-    
-    // EZ1 uses 9.8mV/inch @ 5V or scaling factor of Vcc / 512
-    // so we can eliminate Vcc changes by simply converting the 0-512 inch range
-    // to the ADC's 0-4096 range
-    distance = ((float) adc) * (512 * 0.0254) / 4096;   // distance converted to inch then meter
-
-    return distance;
-}    
 
 void handleI2CReceive(int numBytes)
 {
-  char command = Wire.receive(); // pretty much just ignore the command
+  char d;
+  
+  if (mode == MONITOR) 
+    Serial.print("I2C Receive: ");
+
+  for (int i=0; i < numBytes; i++) {
+    d = Wire.receive(); // pretty much just ignore the command
+
+    if (i == 0) 
+      command = d;
+
+    if (i < 32) {
+      data[i] = d;
+    }
+
+    if (mode == MONITOR) {
+      Serial.print(d, HEX);
+      Serial.print(" ");
+    }
+  }
+  Serial.println();
 
   return;
 }
@@ -108,15 +107,73 @@ void handleI2CReceive(int numBytes)
  */
 void handleI2CRequest()
 {
-  byte data[6];
   byte *v = (byte *) adcValue;
+
+  if (mode == MONITOR)
+      Serial.print("I2C Request. Sending: ");
   
-  for (int i=0; i < 6; i++)
+  for (int i=0; i < 6; i++) {
     data[i] = *v++;
+    if (mode == MONITOR) {
+      Serial.print(data[i], HEX);
+      Serial.print(" ");
+    }
+  }
+  Serial.println();
 
   Wire.send(data,6);
   
-  if (mode == MONITOR) Serial.print("Request received\n");
-  
   return;
 }
+
+// http://popdevelop.com/2010/04/mastering-timer-interrupts-on-the-arduino/
+// author: Sebastian Wallin 
+void timerSetup()
+{
+   /* First disable the timer overflow interrupt while we're configuring */  
+  TIMSK2 &= ~(1<<TOIE2);  
+  
+  /* Configure timer2 in normal mode (pure counting, no PWM etc.) */  
+  TCCR2A &= ~((1<<WGM21) | (1<<WGM20));  
+  TCCR2B &= ~(1<<WGM22);  
+  
+  /* Select clock source: internal I/O clock */  
+  ASSR &= ~(1<<AS2);  
+  
+  /* Disable Compare Match A interrupt enable (only want overflow) */  
+  TIMSK2 &= ~(1<<OCIE2A);  
+  
+  /* Now configure the prescaler to CPU clock divided by 128 */  
+  TCCR2B |= (1<<CS22)  | (1<<CS20); // Set bits  
+  TCCR2B &= ~(1<<CS21);             // Clear bit  
+  
+  /* We need to calculate a proper value to load the timer counter. 
+   * The following loads the value 131 into the Timer 2 counter register 
+   * The math behind this is: 
+   * (CPU frequency) / (prescaler value) = 125000 Hz = 8us. 
+   * (desired period) / 8us = 125.  1000 / 8 = 125
+   * MAX(uint8) + 1 - 125 = 131; 
+   */  
+  /* Save value globally for later reload in ISR */  
+  tcnt2 = 131;   
+  
+  /* Finally load end enable the timer */  
+  TCNT2 = tcnt2;  
+  TIMSK2 |= (1<<TOIE2);  
+}
+
+
+/* 
+ * Install the Interrupt Service Routine (ISR) for Timer2 overflow. 
+ * This is normally done by writing the address of the ISR in the 
+ * interrupt vector table but conveniently done by using ISR()  */  
+ISR(TIMER2_OVF_vect) {  
+  /* Reload the timer */  
+  TCNT2 = tcnt2;  
+  /* toggle pin so that we can confirm our timer */  
+  PINB |= _BV(5); // toggle PB5 (Arduino Pin 13)
+
+  for (int i=0; i < MAX_ADC; i++) {
+    adcValue[i] = FILT_A*analogRead(i) + FILT_B*adcValue[i]; 
+  }
+}  
