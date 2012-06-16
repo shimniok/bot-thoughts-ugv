@@ -35,6 +35,7 @@ sub parseFields {
 	$FIELD{"course"}=$x++;
 	$FIELD{"speed"}=$x++;
 	$FIELD{"hdop"}=$x++;
+	$FIELD{"sats"}=$x++;
 	$FIELD{"lrdist"}=$x++;
 	$FIELD{"rrdist"}=$x++;
 	$FIELD{"lrspeed"}=$x++;
@@ -50,6 +51,11 @@ sub parseFields {
 	$FIELD{"nextwaypoint"}=$x++;
 	$FIELD{"bearing"}=$x++;
 	$FIELD{"distance"}=$x++;
+	$FIELD{"gbias"}=$x++;
+	$FIELD{"errangle"}=$x++;
+	$FIELD{"lranger"}=$x++;
+	$FIELD{"rranger"}=$x++;
+	$FIELD{"cranger"}=$x++;
 
 	my @data = split(/\s*,\s*/);
 	
