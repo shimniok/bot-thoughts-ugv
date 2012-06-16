@@ -17,7 +17,7 @@ foreach my $file (@ARGV) {
 	open my $fin, "<", "$file" || die "cant open $file\n";
 	$file =~ tr/A-Z/a-z/;
 
-	printf "# Millis,course,mx,my,mz,estheading\n";
+	printf "# Millis,course,estheading,gheading,gz\n";
 	while (<$fin>) {
 		s/[\r\n]+//g;
 		my %data = parseFields($_);
@@ -28,7 +28,7 @@ foreach my $file (@ARGV) {
 			$lastCourse = $data{"course"};
 		}
 
-		printf "%d,%.1f,%d,%d,%d,%d,%.2f\n", $data{"millis"}, $data{"course"}, $data{"mx"}, $data{"my"}, $data{"mz"}, $data{"gz"}, $data{"estheading"};
+		printf "%d,%.2f,%.2f,%.2f,%d\n", $data{"millis"}, $data{"course"}, $data{"estheading"}, $data{"gheading"}, $data{"gz"};
 	}
 	close($fin);
 

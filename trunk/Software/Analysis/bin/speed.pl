@@ -27,7 +27,9 @@ foreach my $file (@ARGV) {
 		} else {
 			$lastSpeed = $data{"speed"};
 		}
-		printf "%d,%.2f,%.2f,%.2f\n", $data{"millis"}, $data{"speed"}, $data{"lrspeed"}, $data{"rrspeed"};
+		printf "%d,%.2f,%.2f,%.2f\n", 
+			$data{"millis"}, $data{"speed"}, 
+			$data{"lrspeed"}, $data{"rrspeed"};
 	}
 	close($fin);
 

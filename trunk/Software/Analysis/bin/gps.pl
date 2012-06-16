@@ -66,7 +66,7 @@ foreach my $file (@ARGV) {
 	while (<$fin>) {
 	  s/[\r\n]+//g;
 	  my %data = parseFields($_);
-	  next if ($data{"millis"} eq "Millis");
+	  next if ($data{"millis"} =~ /^[a-z]/);
 	  next if ($mylat eq "lat" && $data{"lat"} == 0);
 	  $coordinates .= sprintf "%.7f,%.7f ", $data{$mylon}, $data{$mylat};
 	}
