@@ -17,7 +17,7 @@ end
 %	
 global M;
 
-function Q=compass_solver_2d(MAG, A, P, H)
+function Q=compass_solver_2d(MAG)
 	global M;
 	M=MAG;
 	%
@@ -70,23 +70,4 @@ function Q=compass_solver_2d(MAG, A, P, H)
 	plot(M2(:,2),N2,'.');
 	axis([-110 110 80 120]);
 	title("Y vs Magnitude", "fontsize", 16);
-	
-	figure; 
-	plot(A,100-N2,'.');
-	title("Err vs Amps", "fontsize", 16);
-	xlabel("Amps", "fontsize", 12);
-	ylabel("Error", "fontsize", 12);
-	
-	figure; 
-	plot(H,100-N2,'.');
-	title("Err vs GPS Heading", "fontsize", 16);
-	xlabel("Heading", "fontsize", 12);
-	ylabel("Error", "fontsize", 12);
-	
-	figure; 
-	plot3(P(:,1),P(:,2),100-N2,'.');
-	title("Err vs Lat/Lon", "fontsize", 16);
-	xlabel("Lat", "fontsize", 12);
-	ylabel("Lon", "fontsize", 12);
-	zlabel("Err", "fontsize", 12);
 end

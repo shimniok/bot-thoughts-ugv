@@ -3,7 +3,7 @@
 function GH=gyroheading(T, G, scale, offset)
 	GH = cumtrapz(T/1000,G/scale-offset); 
 	% newer versions of octave apply scalar subtraction across entire matrix
-	% if yours doesn't, use offset*ones(length(T),1) automatically
+	% if yours doesn't, use offset*ones(length(T),1)
 end
 
 % solver function to calculate SSE
@@ -46,7 +46,7 @@ function Q=gyro_solver_2d(T,H,G)
 	xlabel("Time (ms)", "fontsize", 16);
 	ylabel("Heading Rate (deg per sec)", "fontsize", 16);
 	figure;
-	plot(T, gradient(H, T/1000), '-', T, (G/X(1)-X(2)), '-');
+	plot(T, gradient(H, T/1000), '.', T, (G/X(1)-X(2)), '.');
 	legend("Ref Heading Rate", "Gyro", "location", "southeast");
 	title("Gyro Calibration, Heading Rate","fontsize",20);
 	xlabel("Time (ms)", "fontsize", 16);		
