@@ -10,12 +10,16 @@
 
 // simulation variables
 float turnGain = 0.08;
-float intercept=0.15;
+float intercept=5;
 float speed=3;
-float lim=8; // curvature limit
-float slop=5; // curvature slop
-float bias=1; // curvature bias
-float hdgErr=0; // initial heading error
+float lim=50; // curvature limit
+//float slop=.02; // curvature slop
+//float bias=.001; // curvature bias
+float slop=0.115; // works with dumbPursuit
+float bias=0.002;
+//float slop=0.5;
+//float bias=-0.2;
+float hdgErr=1; // initial heading error
 
 // Pure Pursuit variables
 float u;
@@ -23,6 +27,11 @@ float lookAhead = 60;
 int segPrev;
 int segNext;
 
+float Gx;
+float Gy;
+float cteI=0;
+
+int fade=20;
 float minDist = 5;    // minimum size of distance line
 int padding = 200;    // pixel padding around waypoints at edges
 float lonMin=360.0;   // x minimum boundary
@@ -50,6 +59,10 @@ String[] lines;
 String[] pieces;
 float Xw[];
 float Yw[];
+int wptCount;
+float Xb[];
+float Yb[];
+int barrelCount;
 int prev = 0;        // previous waypoint
 int next = 1;         // next waypoint
 color red = color(255,0,0);
@@ -59,14 +72,31 @@ color yellow = color(240,240,0);
 
 void setup() 
 {
-  Xw = new float[4];
-  Yw = new float[4];
+  Xw = new float[10];
+  Yw = new float[10];
 
-  Xw[0] = 0; Yw[0] = 20;
-  Xw[1] = -20; Yw[1] = 400-20;
-  Xw[2] = 600+20; Yw[2] = 400;
-  Xw[3] = 600; Yw[3] = -20;
-
+  int i=0;
+  Xw[i] = 0; Yw[i++] = 0;
+//  Xw[i] = 0; Yw[i++] = 200;
+//  Xw[i] = 0; Yw[i++] = 350;
+  Xw[i] = 0; Yw[i++] = 400;
+//  Xw[i] = 50; Yw[i++] = 400;
+//  Xw[i] = 300; Yw[i++] = 400;
+  Xw[i] = 600; Yw[i++] = 400;
+//  Xw[i] = 600; Yw[i++] = 200;
+  Xw[i] = 600; Yw[i++] = 0;
+//  Xw[i] = 300; Yw[i++] = 0;
+  wptCount = i;
+  
+  Xb = new float[10];
+  Yb = new float[10];
+  i=0;
+  Xb[i] = 0; Yb[i++] = 200;
+  Xb[i] = 300; Yb[i++] = 400;
+  Xb[i] = 600; Yb[i++] = 200;
+  Xb[i] = 300; Yb[i++] = 0;
+  barrelCount = i;
+  
   // initialize next, x, y, brg, dist, h
   segPrev = prev = 0;
   segNext = next = 1;
@@ -85,13 +115,14 @@ void setup()
 void draw() 
 {
   // Path fadeout
-  fill(0, 5);
+  fill(0, fade);
   rectMode(CORNER);
   rect(0, 0, width, height);
   // Draw waypoints
   //translate(-lonMin, -latMin);
   //translate(padding, sizeY/2+padding);
   drawWaypoints();
+  drawBarrels();
   // PLAYBACK
   // if (index < lines.length) {
     // pieces = split(lines[index], ',');
@@ -117,44 +148,85 @@ void draw()
   if (hdg < 0)
     hdg += 360.0;
 
+  print(" hdg=");
+  print(hdg);
+
   brg = bearing(x, y, Xw[next], Yw[next]);
   distNext = distance(x, y, Xw[next], Yw[next]);
 
   drawBearing(x, y, brg, distNext);
   // draw the car with the specified heading
   drawCar(x, y, hdg);
+  drawCamera(x, y, hdg);
 
   /////////////////////////////////
   // Steering control
   /////////////////////////////////
 
+  float c; // arbitrated curvature
+  float c2; // obstacle avoidance curvature
+  //float c1 = purePursuit(x, y, hdg, prev, next);
+  float c1 = dumbPursuit(x, y, hdg, next);
 
-//  float c = purePursuit(x, y, hdg, prev, next);
-  float c = dumbPursuit(x, y, hdg, next);
- 
-  print(" curvature=");
+  float Bd = -1;
+  float Ba = 0;
+  for (int i=0; i < barrelCount; i++) {
+    float relbrg = hdg - bearing(x, y, Xb[i], Yb[i]);
+    if (relbrg <= -180) relbrg += 360;
+    if (relbrg > 180) relbrg -= 360;
+    float distance = distance(Xb[i], Yb[i], x, y);
+    float Bleft; // left side of barrel, pixels
+    float Bright; // right side of barrel
+    print("Barrel brg=");
+    print(relbrg);
+    print(" dist=");
+    println(distance);
+    if (relbrg >= -22.5 && relbrg <= 22.5 && distance < 100) {
+      if (distance < Bd || Bd < 0) {
+        Ba = relbrg;
+        Bd = distance;
+      }
+    }
+  }
+    
+  if (Bd < 0) {
+    c2 = c1;
+  } else {
+    c2 = 1/(Ba*Ba); //(Bd)/(Ba+0.01);
+  }
+//  c = c1 * 0.05 + c2 * 0.95;
+  c = c1;
+  
+  print("c1=");
+  print(c1);
+  print(" c2=");
+  print(c2);
+  print(" c=");
   print(c);
-  println();
   
   // simulate sloppy steering with bias (misalignment)
   if (c > -slop && c < slop)
     c = bias;
   
   // Simulate limited turning radius (would be based on lateral g)
-  if (c > lim) c = lim;
-  if (c < -lim) c = -lim;
+  if (c > 1/lim) c = 1/lim;
+  if (c < -1/lim) c = -1/lim;
 
   // Compute hdgRate from SA and speed
-  hdgRate = speed * c / radians(360);
+  hdgRate = 360 * speed * c / (2 * 3.141529);
   
   // Navigation calculations
   if (distNext < lookAhead) {
     prev = next;
     next++;
-    if (next >= Xw.length) next = 0;
+    if (next >= wptCount) next = 0;
+    
+    print(" next=");
+    print(next);
     // calculate new line parameters
   }
 }
+
 
 float purePursuit(float x, float y, float hdg, int prev, int next)
 {
@@ -193,8 +265,6 @@ float purePursuit(float x, float y, float hdg, int prev, int next)
   float NBy = Ny-By;
   float cte = sqrt(NBx*NBx + NBy*NBy);
   drawGoal(Nx, Ny);
-  print(" cte=");
-  print(cte);
   
   // Pure pursuit derives down to r = l**2 / 2x in bot frame
   // We know (rather, define) l, the lookahead distance. We
@@ -204,18 +274,32 @@ float purePursuit(float x, float y, float hdg, int prev, int next)
   // and the closest point to the robot, N, which we just found.
   // If we find the length of the segment NG, we can then find
   // G itself easily. It's just distance NG along NG from N
-  float NGd = sqrt( lookAhead*lookAhead - cte*cte );
-  print(" NGd=");
-  print(NGd);
-  print(" L=");
-  print(lookAhead);
-  float Gx = NGd * dx/ACd + Nx;
-  float Gy = NGd * dy/ACd + Ny;
+
+  float NGd;
+  float myLookAhead;
+  
+  if (cte <= lookAhead) {
+    myLookAhead = lookAhead;
+  } else {
+    myLookAhead = lookAhead + cte;
+  }
+  
+  NGd = sqrt( myLookAhead*myLookAhead - cte*cte );
+  Gx = NGd * dx/ACd + Nx;
+  Gy = NGd * dy/ACd + Ny;
   
   drawGoal(Gx, Gy);
- 
+  
   float BGx = (Gx-Bx)*cos(radians(hdg)) - (Gy-By)*sin(radians(hdg));
-  float c = (2 * BGx) / lookAhead*lookAhead;
+  float c = 30 * (2 * BGx) / (myLookAhead*myLookAhead);
+
+  print(" radius=");
+  if (c != 0) {
+    print(1/c);
+  } else {
+    print("inf");
+  }
+  println();
 
   return c;
 }
@@ -233,19 +317,6 @@ float dumbPursuit(float x, float y, float hdg, int next)
     relBrg += 360.0;
   if (relBrg >= 180.0)
     relBrg -= 360.0;
-  //print("relBrg=");
-  //print(relBrg);
-  
-  // steering angle <- relBrg, lookahead distance
-  // turn radius <- steering angle & understeer factor, 
-  // heading rate <- turn radius & speed
-
-  /*
-  // STEERING BASED ONLY ON RELATIVE BEARING
-  hdgRate = relBrg * turnGain;
-  print("  hdgRate");
-  println(hdgRate);
-  */
   
   // STEERING BASED ON RELATIVE BEARING & LOOKAHEAD DISTANCE
   float theta = relBrg;
@@ -263,15 +334,15 @@ float dumbPursuit(float x, float y, float hdg, int next)
   // if theta is actually > 90, we select max steering
   if (theta > 90.0) theta = 90.0;
 
+  float steeringGain = 10;
+
   // Compute radius based on intercept distance and specified angle    
-  float radius = sign * intercept/(2*sin(radians(abs(theta))));
+  float radius = sign * intercept/(2*sin(radians(abs(theta)))) / steeringGain;
   float limit=10.0;
   // limit radius as specified
   if (radius > limit)  radius =  limit;
   if (radius < -limit) radius = -limit;
 
-   drawBearing(x, y, brg, distNext);
-   
   //print("  radius=");
   //print(radius);
 
@@ -283,14 +354,26 @@ float dumbPursuit(float x, float y, float hdg, int next)
 }
 
 
+void drawBarrels()
+{
+  pushMatrix();
+  translate(padding/2.0,-padding/2.0);
+  stroke(red);
+  for (int i=0; i < barrelCount; i++) {
+    fill(red);
+    ellipse(Xb[i],sizeY-Yb[i],10,10);
+  }
+  popMatrix();
+}
+
 void drawWaypoints()
 {
   pushMatrix();
   translate(padding/2.0,-padding/2.0);
   stroke(255);
-  for (int i=0; i < Xw.length; i++) {
+  for (int i=0; i < wptCount; i++) {
     if (next == i) {
-      fill(red);
+      fill(green);
     } else {
       fill(blue);
     }
@@ -335,16 +418,31 @@ void drawBearing(float x, float y, float brg, float dist)
   popMatrix();
 }
 
+void drawCamera(float x, float y, float h)
+{
+  pushMatrix();
+  translate(x+padding/2.0,sizeY-(y+padding/2.0));
+  rotate(radians(h));
+  // camera FOV
+  stroke(128, 10);
+  fill(255, 10);
+  float camSize = 100;  
+  triangle(0, 0, 100, -100, -100, -100);
+  popMatrix();
+}
+
 void drawCar(float x, float y, float h)
 {
   pushMatrix();
   translate(x+padding/2.0,sizeY-(y+padding/2.0));
   rotate(radians(h+90));
   stroke(255);
+  // draw the bus
   fill(yellow);
   rectMode(CENTER);
   stroke(255);
   rect(0, 0, 30, 10);
+  // draw bearing indicator
   stroke(62,227,247);
   line(0, 0, -lookAhead, 0);
   popMatrix();
