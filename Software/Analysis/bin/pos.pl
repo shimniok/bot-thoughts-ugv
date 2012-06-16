@@ -20,7 +20,8 @@ foreach my $file (@ARGV) {
 	while (<$fin>) {
 		s/[\r\n]+//g;
 		my %data = parseFields($_);
-		next if ($data{"millis"} eq "Millis" or $data{"lat"} == 0);
+	    next if ($data{"millis"} =~ /^[a-z]/);
+		next if ($data{"lat"} == 0);
 		printf "%d,%.1f,%d,%d,%d,%.2f,%.6f,%.6f\n", 
 			$data{"millis"}, 
 			$data{"course"}, 
