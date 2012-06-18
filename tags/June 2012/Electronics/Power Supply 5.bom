@@ -1,6 +1,0 @@
-Partlist exported from C:/Documents and Settings/Michael Shimniok/My Documents/eagle/Sparkfun AVC Robot/Power Supply 5.sch at 3/27/2011 11:09:11 PM
-
-Ref Part Value   Attributes Package Description                                       Part Num         Manufacturer Name Vendor ID Vendor Part Number    Description                          Price Quantity1
-  1 C1   0.1uF              C0805   CAPACITOR, American symbol                        MC0805B104K160CT MULTICOMP         NW        06R3738               CAPACITOR 0805 CERAMIC 0.1UF 16V X7R 0.015 ?        
-  2 C3   1000uF             E3,5-8  POLARIZED CAPACITOR, American symbol              C2012Y5V0J226Z   TDK               NW        90R7760               CAPACITOR 0805 CERAMIC 22UF 6.3V Y5V 0.179 ?        
-  3 IC1  REG1117            SOT223  800mA and 1A Low Dropout (LDO) Positive Regulator NCP1117ST50T3G   On Semi           DK        NCP1117ST50T3GOSCT-ND LDO VOLT REG 5V 1A SOT-223-3         1.80  ?        
