@@ -15143,6 +15143,7 @@ Based on the following sources:&lt;p&gt;
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
+<part name="SUPPLY10" library="supply2" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15235,7 +15236,7 @@ Based on the following sources:&lt;p&gt;
 <attribute name="MF" x="398.78" y="88.9" size="1.778" layer="96" rot="MR0" display="off"/>
 <attribute name="MPN" x="398.78" y="88.9" size="1.778" layer="96" rot="MR0" display="off"/>
 </instance>
-<instance part="SUPPLY9" gate="GND" x="17.78" y="10.16"/>
+<instance part="SUPPLY9" gate="GND" x="17.78" y="22.86"/>
 <instance part="R1" gate="G$1" x="96.52" y="121.92" rot="R180">
 <attribute name="OC_NEWARK" x="96.52" y="121.92" size="1.778" layer="96" display="off"/>
 <attribute name="MF" x="96.52" y="121.92" size="1.778" layer="96" display="off"/>
@@ -15256,17 +15257,17 @@ Based on the following sources:&lt;p&gt;
 <attribute name="MF" x="96.52" y="160.02" size="1.778" layer="96" display="off"/>
 <attribute name="MPN" x="96.52" y="160.02" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="JP17" gate="A" x="7.62" y="20.32" rot="MR0">
-<attribute name="OC_NEWARK" x="7.62" y="20.32" size="1.778" layer="96" display="off"/>
-<attribute name="MF" x="7.62" y="20.32" size="1.778" layer="96" display="off"/>
-<attribute name="MPN" x="7.62" y="20.32" size="1.778" layer="96" display="off"/>
+<instance part="JP17" gate="A" x="7.62" y="33.02" rot="MR0">
+<attribute name="OC_NEWARK" x="7.62" y="33.02" size="1.778" layer="96" display="off"/>
+<attribute name="MF" x="7.62" y="33.02" size="1.778" layer="96" display="off"/>
+<attribute name="MPN" x="7.62" y="33.02" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="JP5" gate="A" x="213.36" y="66.04">
 <attribute name="OC_NEWARK" x="213.36" y="66.04" size="1.778" layer="96" display="off"/>
 <attribute name="MF" x="213.36" y="66.04" size="1.778" layer="96" display="off"/>
 <attribute name="MPN" x="213.36" y="66.04" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="JP1" gate="A" x="17.78" y="53.34"/>
+<instance part="JP1" gate="A" x="20.32" y="58.42"/>
 <instance part="JP7" gate="A" x="73.66" y="101.6" rot="MR0"/>
 <instance part="JP10" gate="A" x="73.66" y="139.7" rot="MR0">
 <attribute name="OC_NEWARK" x="76.2" y="139.7" size="1.778" layer="96" display="off"/>
@@ -15359,6 +15360,7 @@ Based on the following sources:&lt;p&gt;
 <attribute name="MF" x="116.84" y="15.24" size="1.778" layer="96" rot="MR0" display="off"/>
 <attribute name="MPN" x="116.84" y="15.24" size="1.778" layer="96" rot="MR0" display="off"/>
 </instance>
+<instance part="SUPPLY10" gate="GND" x="5.08" y="48.26"/>
 </instances>
 <busses>
 </busses>
@@ -15476,16 +15478,16 @@ Based on the following sources:&lt;p&gt;
 <pinref part="JP4" gate="A" pin="2"/>
 </segment>
 <segment>
-<wire x1="17.78" y1="17.78" x2="17.78" y2="12.7" width="0.1524" layer="91"/>
-<pinref part="SUPPLY9" gate="GND" pin="GND"/>
-<wire x1="17.78" y1="17.78" x2="10.16" y2="17.78" width="0.1524" layer="91"/>
-<wire x1="2.54" y1="30.48" x2="17.78" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="17.78" y1="17.78" x2="17.78" y2="30.48" width="0.1524" layer="91"/>
-<junction x="17.78" y="17.78"/>
-<pinref part="JP17" gate="A" pin="3"/>
-<wire x1="2.54" y1="30.48" x2="2.54" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="A" pin="1"/>
-<wire x1="2.54" y1="55.88" x2="12.7" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="60.96" x2="15.24" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="50.8" x2="5.08" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="SUPPLY10" gate="GND" pin="GND"/>
+</segment>
+<segment>
+<wire x1="17.78" y1="30.48" x2="17.78" y2="25.4" width="0.1524" layer="91"/>
+<pinref part="SUPPLY9" gate="GND" pin="GND"/>
+<wire x1="17.78" y1="30.48" x2="10.16" y2="30.48" width="0.1524" layer="91"/>
+<pinref part="JP17" gate="A" pin="3"/>
 </segment>
 <segment>
 <pinref part="R7" gate="G$1" pin="1"/>
@@ -15836,8 +15838,8 @@ Based on the following sources:&lt;p&gt;
 <net name="AMP" class="0">
 <segment>
 <wire x1="48.26" y1="40.64" x2="38.1" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="40.64" x2="38.1" y2="20.32" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="20.32" x2="10.16" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="40.64" x2="38.1" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="33.02" x2="10.16" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="MBED" gate="KIT" pin="P20"/>
 <pinref part="JP17" gate="A" pin="2"/>
 </segment>
@@ -15874,10 +15876,10 @@ Based on the following sources:&lt;p&gt;
 </net>
 <net name="N$6" class="0">
 <segment>
-<wire x1="35.56" y1="22.86" x2="35.56" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="35.56" x2="35.56" y2="43.18" width="0.1524" layer="91"/>
 <wire x1="35.56" y1="43.18" x2="48.26" y2="43.18" width="0.1524" layer="91"/>
 <pinref part="MBED" gate="KIT" pin="P19"/>
-<wire x1="35.56" y1="22.86" x2="10.16" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="35.56" x2="10.16" y2="35.56" width="0.1524" layer="91"/>
 <pinref part="JP17" gate="A" pin="1"/>
 </segment>
 </net>
@@ -15917,29 +15919,15 @@ Based on the following sources:&lt;p&gt;
 <label x="35.56" y="48.26" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$5" class="0">
-<segment>
-<pinref part="MBED" gate="KIT" pin="P14"/>
-<wire x1="20.32" y1="55.88" x2="48.26" y2="55.88" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="A" pin="2"/>
-</segment>
-</net>
-<net name="N$7" class="0">
-<segment>
-<pinref part="MBED" gate="KIT" pin="P15"/>
-<wire x1="48.26" y1="53.34" x2="20.32" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="A" pin="4"/>
-</segment>
-</net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="MBED" gate="KIT" pin="P16"/>
-<wire x1="48.26" y1="50.8" x2="30.48" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="50.8" x2="30.48" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="33.02" x2="5.08" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="5.08" y1="33.02" x2="5.08" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="50.8" x2="7.62" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="50.8" x2="7.62" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="A" pin="3"/>
-<wire x1="5.08" y1="53.34" x2="12.7" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="58.42" x2="15.24" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="50.8" x2="30.48" y2="55.88" width="0.1524" layer="91"/>
+<pinref part="MBED" gate="KIT" pin="P14"/>
+<wire x1="30.48" y1="55.88" x2="48.26" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$9" class="0">
@@ -16284,6 +16272,20 @@ Based on the following sources:&lt;p&gt;
 <wire x1="396.24" y1="147.32" x2="396.24" y2="121.92" width="0.1524" layer="91"/>
 <pinref part="J1" gate="A" pin="MISO"/>
 <wire x1="396.24" y1="121.92" x2="386.08" y2="121.92" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$5" class="0">
+<segment>
+<pinref part="MBED" gate="KIT" pin="P13"/>
+<pinref part="JP1" gate="A" pin="4"/>
+<wire x1="48.26" y1="58.42" x2="22.86" y2="58.42" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$7" class="0">
+<segment>
+<pinref part="MBED" gate="KIT" pin="P12"/>
+<pinref part="JP1" gate="A" pin="2"/>
+<wire x1="48.26" y1="60.96" x2="22.86" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
