@@ -4,11 +4,11 @@
 
 typedef struct __mavlink_request_data_stream_t 
 {
-	uint8_t target_system; ///< The target requested to send the message stream.
-	uint8_t target_component; ///< The target requested to send the message stream.
-	uint8_t req_stream_id; ///< The ID of the requested message type
-	uint16_t req_message_rate; ///< Update rate in Hertz
-	uint8_t start_stop; ///< 1 to start sending, 0 to stop sending.
+    uint8_t target_system; ///< The target requested to send the message stream.
+    uint8_t target_component; ///< The target requested to send the message stream.
+    uint8_t req_stream_id; ///< The ID of the requested message type
+    uint16_t req_message_rate; ///< Update rate in Hertz
+    uint8_t start_stop; ///< 1 to start sending, 0 to stop sending.
 
 } mavlink_request_data_stream_t;
 
@@ -29,16 +29,16 @@ typedef struct __mavlink_request_data_stream_t
  */
 static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, uint8_t target_system, uint8_t target_component, uint8_t req_stream_id, uint16_t req_message_rate, uint8_t start_stop)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	i += put_uint8_t_by_index(target_system, i, msg->payload); // The target requested to send the message stream.
-	i += put_uint8_t_by_index(target_component, i, msg->payload); // The target requested to send the message stream.
-	i += put_uint8_t_by_index(req_stream_id, i, msg->payload); // The ID of the requested message type
-	i += put_uint16_t_by_index(req_message_rate, i, msg->payload); // Update rate in Hertz
-	i += put_uint8_t_by_index(start_stop, i, msg->payload); // 1 to start sending, 0 to stop sending.
+    i += put_uint8_t_by_index(target_system, i, msg->payload); // The target requested to send the message stream.
+    i += put_uint8_t_by_index(target_component, i, msg->payload); // The target requested to send the message stream.
+    i += put_uint8_t_by_index(req_stream_id, i, msg->payload); // The ID of the requested message type
+    i += put_uint16_t_by_index(req_message_rate, i, msg->payload); // Update rate in Hertz
+    i += put_uint8_t_by_index(start_stop, i, msg->payload); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -56,16 +56,16 @@ static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, uint8_t target_system, uint8_t target_component, uint8_t req_stream_id, uint16_t req_message_rate, uint8_t start_stop)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	i += put_uint8_t_by_index(target_system, i, msg->payload); // The target requested to send the message stream.
-	i += put_uint8_t_by_index(target_component, i, msg->payload); // The target requested to send the message stream.
-	i += put_uint8_t_by_index(req_stream_id, i, msg->payload); // The ID of the requested message type
-	i += put_uint16_t_by_index(req_message_rate, i, msg->payload); // Update rate in Hertz
-	i += put_uint8_t_by_index(start_stop, i, msg->payload); // 1 to start sending, 0 to stop sending.
+    i += put_uint8_t_by_index(target_system, i, msg->payload); // The target requested to send the message stream.
+    i += put_uint8_t_by_index(target_component, i, msg->payload); // The target requested to send the message stream.
+    i += put_uint8_t_by_index(req_stream_id, i, msg->payload); // The ID of the requested message type
+    i += put_uint16_t_by_index(req_message_rate, i, msg->payload); // Update rate in Hertz
+    i += put_uint8_t_by_index(start_stop, i, msg->payload); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -78,7 +78,7 @@ static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_request_data_stream_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_request_data_stream_t* request_data_stream)
 {
-	return mavlink_msg_request_data_stream_pack(system_id, component_id, msg, request_data_stream->target_system, request_data_stream->target_component, request_data_stream->req_stream_id, request_data_stream->req_message_rate, request_data_stream->start_stop);
+    return mavlink_msg_request_data_stream_pack(system_id, component_id, msg, request_data_stream->target_system, request_data_stream->target_component, request_data_stream->req_stream_id, request_data_stream->req_message_rate, request_data_stream->start_stop);
 }
 
 /**
@@ -95,9 +95,9 @@ static inline uint16_t mavlink_msg_request_data_stream_encode(uint8_t system_id,
 
 static inline void mavlink_msg_request_data_stream_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, uint8_t req_stream_id, uint16_t req_message_rate, uint8_t start_stop)
 {
-	mavlink_message_t msg;
-	mavlink_msg_request_data_stream_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, target_system, target_component, req_stream_id, req_message_rate, start_stop);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_request_data_stream_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, target_system, target_component, req_stream_id, req_message_rate, start_stop);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -110,7 +110,7 @@ static inline void mavlink_msg_request_data_stream_send(mavlink_channel_t chan, 
  */
 static inline uint8_t mavlink_msg_request_data_stream_get_target_system(const mavlink_message_t* msg)
 {
-	return (uint8_t)(msg->payload)[0];
+    return (uint8_t)(msg->payload)[0];
 }
 
 /**
@@ -120,7 +120,7 @@ static inline uint8_t mavlink_msg_request_data_stream_get_target_system(const ma
  */
 static inline uint8_t mavlink_msg_request_data_stream_get_target_component(const mavlink_message_t* msg)
 {
-	return (uint8_t)(msg->payload+sizeof(uint8_t))[0];
+    return (uint8_t)(msg->payload+sizeof(uint8_t))[0];
 }
 
 /**
@@ -130,7 +130,7 @@ static inline uint8_t mavlink_msg_request_data_stream_get_target_component(const
  */
 static inline uint8_t mavlink_msg_request_data_stream_get_req_stream_id(const mavlink_message_t* msg)
 {
-	return (uint8_t)(msg->payload+sizeof(uint8_t)+sizeof(uint8_t))[0];
+    return (uint8_t)(msg->payload+sizeof(uint8_t)+sizeof(uint8_t))[0];
 }
 
 /**
@@ -140,10 +140,10 @@ static inline uint8_t mavlink_msg_request_data_stream_get_req_stream_id(const ma
  */
 static inline uint16_t mavlink_msg_request_data_stream_get_req_message_rate(const mavlink_message_t* msg)
 {
-	generic_16bit r;
-	r.b[1] = (msg->payload+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint8_t))[0];
-	r.b[0] = (msg->payload+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint8_t))[1];
-	return (uint16_t)r.s;
+    generic_16bit r;
+    r.b[1] = (msg->payload+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint8_t))[0];
+    r.b[0] = (msg->payload+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint8_t))[1];
+    return (uint16_t)r.s;
 }
 
 /**
@@ -153,7 +153,7 @@ static inline uint16_t mavlink_msg_request_data_stream_get_req_message_rate(cons
  */
 static inline uint8_t mavlink_msg_request_data_stream_get_start_stop(const mavlink_message_t* msg)
 {
-	return (uint8_t)(msg->payload+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint16_t))[0];
+    return (uint8_t)(msg->payload+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint8_t)+sizeof(uint16_t))[0];
 }
 
 /**
@@ -164,9 +164,9 @@ static inline uint8_t mavlink_msg_request_data_stream_get_start_stop(const mavli
  */
 static inline void mavlink_msg_request_data_stream_decode(const mavlink_message_t* msg, mavlink_request_data_stream_t* request_data_stream)
 {
-	request_data_stream->target_system = mavlink_msg_request_data_stream_get_target_system(msg);
-	request_data_stream->target_component = mavlink_msg_request_data_stream_get_target_component(msg);
-	request_data_stream->req_stream_id = mavlink_msg_request_data_stream_get_req_stream_id(msg);
-	request_data_stream->req_message_rate = mavlink_msg_request_data_stream_get_req_message_rate(msg);
-	request_data_stream->start_stop = mavlink_msg_request_data_stream_get_start_stop(msg);
+    request_data_stream->target_system = mavlink_msg_request_data_stream_get_target_system(msg);
+    request_data_stream->target_component = mavlink_msg_request_data_stream_get_target_component(msg);
+    request_data_stream->req_stream_id = mavlink_msg_request_data_stream_get_req_stream_id(msg);
+    request_data_stream->req_message_rate = mavlink_msg_request_data_stream_get_req_message_rate(msg);
+    request_data_stream->start_stop = mavlink_msg_request_data_stream_get_start_stop(msg);
 }

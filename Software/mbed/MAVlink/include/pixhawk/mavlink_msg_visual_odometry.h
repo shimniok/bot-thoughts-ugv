@@ -4,14 +4,14 @@
 
 typedef struct __mavlink_visual_odometry_t 
 {
-	uint64_t frame1_time_us; ///< Time at which frame 1 was captured (in microseconds since unix epoch)
-	uint64_t frame2_time_us; ///< Time at which frame 2 was captured (in microseconds since unix epoch)
-	float x; ///< Relative X position
-	float y; ///< Relative Y position
-	float z; ///< Relative Z position
-	float roll; ///< Relative roll angle in rad
-	float pitch; ///< Relative pitch angle in rad
-	float yaw; ///< Relative yaw angle in rad
+    uint64_t frame1_time_us; ///< Time at which frame 1 was captured (in microseconds since unix epoch)
+    uint64_t frame2_time_us; ///< Time at which frame 2 was captured (in microseconds since unix epoch)
+    float x; ///< Relative X position
+    float y; ///< Relative Y position
+    float z; ///< Relative Z position
+    float roll; ///< Relative roll angle in rad
+    float pitch; ///< Relative pitch angle in rad
+    float yaw; ///< Relative yaw angle in rad
 
 } mavlink_visual_odometry_t;
 
@@ -35,19 +35,19 @@ typedef struct __mavlink_visual_odometry_t
  */
 static inline uint16_t mavlink_msg_visual_odometry_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, uint64_t frame1_time_us, uint64_t frame2_time_us, float x, float y, float z, float roll, float pitch, float yaw)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_VISUAL_ODOMETRY;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_VISUAL_ODOMETRY;
 
-	i += put_uint64_t_by_index(frame1_time_us, i, msg->payload); // Time at which frame 1 was captured (in microseconds since unix epoch)
-	i += put_uint64_t_by_index(frame2_time_us, i, msg->payload); // Time at which frame 2 was captured (in microseconds since unix epoch)
-	i += put_float_by_index(x, i, msg->payload); // Relative X position
-	i += put_float_by_index(y, i, msg->payload); // Relative Y position
-	i += put_float_by_index(z, i, msg->payload); // Relative Z position
-	i += put_float_by_index(roll, i, msg->payload); // Relative roll angle in rad
-	i += put_float_by_index(pitch, i, msg->payload); // Relative pitch angle in rad
-	i += put_float_by_index(yaw, i, msg->payload); // Relative yaw angle in rad
+    i += put_uint64_t_by_index(frame1_time_us, i, msg->payload); // Time at which frame 1 was captured (in microseconds since unix epoch)
+    i += put_uint64_t_by_index(frame2_time_us, i, msg->payload); // Time at which frame 2 was captured (in microseconds since unix epoch)
+    i += put_float_by_index(x, i, msg->payload); // Relative X position
+    i += put_float_by_index(y, i, msg->payload); // Relative Y position
+    i += put_float_by_index(z, i, msg->payload); // Relative Z position
+    i += put_float_by_index(roll, i, msg->payload); // Relative roll angle in rad
+    i += put_float_by_index(pitch, i, msg->payload); // Relative pitch angle in rad
+    i += put_float_by_index(yaw, i, msg->payload); // Relative yaw angle in rad
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -68,19 +68,19 @@ static inline uint16_t mavlink_msg_visual_odometry_pack(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_visual_odometry_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, uint64_t frame1_time_us, uint64_t frame2_time_us, float x, float y, float z, float roll, float pitch, float yaw)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_VISUAL_ODOMETRY;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_VISUAL_ODOMETRY;
 
-	i += put_uint64_t_by_index(frame1_time_us, i, msg->payload); // Time at which frame 1 was captured (in microseconds since unix epoch)
-	i += put_uint64_t_by_index(frame2_time_us, i, msg->payload); // Time at which frame 2 was captured (in microseconds since unix epoch)
-	i += put_float_by_index(x, i, msg->payload); // Relative X position
-	i += put_float_by_index(y, i, msg->payload); // Relative Y position
-	i += put_float_by_index(z, i, msg->payload); // Relative Z position
-	i += put_float_by_index(roll, i, msg->payload); // Relative roll angle in rad
-	i += put_float_by_index(pitch, i, msg->payload); // Relative pitch angle in rad
-	i += put_float_by_index(yaw, i, msg->payload); // Relative yaw angle in rad
+    i += put_uint64_t_by_index(frame1_time_us, i, msg->payload); // Time at which frame 1 was captured (in microseconds since unix epoch)
+    i += put_uint64_t_by_index(frame2_time_us, i, msg->payload); // Time at which frame 2 was captured (in microseconds since unix epoch)
+    i += put_float_by_index(x, i, msg->payload); // Relative X position
+    i += put_float_by_index(y, i, msg->payload); // Relative Y position
+    i += put_float_by_index(z, i, msg->payload); // Relative Z position
+    i += put_float_by_index(roll, i, msg->payload); // Relative roll angle in rad
+    i += put_float_by_index(pitch, i, msg->payload); // Relative pitch angle in rad
+    i += put_float_by_index(yaw, i, msg->payload); // Relative yaw angle in rad
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -93,7 +93,7 @@ static inline uint16_t mavlink_msg_visual_odometry_pack_chan(uint8_t system_id, 
  */
 static inline uint16_t mavlink_msg_visual_odometry_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_visual_odometry_t* visual_odometry)
 {
-	return mavlink_msg_visual_odometry_pack(system_id, component_id, msg, visual_odometry->frame1_time_us, visual_odometry->frame2_time_us, visual_odometry->x, visual_odometry->y, visual_odometry->z, visual_odometry->roll, visual_odometry->pitch, visual_odometry->yaw);
+    return mavlink_msg_visual_odometry_pack(system_id, component_id, msg, visual_odometry->frame1_time_us, visual_odometry->frame2_time_us, visual_odometry->x, visual_odometry->y, visual_odometry->z, visual_odometry->roll, visual_odometry->pitch, visual_odometry->yaw);
 }
 
 /**
@@ -113,9 +113,9 @@ static inline uint16_t mavlink_msg_visual_odometry_encode(uint8_t system_id, uin
 
 static inline void mavlink_msg_visual_odometry_send(mavlink_channel_t chan, uint64_t frame1_time_us, uint64_t frame2_time_us, float x, float y, float z, float roll, float pitch, float yaw)
 {
-	mavlink_message_t msg;
-	mavlink_msg_visual_odometry_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, frame1_time_us, frame2_time_us, x, y, z, roll, pitch, yaw);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_visual_odometry_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, frame1_time_us, frame2_time_us, x, y, z, roll, pitch, yaw);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -128,16 +128,16 @@ static inline void mavlink_msg_visual_odometry_send(mavlink_channel_t chan, uint
  */
 static inline uint64_t mavlink_msg_visual_odometry_get_frame1_time_us(const mavlink_message_t* msg)
 {
-	generic_64bit r;
-	r.b[7] = (msg->payload)[0];
-	r.b[6] = (msg->payload)[1];
-	r.b[5] = (msg->payload)[2];
-	r.b[4] = (msg->payload)[3];
-	r.b[3] = (msg->payload)[4];
-	r.b[2] = (msg->payload)[5];
-	r.b[1] = (msg->payload)[6];
-	r.b[0] = (msg->payload)[7];
-	return (uint64_t)r.ll;
+    generic_64bit r;
+    r.b[7] = (msg->payload)[0];
+    r.b[6] = (msg->payload)[1];
+    r.b[5] = (msg->payload)[2];
+    r.b[4] = (msg->payload)[3];
+    r.b[3] = (msg->payload)[4];
+    r.b[2] = (msg->payload)[5];
+    r.b[1] = (msg->payload)[6];
+    r.b[0] = (msg->payload)[7];
+    return (uint64_t)r.ll;
 }
 
 /**
@@ -147,16 +147,16 @@ static inline uint64_t mavlink_msg_visual_odometry_get_frame1_time_us(const mavl
  */
 static inline uint64_t mavlink_msg_visual_odometry_get_frame2_time_us(const mavlink_message_t* msg)
 {
-	generic_64bit r;
-	r.b[7] = (msg->payload+sizeof(uint64_t))[0];
-	r.b[6] = (msg->payload+sizeof(uint64_t))[1];
-	r.b[5] = (msg->payload+sizeof(uint64_t))[2];
-	r.b[4] = (msg->payload+sizeof(uint64_t))[3];
-	r.b[3] = (msg->payload+sizeof(uint64_t))[4];
-	r.b[2] = (msg->payload+sizeof(uint64_t))[5];
-	r.b[1] = (msg->payload+sizeof(uint64_t))[6];
-	r.b[0] = (msg->payload+sizeof(uint64_t))[7];
-	return (uint64_t)r.ll;
+    generic_64bit r;
+    r.b[7] = (msg->payload+sizeof(uint64_t))[0];
+    r.b[6] = (msg->payload+sizeof(uint64_t))[1];
+    r.b[5] = (msg->payload+sizeof(uint64_t))[2];
+    r.b[4] = (msg->payload+sizeof(uint64_t))[3];
+    r.b[3] = (msg->payload+sizeof(uint64_t))[4];
+    r.b[2] = (msg->payload+sizeof(uint64_t))[5];
+    r.b[1] = (msg->payload+sizeof(uint64_t))[6];
+    r.b[0] = (msg->payload+sizeof(uint64_t))[7];
+    return (uint64_t)r.ll;
 }
 
 /**
@@ -166,12 +166,12 @@ static inline uint64_t mavlink_msg_visual_odometry_get_frame2_time_us(const mavl
  */
 static inline float mavlink_msg_visual_odometry_get_x(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[0];
-	r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[1];
-	r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[2];
-	r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[0];
+    r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[1];
+    r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[2];
+    r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t))[3];
+    return (float)r.f;
 }
 
 /**
@@ -181,12 +181,12 @@ static inline float mavlink_msg_visual_odometry_get_x(const mavlink_message_t* m
  */
 static inline float mavlink_msg_visual_odometry_get_y(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -196,12 +196,12 @@ static inline float mavlink_msg_visual_odometry_get_y(const mavlink_message_t* m
  */
 static inline float mavlink_msg_visual_odometry_get_z(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -211,12 +211,12 @@ static inline float mavlink_msg_visual_odometry_get_z(const mavlink_message_t* m
  */
 static inline float mavlink_msg_visual_odometry_get_roll(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -226,12 +226,12 @@ static inline float mavlink_msg_visual_odometry_get_roll(const mavlink_message_t
  */
 static inline float mavlink_msg_visual_odometry_get_pitch(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -241,12 +241,12 @@ static inline float mavlink_msg_visual_odometry_get_pitch(const mavlink_message_
  */
 static inline float mavlink_msg_visual_odometry_get_yaw(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(uint64_t)+sizeof(uint64_t)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -257,12 +257,12 @@ static inline float mavlink_msg_visual_odometry_get_yaw(const mavlink_message_t*
  */
 static inline void mavlink_msg_visual_odometry_decode(const mavlink_message_t* msg, mavlink_visual_odometry_t* visual_odometry)
 {
-	visual_odometry->frame1_time_us = mavlink_msg_visual_odometry_get_frame1_time_us(msg);
-	visual_odometry->frame2_time_us = mavlink_msg_visual_odometry_get_frame2_time_us(msg);
-	visual_odometry->x = mavlink_msg_visual_odometry_get_x(msg);
-	visual_odometry->y = mavlink_msg_visual_odometry_get_y(msg);
-	visual_odometry->z = mavlink_msg_visual_odometry_get_z(msg);
-	visual_odometry->roll = mavlink_msg_visual_odometry_get_roll(msg);
-	visual_odometry->pitch = mavlink_msg_visual_odometry_get_pitch(msg);
-	visual_odometry->yaw = mavlink_msg_visual_odometry_get_yaw(msg);
+    visual_odometry->frame1_time_us = mavlink_msg_visual_odometry_get_frame1_time_us(msg);
+    visual_odometry->frame2_time_us = mavlink_msg_visual_odometry_get_frame2_time_us(msg);
+    visual_odometry->x = mavlink_msg_visual_odometry_get_x(msg);
+    visual_odometry->y = mavlink_msg_visual_odometry_get_y(msg);
+    visual_odometry->z = mavlink_msg_visual_odometry_get_z(msg);
+    visual_odometry->roll = mavlink_msg_visual_odometry_get_roll(msg);
+    visual_odometry->pitch = mavlink_msg_visual_odometry_get_pitch(msg);
+    visual_odometry->yaw = mavlink_msg_visual_odometry_get_yaw(msg);
 }

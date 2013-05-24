@@ -36,14 +36,8 @@
 #ifndef HMC5843_H
 #define HMC5843_H
 
-/**
- * Includes
- */
 #include "mbed.h"
 
-/**
- * Defines
- */
 #define HMC5843_I2C_ADDRESS 0x1E //7-bit address. 0x3C write, 0x3D read.
 #define HMC5843_I2C_WRITE   0x3C 
 #define HMC5843_I2C_READ    0x3D 

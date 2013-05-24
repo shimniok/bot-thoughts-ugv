@@ -4,7 +4,7 @@
 
 typedef struct __mavlink_request_rc_channels_t 
 {
-	uint8_t enabled; ///< True: start sending data; False: stop sending data
+    uint8_t enabled; ///< True: start sending data; False: stop sending data
 
 } mavlink_request_rc_channels_t;
 
@@ -21,12 +21,12 @@ typedef struct __mavlink_request_rc_channels_t
  */
 static inline uint16_t mavlink_msg_request_rc_channels_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, uint8_t enabled)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_REQUEST_RC_CHANNELS;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_REQUEST_RC_CHANNELS;
 
-	i += put_uint8_t_by_index(enabled, i, msg->payload); // True: start sending data; False: stop sending data
+    i += put_uint8_t_by_index(enabled, i, msg->payload); // True: start sending data; False: stop sending data
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -40,12 +40,12 @@ static inline uint16_t mavlink_msg_request_rc_channels_pack(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_request_rc_channels_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, uint8_t enabled)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_REQUEST_RC_CHANNELS;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_REQUEST_RC_CHANNELS;
 
-	i += put_uint8_t_by_index(enabled, i, msg->payload); // True: start sending data; False: stop sending data
+    i += put_uint8_t_by_index(enabled, i, msg->payload); // True: start sending data; False: stop sending data
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -58,7 +58,7 @@ static inline uint16_t mavlink_msg_request_rc_channels_pack_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_request_rc_channels_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_request_rc_channels_t* request_rc_channels)
 {
-	return mavlink_msg_request_rc_channels_pack(system_id, component_id, msg, request_rc_channels->enabled);
+    return mavlink_msg_request_rc_channels_pack(system_id, component_id, msg, request_rc_channels->enabled);
 }
 
 /**
@@ -71,9 +71,9 @@ static inline uint16_t mavlink_msg_request_rc_channels_encode(uint8_t system_id,
 
 static inline void mavlink_msg_request_rc_channels_send(mavlink_channel_t chan, uint8_t enabled)
 {
-	mavlink_message_t msg;
-	mavlink_msg_request_rc_channels_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, enabled);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_request_rc_channels_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, enabled);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -86,7 +86,7 @@ static inline void mavlink_msg_request_rc_channels_send(mavlink_channel_t chan, 
  */
 static inline uint8_t mavlink_msg_request_rc_channels_get_enabled(const mavlink_message_t* msg)
 {
-	return (uint8_t)(msg->payload)[0];
+    return (uint8_t)(msg->payload)[0];
 }
 
 /**
@@ -97,5 +97,5 @@ static inline uint8_t mavlink_msg_request_rc_channels_get_enabled(const mavlink_
  */
 static inline void mavlink_msg_request_rc_channels_decode(const mavlink_message_t* msg, mavlink_request_rc_channels_t* request_rc_channels)
 {
-	request_rc_channels->enabled = mavlink_msg_request_rc_channels_get_enabled(msg);
+    request_rc_channels->enabled = mavlink_msg_request_rc_channels_get_enabled(msg);
 }

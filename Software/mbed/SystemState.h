@@ -3,7 +3,11 @@
 
 #define SSBUF 0x2F
 
-/** struct systemState
+/** System State is the main mechanism for communicating current realtime system state to
+ * the rest of the system for logging, data display, etc.
+ */
+
+/* struct systemState
  * structure containing system sensor data
  ****** System Status
  * millis               number of milliseconds since epoch (or startup)
@@ -21,9 +25,10 @@
  ****** Data reported by GPS
  * gpsLatitude          raw GPS latitude in fractional degrees (e.g., 39.123456)
  * gpsLongitude         raw GPS longitude in fractional degrees (e.g., -104.123456
- * gpsCourse            raw GPS course in degrees
- * gpsSpeed             raw GPS speed in mph
+ * gpsCourse_deg        raw GPS course in degrees
+ * gpsSpeed_mps         raw GPS speed in m/s
  * gpsHDOP              raw GPS Horizontal Dilution of Precision
+ * gpsSats              raw GPS Satellite fix count
  ****** Odometry data
  * lrEncDistance        left rear encoder distance since last log update
  * rrEncDistance        right rear encoder distance since last log update
@@ -57,10 +62,18 @@ typedef struct {
     //float roll, pitch, yaw;
     double gpsLatitude;
     double gpsLongitude;
-    float gpsCourse;
-    float gpsSpeed;
+    float gpsCourse_deg;
+    float gpsSpeed_mps;
     float gpsHDOP;
     int gpsSats;
+
+    double gpsLatitude2;
+    double gpsLongitude2;
+    float gpsCourse_deg2;
+    float gpsSpeed_mps2;
+    float gpsHDOP2;
+    int gpsSats2;
+
     float lrEncDistance, rrEncDistance;
     float lrEncSpeed, rrEncSpeed;
     float encHeading;

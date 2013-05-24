@@ -472,7 +472,7 @@ unsigned long SDFileSystem::_sd_sectors() {
       capacity = blocknr * block_len;
       blocks = capacity / 512;
       #ifdef DEBUG 
-      printf("\n\rSDCard\n\rc_size: %.4X \n\rcapacity: %.ld \n\rsectors: %d\n\r", c_size, capacity, blocks);
+      printf("\n\rSDCard\n\rc_size: %.4X \n\rcapacity: %.d \n\rsectors: %d\n\r", c_size, capacity, blocks);
       #endif
       break;
     

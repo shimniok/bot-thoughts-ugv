@@ -64,7 +64,7 @@ static inline uint16_t crc_calculate(uint8_t* pBuffer, int length)
         uint16_t crcTmp;
         //uint16_t tmp;
         uint8_t* pTmp;
-		int i;
+        int i;
 
         pTmp=pBuffer;
         

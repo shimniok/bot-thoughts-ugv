@@ -39,6 +39,8 @@ with MinIMU-9-Arduino-AHRS. If not, see <http://www.gnu.org/licenses/>.
 ///////////////////// MAGNETOMETER CALIBRATION
 
 Sensors::Sensors():
+    //gps(p9, p10),              // Ublox6 GPS
+    gps(p26, p25),               // Venus GPS
     _voltage(p19),               // Voltage from sensor board
     _current(p20),               // Current from sensor board
     _left(p30),                  // left wheel encoder
@@ -192,11 +194,11 @@ void Sensors::Calculate_Offsets()
     for(int i=0; i < samples; i++) {  // We take some readings...
         Read_Gyro();
         Read_Accel();
-        for(int y=0; y < 3; y++) {   // Cumulate values
+        wait(0.010); // sample at 100hz
+        for(int y=0; y < 3; y++) {   // accumulate values
             g_offset[y] += g[y];
             a_offset[y] += a[y];
         }
-        wait(0.010);
     }
 
     for(int y=0; y < 3; y++) {
@@ -308,8 +310,8 @@ float clampIRRanger(float x)
 void Sensors::Read_Camera()
 {
     char count;
-    char data[128];
-    char addr=0x80;
+    //char data[128];
+    //char addr=0x80;
     /*
     struct {
         int color;
@@ -343,7 +345,7 @@ void Sensors::Read_Camera()
     for (int i=0; i < count; i++) {
         //fprintf(stdout, "%d: ", i);
         for (int j=0; j < 5; j++) {
-            data[x] = _cam.read(1);
+            //data[x] = _cam.read(1);
             //fprintf(stdout, "%d ", data[x]);
             x++;
         }

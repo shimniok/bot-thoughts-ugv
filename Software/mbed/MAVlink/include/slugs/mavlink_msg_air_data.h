@@ -4,9 +4,9 @@
 
 typedef struct __mavlink_air_data_t 
 {
-	float dynamicPressure; ///< Dynamic pressure (Pa)
-	float staticPressure; ///< Static pressure (Pa)
-	uint16_t temperature; ///< Board temperature
+    float dynamicPressure; ///< Dynamic pressure (Pa)
+    float staticPressure; ///< Static pressure (Pa)
+    uint16_t temperature; ///< Board temperature
 
 } mavlink_air_data_t;
 
@@ -25,14 +25,14 @@ typedef struct __mavlink_air_data_t
  */
 static inline uint16_t mavlink_msg_air_data_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, float dynamicPressure, float staticPressure, uint16_t temperature)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_AIR_DATA;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_AIR_DATA;
 
-	i += put_float_by_index(dynamicPressure, i, msg->payload); // Dynamic pressure (Pa)
-	i += put_float_by_index(staticPressure, i, msg->payload); // Static pressure (Pa)
-	i += put_uint16_t_by_index(temperature, i, msg->payload); // Board temperature
+    i += put_float_by_index(dynamicPressure, i, msg->payload); // Dynamic pressure (Pa)
+    i += put_float_by_index(staticPressure, i, msg->payload); // Static pressure (Pa)
+    i += put_uint16_t_by_index(temperature, i, msg->payload); // Board temperature
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -48,14 +48,14 @@ static inline uint16_t mavlink_msg_air_data_pack(uint8_t system_id, uint8_t comp
  */
 static inline uint16_t mavlink_msg_air_data_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, float dynamicPressure, float staticPressure, uint16_t temperature)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_AIR_DATA;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_AIR_DATA;
 
-	i += put_float_by_index(dynamicPressure, i, msg->payload); // Dynamic pressure (Pa)
-	i += put_float_by_index(staticPressure, i, msg->payload); // Static pressure (Pa)
-	i += put_uint16_t_by_index(temperature, i, msg->payload); // Board temperature
+    i += put_float_by_index(dynamicPressure, i, msg->payload); // Dynamic pressure (Pa)
+    i += put_float_by_index(staticPressure, i, msg->payload); // Static pressure (Pa)
+    i += put_uint16_t_by_index(temperature, i, msg->payload); // Board temperature
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_air_data_pack_chan(uint8_t system_id, uint8_t
  */
 static inline uint16_t mavlink_msg_air_data_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_air_data_t* air_data)
 {
-	return mavlink_msg_air_data_pack(system_id, component_id, msg, air_data->dynamicPressure, air_data->staticPressure, air_data->temperature);
+    return mavlink_msg_air_data_pack(system_id, component_id, msg, air_data->dynamicPressure, air_data->staticPressure, air_data->temperature);
 }
 
 /**
@@ -83,9 +83,9 @@ static inline uint16_t mavlink_msg_air_data_encode(uint8_t system_id, uint8_t co
 
 static inline void mavlink_msg_air_data_send(mavlink_channel_t chan, float dynamicPressure, float staticPressure, uint16_t temperature)
 {
-	mavlink_message_t msg;
-	mavlink_msg_air_data_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, dynamicPressure, staticPressure, temperature);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_air_data_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, dynamicPressure, staticPressure, temperature);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -98,12 +98,12 @@ static inline void mavlink_msg_air_data_send(mavlink_channel_t chan, float dynam
  */
 static inline float mavlink_msg_air_data_get_dynamicPressure(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload)[0];
-	r.b[2] = (msg->payload)[1];
-	r.b[1] = (msg->payload)[2];
-	r.b[0] = (msg->payload)[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload)[0];
+    r.b[2] = (msg->payload)[1];
+    r.b[1] = (msg->payload)[2];
+    r.b[0] = (msg->payload)[3];
+    return (float)r.f;
 }
 
 /**
@@ -113,12 +113,12 @@ static inline float mavlink_msg_air_data_get_dynamicPressure(const mavlink_messa
  */
 static inline float mavlink_msg_air_data_get_staticPressure(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -128,10 +128,10 @@ static inline float mavlink_msg_air_data_get_staticPressure(const mavlink_messag
  */
 static inline uint16_t mavlink_msg_air_data_get_temperature(const mavlink_message_t* msg)
 {
-	generic_16bit r;
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float))[0];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float))[1];
-	return (uint16_t)r.s;
+    generic_16bit r;
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float))[0];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float))[1];
+    return (uint16_t)r.s;
 }
 
 /**
@@ -142,7 +142,7 @@ static inline uint16_t mavlink_msg_air_data_get_temperature(const mavlink_messag
  */
 static inline void mavlink_msg_air_data_decode(const mavlink_message_t* msg, mavlink_air_data_t* air_data)
 {
-	air_data->dynamicPressure = mavlink_msg_air_data_get_dynamicPressure(msg);
-	air_data->staticPressure = mavlink_msg_air_data_get_staticPressure(msg);
-	air_data->temperature = mavlink_msg_air_data_get_temperature(msg);
+    air_data->dynamicPressure = mavlink_msg_air_data_get_dynamicPressure(msg);
+    air_data->staticPressure = mavlink_msg_air_data_get_staticPressure(msg);
+    air_data->temperature = mavlink_msg_air_data_get_temperature(msg);
 }

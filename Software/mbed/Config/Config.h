@@ -4,7 +4,7 @@
 #include "GeoPosition.h"
 #include "CartPosition.h"
 
-/** Configuration for Data Bus mini autonomous ground vehicle
+/** Text-based configuration; reads config file and stores in fields
  */
 class Config {
     public:

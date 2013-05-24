@@ -23,6 +23,8 @@
 #ifndef MBED_SDHCFILESYSTEM_H
 #define MBED_SDHCFILESYSTEM_H
 
+/** Implements FAT32 filesystem on SDHC cards, Copyright (c) 2008-2010, sford */
+
 #include "mbed.h"
 #include "FATFileSystem.h"
 

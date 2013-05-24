@@ -23,10 +23,10 @@ void SerialGraphicLCD::clear() {
 }
 
 void SerialGraphicLCD::pos(int col, int row) {
-    if (_firmware == SD_FW)
+//    if (_firmware == SD_FW)
         posXY(XSIZE*col, (YSIZE*row));
-    else if (_firmware == SFE_FW)
-        posXY(XSIZE*col, _yMax-(YSIZE*row)-1);
+//    else if (_firmware == SFE_FW)
+        //posXY(XSIZE*col, _yMax-(YSIZE*row));
 }
 
 void SerialGraphicLCD::posXY(int x, int y) {

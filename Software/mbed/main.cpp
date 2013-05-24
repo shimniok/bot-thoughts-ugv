@@ -12,10 +12,8 @@
 #include "globals.h"
 #include "Config.h"
 #include "Buttons.h"
+#include "Display.h"
 #include "Menu.h"
-//#include "lcd.h"
-#include "SerialGraphicLCD.h"
-#include "Bargraph.h"
 #include "GPSStatus.h"
 #include "logging.h"
 #include "shell.h"
@@ -23,7 +21,8 @@
 //#include "DCM.h"
 //#include "dcm_matrix.h"
 #include "kalman.h"
-#include "GPS.h"
+#include "Venus638flpx.h"
+#include "Ublox6.h"
 #include "Camera.h"
 #include "PinDetect.h"
 #include "Actuators.h"
@@ -38,8 +37,6 @@
 #include "MAVlink/include/mavlink_bridge.h"
 #include "updater.h"
 
-#define LCD_FMT "%-20s" // used to fill a single line on the LCD screen
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // DEFINES
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +47,6 @@
 #define GPS_MAX_HDOP    2.0             // HDOP above which we won't trust GPS course/position
 
 #define UPDATE_PERIOD 0.010             // update period in s
-#define UPDATE_PERIOD_MS 10             // update period in ms
 
 // Driver configuration parameters
 #define SONARLEFT_CHAN   0
@@ -79,6 +75,7 @@ DigitalOut logStatus(LED2);             // Log file status LED
 DigitalOut gpsStatus(LED3);             // GPS fix status LED
 DigitalOut ahrsStatus(LED4);            // AHRS status LED
 //DigitalOut sonarStart(p18);             // Sends signal to start sonar array pings
+Display display;                        // UI display
 Beep speaker(p24);                      // Piezo speaker
 
 // INPUT
@@ -97,8 +94,8 @@ SerialGraphicLCD lcd(p17, p18, SD_FW);  // Graphic LCD with summoningdark firmwa
 Sensors sensors;                        // Abstraction of sensor drivers
 //DCM ahrs;                             // ArduPilot/MatrixPilot AHRS
 Serial *dev;                            // For use with bridge
-GPS gps(p26, p25, VENUS);               // gps
 
+// MISC
 FILE *camlog;                           // Camera log
 
 // Configuration
@@ -125,7 +122,6 @@ Schedule blink;
 
 // Estimation & Navigation Variables
 GeoPosition dr_here;                    // Estimated position based on estimated heading
-GeoPosition gps_here;                   // current gps position
 Mapping mapper;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,18 +160,6 @@ int dummy(void)
 }
 
 
-// TODO: 3 move to GPS module
-/* GPS serial interrupt handler
- */
-void gpsRecv() {
-    while (gps.serial.readable()) {
-        gpsStatus = !gpsStatus;
-        gps.nmea.encode(gps.serial.getc());
-        gpsStatus = !gpsStatus;
-    }
-}
-
-
 int resetMe()
 {
     mbed_reset();
@@ -184,29 +168,19 @@ int resetMe()
 }
 
 
-#define DISPLAY_CLEAR     0x01
-#define DISPLAY_SET_POS   0x08
-
-
 int main()
 {
     // Send data back to the PC
     pc.baud(115200);
-    lcd.baud(115200);
-    lcd.printf("test\n"); // hopefully force 115200 on powerup
-    lcd.clear();
-    wait(0.3);
-    lcd.printf("Data Bus mAGV V2");
-
     fprintf(stdout, "Data Bus mAGV Control System\n");
-    
+
+    display.init();
+    display.status("Data Bus mAGV V3");
+   
     fprintf(stdout, "Initialization...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Initializing");
-    wait(0.5);
+    display.status("Initializing");
+    wait(0.2);
     
-    gps.setUpdateRate(10);
-        
     // Initialize status LEDs
     ahrsStatus = 0;
     gpsStatus = 0;
@@ -216,9 +190,8 @@ int main()
     //ahrs.G_Dt = UPDATE_PERIOD; 
 
     fprintf(stdout, "Loading configuration...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Load config");
-    wait(0.5);
+    display.status("Load config");
+    wait(0.2);
     if (config.load())                          // Load various configurable parameters, e.g., waypoints, declination, etc.
         confStatus = 1;
         
@@ -244,49 +217,39 @@ int main()
 
     // TODO: 3 print mag and gyro calibrations
 
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "GPS configuration   ");
-    gps.setType(config.gpsType);
-    gps.setBaud(config.gpsBaud);
-    fprintf(stdout, "GPS config: type=%d baud=%d\n", config.gpsType, config.gpsBaud);
+    // TODO 3: remove GPS configuration, all config will be in object itself I think
 
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Nav configuration   ");
+    display.status("Nav configuration   ");
     steerCalc.setIntercept(config.interceptDist);               // Setup steering calculator based on intercept distance
     pc.printf("Intercept distance: %.1f\n", config.interceptDist);
     pc.printf("Waypoint distance: %.1f\n", config.waypointDist);
     pc.printf("Brake distance: %.1f\n", config.brakeDist);
     pc.printf("Min turn radius: %.3f\n", config.minRadius);
-    
+
     fprintf(stdout, "Calculating offsets...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Offset calculation  ");
-    wait(0.5);
+    display.status("Offset calculation  ");
+    wait(0.2);
     // TODO: 3 Really need to give the gyro more time to settle
+    // 5/20 - for some reason it is hanging here
+    sensors.gps.disable();
     sensors.Calculate_Offsets();
 
     fprintf(stdout, "Starting GPS...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Start GPS           ");
-    wait(0.5);
-    // TODO: 3 move this to GPS module
-    gps.serial.attach(gpsRecv, Serial::RxIrq);
-    // TODO: 3 enable and process GSV as bar graph
-    //gps.gsvMessage(false);
-    //gps.gsaMessage(true);
+    display.status("Start GPS           "); // TODO 3: would be nice not to have to pad at this level
+    wait(0.2);
+    sensors.gps.setUpdateRate(10);
+    sensors.gps.enable();        
 
     fprintf(stdout, "Starting Scheduler...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Start scheduler     ");
-    wait(0.5);
-    // Startup sensor/AHRS ticker; update every 10ms = 100hz
+    display.status("Start scheduler     ");
+    wait(0.2);
+    // Startup sensor/AHRS ticker; update every UPDATE_PERIOD
     restartNav();
     sched.attach(&update, UPDATE_PERIOD);
 
 /*
     fprintf(stdout, "Starting Camera...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Start Camera        ");
+    display.status("Start Camera        ");
     wait(0.5);
     cam.start();
 */
@@ -302,19 +265,6 @@ int main()
     //speaker.beep(3000.0, 0.2); // non-blocking
 
     keypad.init();
-
-    // Initialize LCD graphics
-    Bargraph::lcd = &lcd;   
-    Bargraph v(1, 40, 15, 'V');
-    v.calibrate(6.3, 8.4);
-    Bargraph a(11, 40, 15, 'A');
-    a.calibrate(0, 15.0);
-    Bargraph g1(21, 40, 15, 'G');
-    g1.calibrate(0, 10);
-    Bargraph g2(31, 40, 15, 'H');
-    g2.calibrate(4.0, 0.8);
-    //GPSStatus g2(21, 12);
-    //GPSStatus::lcd = &lcd;
     
     // Setup LCD Input Menu
     menu.add("Auto mode", &autonomousMode);
@@ -347,22 +297,12 @@ int main()
         }*/
 
         if ((thisUpdate = timer.read_ms()) > nextUpdate) {
-            //fprintf(stdout, "Updating...\n");
-            v.update(sensors.voltage);
-            a.update(sensors.current);
-            g1.update((float) gps.nmea.sat_count());
-            g2.update(gps.hdop);
-            lcd.posXY(60, 22);
-            lcd.printf("%.2f", state[inState].rightRanger);
-            lcd.posXY(60, 32);
-            lcd.printf("%.2f", state[inState].leftRanger);
-            lcd.posXY(60, 42);
-            lcd.printf("%5.1f", state[inState].estHeading);
-            lcd.posXY(60, 52);
-            lcd.printf("%.3f", state[inState].gpsCourse);
+            // TODO 1: wtf is this?!?!  why not pull out of state[outstate]
+            SystemState s = state[inState];
+            s.gpsHDOP = sensors.gps.hdop();
+            s.gpsSats = sensors.gps.sat_count();
+            display.update(s);
             nextUpdate = thisUpdate + 2000;
-            // TODO: 3 address integer overflow
-            // TODO: 3 display scheduler() timing
         }
         
         if (keypad.pressed) {
@@ -378,8 +318,7 @@ int main()
                     menu.prev();
                     break;
                 case SELECT_BUTTON:
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", menu.getItemName());
+                    display.select(menu.getItemName());
                     menu.select();
                     printMenu = true;
                     break;
@@ -392,37 +331,14 @@ int main()
 
             
         if (printLCDMenu) {
-            lcd.pos(0,0);
-            lcd.printf("< %-14s >", menu.getItemName());
-            lcd.pos(0,1);
-            lcd.printf(LCD_FMT, "Ready.");
-            lcd.posXY(50, 22);
-            lcd.printf("R");
-            lcd.rect(58, 20, 98, 30, true);
-            wait(0.01);
-            lcd.posXY(50, 32);
-            lcd.printf("L");
-            lcd.rect(58, 30, 98, 40, true);
-            wait(0.01);
-            lcd.posXY(50, 42);
-            lcd.printf("H");
-            lcd.rect(58, 40, 98, 50, true);
-            wait(0.01);
-            lcd.posXY(44,52);
-            lcd.printf("GH");
-            lcd.rect(58, 50, 98, 60, true);
-            v.init();
-            a.init();
-            g1.init();
-            g2.init();
+        
+            display.menu( menu.getItemName() );
+            display.status("Ready.");
+            display.redraw();
             printLCDMenu = false;
         }
         
-/*      if (autoBoot) {
-            autoBoot = false;
-            cmd = 'a';
-        } else {*/
-        
+                
         if (printMenu) {
             int i=0;
             fprintf(stdout, "\n==============\nData Bus Menu\n==============\n");
@@ -435,6 +351,7 @@ int main()
             fprintf(stdout, "%d) Display AHRS\n", i++);
             fprintf(stdout, "%d) Mavlink mode\n", i++);
             fprintf(stdout, "%d) Shell\n", i++);
+            fprintf(stdout, "%d) Bridge serial to 2nd GPS\n", i++);
             fprintf(stdout, "R) Reset\n");
             fprintf(stdout, "\nSelect from the above: ");
             fflush(stdout);
@@ -472,64 +389,54 @@ int main()
                     resetMe();
                     break;
                 case '0' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", menu.getItemName(0));
+                    display.select(menu.getItemName(0));
                     autonomousMode();
                     break;
                 case '1' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", "Serial bridge");
-                    lcd.pos(0,1);
-                    lcd.printf(LCD_FMT, "Standby.");
-                    gps.gsvMessage(true);
-                    gps.gsaMessage(true);
-                    serialBridge(gps.serial);
-                    gps.gsvMessage(false);
-                    gps.gsaMessage(false);                        
+                    display.select("Serial bridge");
+                    display.status("Standby.");
+                    sensors.gps.enableVerbose();
+                    serialBridge( *(sensors.gps.getSerial()) );
+                    sensors.gps.disableVerbose();
                     break;
                 case '2' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", menu.getItemName(1));
+                    display.select(menu.getItemName(1));
                     compassCalibrate();
                     break;
                 case '3' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", menu.getItemName(2));
+                    display.select(menu.getItemName(2));
                     compassSwing();
                     break;
                 case '4' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", menu.getItemName(2));
+                    display.select(menu.getItemName(2));
                     gyroSwing();
                     break;
                 case '5' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", "Instruments");
-                    lcd.pos(0,1);
-                    lcd.printf(LCD_FMT, "Standby.");
+                    display.select("Instruments");
+                    display.status("Standby.");
                     displayData(INSTRUMENT_CHECK);
                     break;
                 case '6' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", "AHRS Visual'n");
-                    lcd.pos(0,1);
-                    lcd.printf(LCD_FMT, "Standby.");
+                    display.select("AHRS Visual'n");
+                    display.status("Standby.");
                     displayData(AHRS_VISUALIZATION);
                     break;
                 case '7' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", "Mavlink mode");
-                    lcd.pos(0,1);
-                    lcd.printf(LCD_FMT, "Standby.");
+                    display.select("Mavlink mode");
+                    display.status("Standby.");
                     mavlinkMode();
                     break;
                 case '8' :
-                    lcd.pos(0,0);
-                    lcd.printf(">>%-14s", "Shell");
-                    lcd.pos(0,1);
-                    lcd.printf(LCD_FMT, "Standby.");
+                    display.select("Shell");
+                    display.status("Standby.");
                     shell();
                     break;
+                case '9' :
+                    display.select("Serial bridge 2");
+                    display.status("Standby.");
+                    //gps2.enableVerbose();
+                    //serialBridge( *(gps2.getSerial()) );
+                    //gps2.disableVerbose();                   
                 default :
                     break;
             } // switch        
@@ -566,7 +473,8 @@ int autonomousMode()
 {
     bool goGoGo = false;                    // signal to start moving
     bool navDone;                      // signal that we're done navigating
-    extern int tSensor, tGPS, tAHRS, tLog;
+
+    sensors.gps.reset_available();
 
     // TODO: 3 move to main?
     // Navigation
@@ -579,13 +487,13 @@ int autonomousMode()
     if (initLogfile()) logStatus = 1;                           // Open the log file in sprintf format string style; numbers go in %d
     wait(0.2);
 
-    gps.setNmeaMessages(true, true, false, false, true, false); // enable GGA, GSA, RMC
-    gps.serial.attach(gpsRecv, Serial::RxIrq);
+    sensors.gps.disableVerbose();
+    sensors.gps.enable();
+    //gps2.enable();
 
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Select starts.");
+    display.status("Select starts.");
     wait(1.0);
-
+    
     timer.reset();
     timer.start();
     wait(0.1);
@@ -626,8 +534,7 @@ int autonomousMode()
             
             if (keypad.pressed == true) { // && started
                 fprintf(stdout, ">>>>>>>>>>>>>>>>>>>>>>> HALT\n");
-                lcd.pos(0,1);
-                lcd.printf(LCD_FMT, "HALT.");
+                display.status("HALT.");
                 navDone = true;
                 goGoGo = false;
                 keypad.pressed = false;
@@ -636,8 +543,7 @@ int autonomousMode()
         } else {
             if (keypad.pressed == true) {
                 fprintf(stdout, ">>>>>>>>>>>>>>>>>>>>>>> GO GO GO\n");
-                lcd.pos(0,1);
-                lcd.printf(LCD_FMT, "GO GO GO!");
+                display.status("GO GO GO!");
                 goGoGo = true;
                 keypad.pressed = false;
                 //restartNav();
@@ -656,8 +562,7 @@ int autonomousMode()
             fprintf(stdout, "Arrived at final destination. Done.\n");
             //causes issue with servo library
             //speaker.beep(3000.0, 1.0); // non-blocking
-            lcd.pos(0,1);
-            lcd.printf(LCD_FMT, "Arrived. Done.");
+            display.status("Arrived. Done.");
             navDone = true;
             endRun();
         }
@@ -695,8 +600,7 @@ int autonomousMode()
     logStatus = 0;
     fprintf(stdout, "Completed, file saved.\n");
     wait(2); // wait from last printout
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Done. Saved.");
+    display.status("Done. Saved.");
     wait(2);        
 
     ahrsStatus = 0;
@@ -704,8 +608,7 @@ int autonomousMode()
     //confStatus = 0;
     //flasher = 0;
 
-    gps.gsaMessage(false);
-    gps.gsvMessage(false);
+    sensors.gps.disableVerbose();
 
     return 0;
 } // autonomousMode
@@ -723,15 +626,12 @@ int compassCalibrate()
     FILE *fp;
     
     fprintf(stdout, "Entering compass calibration in 2 seconds.\nLaunch _3DScatter Processing app now... type e to exit\n");
-    lcd.pos(0,1);
-
-    lcd.printf(LCD_FMT, "Starting...");
+    display.status("Starting...");
 
     fp = openlog("cal");
 
     wait(2);
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Select exits");
+    display.status("Select exits");
     timer.reset();
     timer.start();
     while (!done) {
@@ -772,8 +672,7 @@ int compassCalibrate()
     }
     if (fp) {
         fclose(fp);
-        lcd.pos(0,1);
-        lcd.printf(LCD_FMT, "Done. Saved.");
+        display.status("Done. Saved.");
         wait(2);
     }
 
@@ -793,16 +692,14 @@ int gyroSwing()
     FILE *fp;
 
     // Timing is pretty critical so just in case, disable serial processing from GPS
-    gps.serial.attach(NULL, Serial::RxIrq);
+    sensors.gps.disable();
 
     fprintf(stdout, "Entering gyro swing...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Starting...");
+    display.status("Starting...");
     wait(2);
     fp = openlog("gy");
     wait(2);
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Begin. Select exits.");
+    display.status("Begin. Select exits.");
 
     fprintf(stdout, "Begin clockwise rotation, varying rpm... press select to exit\n");
 
@@ -827,8 +724,7 @@ int gyroSwing()
     }    
     if (fp) {
         fclose(fp);
-        lcd.pos(0,1);
-        lcd.printf(LCD_FMT, "Done. Saved.");
+        display.status("Done. Saved.");
         fprintf(stdout, "Data collection complete.\n");
         wait(2);
     }
@@ -856,13 +752,11 @@ int compassSwing()
     // right is encoder track
 
     fprintf(stdout, "Entering compass swing...\n");
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Starting...");
+    display.status("Starting...");
     wait(2);
     fp = openlog("sw");
     wait(2);
-    lcd.pos(0,1);
-    lcd.printf(LCD_FMT, "Ok. Begin.");
+    display.status("Ok. Begin.");
 
     fprintf(stdout, "Begin clockwise rotation... exit after %d revolutions\n", revolutions);
 
@@ -878,6 +772,7 @@ int compassSwing()
     }
     fprintf(stdout, ">>>> Index detected. Starting data collection\n");
     leftCount = 0;
+    // TODO: how to parameterize status?
     lcd.pos(0,1);
     lcd.printf("%1d %-14s", revolutions, "revs left");
 
@@ -926,8 +821,7 @@ int compassSwing()
     }    
     if (fp) {
         fclose(fp);
-        lcd.pos(0,1);
-        lcd.printf(LCD_FMT, "Done. Saved.");
+        display.status("Done. Saved.");
         fprintf(stdout, "Data collection complete.\n");
         wait(2);
     }
@@ -955,21 +849,20 @@ void serialBridge(Serial &serial)
     bool done=false;
 
     fprintf(stdout, "\nEntering serial bridge in 2 seconds, +++ to escape\n\n");
-    //gps.setNmeaMessages(true, true, true, false, true, false); // enable GGA, GSA, GSV, RMC
-    gps.setNmeaMessages(true, false, false, false, true, false); // enable only GGA, RMC
+    sensors.gps.enableVerbose();
     wait(2.0);
     //dev = &gps;
     serial.attach(NULL, Serial::RxIrq);
     while (!done) {
         if (pc.readable()) {
             x = pc.getc();
+            serial.putc(x);
             // escape sequence
             if (x == '+') {
                 if (++count >= 3) done=true;
             } else {
                 count = 0;
             }
-            serial.putc(x);
         }
         if (serial.readable()) {
             pc.putc(serial.getc());
@@ -997,9 +890,13 @@ void displayData(int mode)
     lcd.clear();
 
     // Init GPS
-    gps.setNmeaMessages(true, false, false, false, true, false); // enable GGA, GSA, RMC
-    gps.serial.attach(gpsRecv, Serial::RxIrq);
-    gps.nmea.reset_ready();    
+    sensors.gps.disableVerbose();
+    sensors.gps.enable();
+    sensors.gps.reset_available();    
+
+    // Init 2nd GPS
+    //gps2.enable();
+    //gps2.reset_available();
 
     keypad.pressed = false;  
     
@@ -1046,8 +943,15 @@ void displayData(int mode)
                 fprintf(stdout, "estHdg=%.2f\n", state[inState].estHeading);
                 //fprintf(stdout, "roll=%.2f pitch=%.2f yaw=%.2f\n", ToDeg(ahrs.roll), ToDeg(ahrs.pitch), ToDeg(ahrs.yaw));
                 fprintf(stdout, "speed: left=%.3f  right=%.3f\n", sensors.lrEncSpeed, sensors.rrEncSpeed);
-                fprintf(stdout, "gps=(%.6f, %.6f, %.1f, %.1f, %.1f, %d)\n", gps_here.latitude(), gps_here.longitude(),
-                    gps.nmea.f_course(), gps.nmea.f_speed_mps(), gps.hdop, gps.nmea.sat_count());
+                fprintf(stdout, "gps=(%.6f, %.6f, %.1f, %.1f, %.1f, %d) %02x\n", 
+                    sensors.gps.latitude(), sensors.gps.longitude(), sensors.gps.heading_deg(), 
+                    sensors.gps.speed_mps(), sensors.gps.hdop(), sensors.gps.sat_count(),
+                    (unsigned char) sensors.gps.getAvailable() );
+                /*
+                fprintf(stdout, "gps2=(%.6f, %.6f, %.1f, %.1f, %.1f, %d) %02x\n", 
+                    gps2.latitude(), gps2.longitude(), gps2.heading_deg(), gps2.speed_mps(), gps2.hdop(), gps2.sat_count(),
+                    (unsigned char) gps2.getAvailable() );
+                */
                 fprintf(stdout, "v=%.2f  a=%.3f\n", sensors.voltage, sensors.current);
                 fprintf(stdout, "\n");
                 
@@ -1062,10 +966,10 @@ void displayData(int mode)
                 lcd.printf("G=%4.1f,%4.1f,%4.1f    ", sensors.gyro[0], sensors.gyro[1], sensors.gyro[2]);
                 wait(0.1);
                 lcd.pos(0,3);
-                lcd.printf("La=%11.6f HD=%1.1f  ", gps_here.latitude(), gps.hdop);
+                lcd.printf("La=%11.6f HD=%1.1f  ", sensors.gps.latitude(), sensors.gps.hdop());
                 wait(0.1);
                 lcd.pos(0,4);
-                lcd.printf("Lo=%11.6f Sat=%-2d  ", gps_here.longitude(), gps.nmea.sat_count());
+                lcd.printf("Lo=%11.6f Sat=%-2d  ", sensors.gps.longitude(), sensors.gps.sat_count());
                 wait(0.1);
                 lcd.pos(0,5);
                 lcd.printf("V=%5.2f A=%5.3f  ", sensors.voltage, sensors.current);
@@ -1109,9 +1013,14 @@ void mavlinkMode() {
 
     fprintf(stdout, "Entering MAVlink mode; reset the MCU to exit\n\n");
 
-    gps.gsvMessage(true);
-    gps.gsaMessage(true);
-    gps.serial.attach(gpsRecv, Serial::RxIrq);
+    wait(5.0);
+
+    //gps.gsvMessage(true);
+    //gps.gsaMessage(true);
+    //gps.serial.attach(gpsRecv, Serial::RxIrq);
+    
+    timer.start();
+    timer.reset();
     
     while (done == false) {
 
@@ -1123,26 +1032,46 @@ void mavlinkMode() {
         int millis = timer.read_ms();
       
         if ((millis % 1000) == 0) {
+            SystemState s = state[outState];
+        /*
+        s.millis,
+        s.current, s.voltage,
+        s.g[0], s.g[1], s.g[2],
+        s.gTemp,
+        s.a[0], s.a[1], s.a[2],
+        s.m[0], s.m[1], s.m[2],
+        s.gHeading, //s.cHeading,
+        //s.roll, s.pitch, s.yaw,
+        s.gpsLatitude, s.gpsLongitude, s.gpsCourse, s.gpsSpeed*0.44704, s.gpsHDOP, s.gpsSats, // convert gps speed to m/s
+        s.lrEncDistance, s.rrEncDistance, s.lrEncSpeed, s.rrEncSpeed, s.encHeading,
+        s.estHeading, s.estLatitude, s.estLongitude,
+        // s.estNorthing, s.estEasting, 
+        s.estX, s.estY,
+        s.nextWaypoint, s.bearing, s.distance, s.gbias, s.errAngle,
+        s.leftRanger, s.rightRanger, s.centerRanger,
+        s.crossTrackErr
+        */
+
+            float groundspeed = (s.lrEncSpeed + s.rrEncSpeed)/2.0;
+            //mav_hud.groundspeed *= 2.237; // convert to mph
+            //mav_hud.heading = compassHeading();
 
             mav_hud.heading = 0.0; //ahrs.parser.yaw;
             
             mavlink_msg_attitude_send(MAVLINK_COMM_0, millis*1000, 
                 0.0, //ToDeg(ahrs.roll),
                 0.0, //ToDeg(ahrs.pitch),
-                0.0, //ToDeg(ahrs.yaw), TODO: 3 fix this to use current estimate
+                s.estHeading,
                 0.0, // rollspeed
                 0.0, // pitchspeed
                 0.0  // yawspeed
             );
 
-            mav_hud.groundspeed = sensors.encSpeed;
-            mav_hud.groundspeed *= 2.237; // convert to mph
-            //mav_hud.heading = compassHeading();
 
             mavlink_msg_vfr_hud_send(MAVLINK_COMM_0, 
-                    mav_hud.groundspeed, 
-                    mav_hud.groundspeed, 
-                    mav_hud.heading, 
+                    groundspeed, 
+                    groundspeed, 
+                    s.estHeading, 
                     mav_hud.throttle, 
                     0.0, // altitude
                     0.0  // climb
@@ -1159,53 +1088,70 @@ void mavlinkMode() {
                     0 // packet drop
             );
             
+            
+            mavlink_msg_gps_raw_send(MAVLINK_COMM_0, millis*1000, 3, 
+                sensors.gps.latitude(), 
+                sensors.gps.longitude(), 
+                0.0, // altitude
+                sensors.gps.hdop()*100.0, 
+                0.0, // VDOP
+                groundspeed, 
+                s.estHeading
+            );
+                
+            mavlink_msg_gps_status_send(MAVLINK_COMM_0, sensors.gps.sat_count(), 0, 0, 0, 0, 0);
+
             wait(0.001);
         } // millis % 1000
 
-        if (gps.nmea.rmc_ready() && gps.nmea.gga_ready()) {
+        /*
+        if (gps.nmea.rmc_ready() &&sensors.gps.nmea.gga_ready()) {
             char gpsdate[32], gpstime[32];
 
-            gps.process(gps_here, gpsdate, gpstime);
-            gpsStatus = (gps.hdop > 0.0 && gps.hdop < 3.0) ? 1 : 0;
+           sensors.gps.process(gps_here, gpsdate, gpstime);
+            gpsStatus = (gps.hdop > 0.0 && sensors.gps.hdop < 3.0) ? 1 : 0;
 
             mavlink_msg_gps_raw_send(MAVLINK_COMM_0, millis*1000, 3, 
                 gps_here.latitude(), 
                 gps_here.longitude(), 
                 0.0, // altitude
-                gps.nmea.f_hdop()*100.0, 
+                sensors.gps.nmea.f_hdop()*100.0, 
                 0.0, // VDOP
                 mav_hud.groundspeed, 
                 mav_hud.heading
             );
                 
-            mavlink_msg_gps_status_send(MAVLINK_COMM_0, gps.nmea.sat_count(), 0, 0, 0, 0, 0);
+            mavlink_msg_gps_status_send(MAVLINK_COMM_0, sensors.gps.nmea.sat_count(), 0, 0, 0, 0, 0);
 
-            gps.nmea.reset_ready();
+            sensors.gps.nmea.reset_ready();
                 
         } //gps
 
         //mavlink_msg_attitude_send(MAVLINK_COMM_0, millis*1000, mav_attitude.roll, mav_attitude.pitch, mav_attitude.yaw, 0.0, 0.0, 0.0);
         //mavlink_msg_sys_status_send(MAVLINK_COMM_0, mav_stat.mode, mav_stat.nav_mode, mav_stat.status, mav_stat.load,
         //                            mav_stat.vbat, mav_stat.battery_remaining, 0);
+
+        */
+
     }
 
-    gps.serial.attach(NULL, Serial::RxIrq);
-    gps.gsvMessage(false);
-    gps.gsaMessage(false);
+    //gps.serial.attach(NULL, Serial::RxIrq);
+    //gps.gsvMessage(false);
+    //gps.gsaMessage(false);
+    
     fprintf(stdout, "\n");
     
     return;
 }
 
-
+// TODO: move to display
 int setBacklight(void) {
     Menu bmenu;
     bool done = false;
     bool printUpdate = false;
     static int backlight=100;
     
-    lcd.pos(0,0);
-    lcd.printf(LCD_FMT, ">> Backlight");
+    display.select(">> Backlight");
 
     while (!done) {
         if (keypad.pressed) {

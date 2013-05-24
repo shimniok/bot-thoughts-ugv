@@ -1,7 +1,7 @@
 /** @file
- *	@brief MAVLink comm protocol.
- *	@see http://qgroundcontrol.org/mavlink/
- *	 Generated on Friday, August 5 2011, 07:37 UTC
+ *    @brief MAVLink comm protocol.
+ *    @see http://qgroundcontrol.org/mavlink/
+ *     Generated on Friday, August 5 2011, 07:37 UTC
  */
 #ifndef UALBERTA_H
 #define UALBERTA_H
@@ -33,31 +33,31 @@ extern "C" {
 /** @brief  Available autopilot modes for ualberta uav */
 enum UALBERTA_AUTOPILOT_MODE
 {
-	MODE_MANUAL_DIRECT=0, /*  */
-	MODE_MANUAL_SCALED=1, /*  */
-	MODE_AUTO_PID_ATT=2, /*  */
-	MODE_AUTO_PID_VEL=3, /*  */
-	MODE_AUTO_PID_POS=4, /*  */
-	UALBERTA_AUTOPILOT_MODE_ENUM_END
+    MODE_MANUAL_DIRECT=0, /*  */
+    MODE_MANUAL_SCALED=1, /*  */
+    MODE_AUTO_PID_ATT=2, /*  */
+    MODE_AUTO_PID_VEL=3, /*  */
+    MODE_AUTO_PID_POS=4, /*  */
+    UALBERTA_AUTOPILOT_MODE_ENUM_END
 };
 
 /** @brief  Navigation filter mode */
 enum UALBERTA_NAV_MODE
 {
-	NAV_AHRS_INIT=0,
-	NAV_AHRS=1, /*  */
-	NAV_INS_GPS_INIT=2, /*  */
-	NAV_INS_GPS=3, /*  */
-	UALBERTA_NAV_MODE_ENUM_END
+    NAV_AHRS_INIT=0,
+    NAV_AHRS=1, /*  */
+    NAV_INS_GPS_INIT=2, /*  */
+    NAV_INS_GPS=3, /*  */
+    UALBERTA_NAV_MODE_ENUM_END
 };
 
 /** @brief  Mode currently commanded by pilot */
 enum UALBERTA_PILOT_MODE
 {
-	PILOT_MANUAL=0, /*  */
-	PILOT_AUTO=1, /*  */
-	PILOT_ROTO=2, /*  */
-	UALBERTA_PILOT_MODE_ENUM_END
+    PILOT_MANUAL=0, /*  */
+    PILOT_AUTO=1, /*  */
+    PILOT_ROTO=2, /*  */
+    UALBERTA_PILOT_MODE_ENUM_END
 };
 
 
