@@ -4,8 +4,8 @@
 
 typedef struct __mavlink_named_value_int_t 
 {
-	char name[10]; ///< Name of the debug variable
-	int32_t value; ///< Signed integer value
+    char name[10]; ///< Name of the debug variable
+    int32_t value; ///< Signed integer value
 
 } mavlink_named_value_int_t;
 
@@ -24,13 +24,13 @@ typedef struct __mavlink_named_value_int_t
  */
 static inline uint16_t mavlink_msg_named_value_int_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const char* name, int32_t value)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
-	i += put_int32_t_by_index(value, i, msg->payload); // Signed integer value
+    i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
+    i += put_int32_t_by_index(value, i, msg->payload); // Signed integer value
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -45,13 +45,13 @@ static inline uint16_t mavlink_msg_named_value_int_pack(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_named_value_int_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const char* name, int32_t value)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
-	i += put_int32_t_by_index(value, i, msg->payload); // Signed integer value
+    i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
+    i += put_int32_t_by_index(value, i, msg->payload); // Signed integer value
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_named_value_int_pack_chan(uint8_t system_id, 
  */
 static inline uint16_t mavlink_msg_named_value_int_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_named_value_int_t* named_value_int)
 {
-	return mavlink_msg_named_value_int_pack(system_id, component_id, msg, named_value_int->name, named_value_int->value);
+    return mavlink_msg_named_value_int_pack(system_id, component_id, msg, named_value_int->name, named_value_int->value);
 }
 
 /**
@@ -78,9 +78,9 @@ static inline uint16_t mavlink_msg_named_value_int_encode(uint8_t system_id, uin
 
 static inline void mavlink_msg_named_value_int_send(mavlink_channel_t chan, const char* name, int32_t value)
 {
-	mavlink_message_t msg;
-	mavlink_msg_named_value_int_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, name, value);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_named_value_int_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, name, value);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -94,8 +94,8 @@ static inline void mavlink_msg_named_value_int_send(mavlink_channel_t chan, cons
 static inline uint16_t mavlink_msg_named_value_int_get_name(const mavlink_message_t* msg, char* r_data)
 {
 
-	memcpy(r_data, msg->payload, sizeof(char)*10);
-	return sizeof(char)*10;
+    memcpy(r_data, msg->payload, sizeof(char)*10);
+    return sizeof(char)*10;
 }
 
 /**
@@ -105,12 +105,12 @@ static inline uint16_t mavlink_msg_named_value_int_get_name(const mavlink_messag
  */
 static inline int32_t mavlink_msg_named_value_int_get_value(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(char)*10)[0];
-	r.b[2] = (msg->payload+sizeof(char)*10)[1];
-	r.b[1] = (msg->payload+sizeof(char)*10)[2];
-	r.b[0] = (msg->payload+sizeof(char)*10)[3];
-	return (int32_t)r.i;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(char)*10)[0];
+    r.b[2] = (msg->payload+sizeof(char)*10)[1];
+    r.b[1] = (msg->payload+sizeof(char)*10)[2];
+    r.b[0] = (msg->payload+sizeof(char)*10)[3];
+    return (int32_t)r.i;
 }
 
 /**
@@ -121,6 +121,6 @@ static inline int32_t mavlink_msg_named_value_int_get_value(const mavlink_messag
  */
 static inline void mavlink_msg_named_value_int_decode(const mavlink_message_t* msg, mavlink_named_value_int_t* named_value_int)
 {
-	mavlink_msg_named_value_int_get_name(msg, named_value_int->name);
-	named_value_int->value = mavlink_msg_named_value_int_get_value(msg);
+    mavlink_msg_named_value_int_get_name(msg, named_value_int->name);
+    named_value_int->value = mavlink_msg_named_value_int_get_value(msg);
 }

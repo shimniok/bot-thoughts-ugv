@@ -1,5 +1,6 @@
 #include "Bargraph.h"
 
+#define CHAR_WIDTH 6
 #define WIDTH 8
 #define HEIGHT 9
 
@@ -19,10 +20,13 @@ void Bargraph::init()
 {
     if (lcd) {
         if (_n != ' ') {
-            lcd->posXY(_x, _y2+2); // horizontal center
+            lcd->posXY(_x + (_w/2 - CHAR_WIDTH/2), _y2+2); // horizontal center
+            //wait_ms(5);
             lcd->printf("%c", _n);
+            //wait_ms(5);
         }
         lcd->rect(_x, _y, _x2, _y2, true);
+        //wait_ms(5); // doesn't seem to help
         int value = _last;
         _last = 0;
         update(value);
@@ -54,7 +58,7 @@ void Bargraph::update(int value)
             
             for (int y=_y+1; y < _y2; y++) {
                 lcd->line(_x+1, y, _x2-1, y, (y > newY));
-                wait_ms(5);
+                wait_ms(8);
             }
         }
         _last = value;

@@ -34,6 +34,10 @@
 #define _GPS_KM_PER_METER 0.001
 //#define _GPS_NO_STATS
 
+/** TinyGPS - a small GPS library for Arduino providing basic NMEA parsing Copyright (C) 2008-9 Mikal Hart
+ * All rights reserved. Modified by Michael Shimniok 
+ */
+
 class TinyGPS
 {
   public:
@@ -185,13 +189,10 @@ class TinyGPS
     */
     static int library_version() { return _GPS_VERSION; }
 
-    /** determine if RMC sentence parsed since last reset_ready()
+    /** determine if all sentences parsed
+     *
      */
-    inline bool rmc_ready() { return _rmc_ready; }
-
-    /** determine if GGA sentence parsed since last reset_ready()
-     */
-    inline bool gga_ready() { return _gga_ready; }
+    inline bool ready() { return (_rmc_ready && _gga_ready); }
 
     /** determine if GSV sentence parsed since last reset_ready()
      */
@@ -226,7 +227,7 @@ private:
     char _term[15];
     byte _sentence_type;
     byte _term_number;
-    byte _term_offset;
+    unsigned char _term_offset;
     bool _gps_data_good;
     bool _rmc_ready;
     bool _gga_ready;

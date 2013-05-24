@@ -4,8 +4,8 @@
 
 typedef struct __mavlink_system_time_utc_t 
 {
-	uint32_t utc_date; ///< GPS UTC date ddmmyy
-	uint32_t utc_time; ///< GPS UTC time hhmmss
+    uint32_t utc_date; ///< GPS UTC date ddmmyy
+    uint32_t utc_time; ///< GPS UTC time hhmmss
 
 } mavlink_system_time_utc_t;
 
@@ -23,13 +23,13 @@ typedef struct __mavlink_system_time_utc_t
  */
 static inline uint16_t mavlink_msg_system_time_utc_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, uint32_t utc_date, uint32_t utc_time)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME_UTC;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME_UTC;
 
-	i += put_uint32_t_by_index(utc_date, i, msg->payload); // GPS UTC date ddmmyy
-	i += put_uint32_t_by_index(utc_time, i, msg->payload); // GPS UTC time hhmmss
+    i += put_uint32_t_by_index(utc_date, i, msg->payload); // GPS UTC date ddmmyy
+    i += put_uint32_t_by_index(utc_time, i, msg->payload); // GPS UTC time hhmmss
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -44,13 +44,13 @@ static inline uint16_t mavlink_msg_system_time_utc_pack(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_system_time_utc_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, uint32_t utc_date, uint32_t utc_time)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME_UTC;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME_UTC;
 
-	i += put_uint32_t_by_index(utc_date, i, msg->payload); // GPS UTC date ddmmyy
-	i += put_uint32_t_by_index(utc_time, i, msg->payload); // GPS UTC time hhmmss
+    i += put_uint32_t_by_index(utc_date, i, msg->payload); // GPS UTC date ddmmyy
+    i += put_uint32_t_by_index(utc_time, i, msg->payload); // GPS UTC time hhmmss
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -63,7 +63,7 @@ static inline uint16_t mavlink_msg_system_time_utc_pack_chan(uint8_t system_id, 
  */
 static inline uint16_t mavlink_msg_system_time_utc_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_system_time_utc_t* system_time_utc)
 {
-	return mavlink_msg_system_time_utc_pack(system_id, component_id, msg, system_time_utc->utc_date, system_time_utc->utc_time);
+    return mavlink_msg_system_time_utc_pack(system_id, component_id, msg, system_time_utc->utc_date, system_time_utc->utc_time);
 }
 
 /**
@@ -77,9 +77,9 @@ static inline uint16_t mavlink_msg_system_time_utc_encode(uint8_t system_id, uin
 
 static inline void mavlink_msg_system_time_utc_send(mavlink_channel_t chan, uint32_t utc_date, uint32_t utc_time)
 {
-	mavlink_message_t msg;
-	mavlink_msg_system_time_utc_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, utc_date, utc_time);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_system_time_utc_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, utc_date, utc_time);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -92,12 +92,12 @@ static inline void mavlink_msg_system_time_utc_send(mavlink_channel_t chan, uint
  */
 static inline uint32_t mavlink_msg_system_time_utc_get_utc_date(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload)[0];
-	r.b[2] = (msg->payload)[1];
-	r.b[1] = (msg->payload)[2];
-	r.b[0] = (msg->payload)[3];
-	return (uint32_t)r.i;
+    generic_32bit r;
+    r.b[3] = (msg->payload)[0];
+    r.b[2] = (msg->payload)[1];
+    r.b[1] = (msg->payload)[2];
+    r.b[0] = (msg->payload)[3];
+    return (uint32_t)r.i;
 }
 
 /**
@@ -107,12 +107,12 @@ static inline uint32_t mavlink_msg_system_time_utc_get_utc_date(const mavlink_me
  */
 static inline uint32_t mavlink_msg_system_time_utc_get_utc_time(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(uint32_t))[0];
-	r.b[2] = (msg->payload+sizeof(uint32_t))[1];
-	r.b[1] = (msg->payload+sizeof(uint32_t))[2];
-	r.b[0] = (msg->payload+sizeof(uint32_t))[3];
-	return (uint32_t)r.i;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(uint32_t))[0];
+    r.b[2] = (msg->payload+sizeof(uint32_t))[1];
+    r.b[1] = (msg->payload+sizeof(uint32_t))[2];
+    r.b[0] = (msg->payload+sizeof(uint32_t))[3];
+    return (uint32_t)r.i;
 }
 
 /**
@@ -123,6 +123,6 @@ static inline uint32_t mavlink_msg_system_time_utc_get_utc_time(const mavlink_me
  */
 static inline void mavlink_msg_system_time_utc_decode(const mavlink_message_t* msg, mavlink_system_time_utc_t* system_time_utc)
 {
-	system_time_utc->utc_date = mavlink_msg_system_time_utc_get_utc_date(msg);
-	system_time_utc->utc_time = mavlink_msg_system_time_utc_get_utc_time(msg);
+    system_time_utc->utc_date = mavlink_msg_system_time_utc_get_utc_date(msg);
+    system_time_utc->utc_time = mavlink_msg_system_time_utc_get_utc_time(msg);
 }

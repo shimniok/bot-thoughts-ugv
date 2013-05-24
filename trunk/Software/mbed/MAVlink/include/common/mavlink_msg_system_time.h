@@ -4,7 +4,7 @@
 
 typedef struct __mavlink_system_time_t 
 {
-	uint64_t time_usec; ///< Timestamp of the master clock in microseconds since UNIX epoch.
+    uint64_t time_usec; ///< Timestamp of the master clock in microseconds since UNIX epoch.
 
 } mavlink_system_time_t;
 
@@ -21,12 +21,12 @@ typedef struct __mavlink_system_time_t
  */
 static inline uint16_t mavlink_msg_system_time_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, uint64_t time_usec)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	i += put_uint64_t_by_index(time_usec, i, msg->payload); // Timestamp of the master clock in microseconds since UNIX epoch.
+    i += put_uint64_t_by_index(time_usec, i, msg->payload); // Timestamp of the master clock in microseconds since UNIX epoch.
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -40,12 +40,12 @@ static inline uint16_t mavlink_msg_system_time_pack(uint8_t system_id, uint8_t c
  */
 static inline uint16_t mavlink_msg_system_time_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, uint64_t time_usec)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	i += put_uint64_t_by_index(time_usec, i, msg->payload); // Timestamp of the master clock in microseconds since UNIX epoch.
+    i += put_uint64_t_by_index(time_usec, i, msg->payload); // Timestamp of the master clock in microseconds since UNIX epoch.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -58,7 +58,7 @@ static inline uint16_t mavlink_msg_system_time_pack_chan(uint8_t system_id, uint
  */
 static inline uint16_t mavlink_msg_system_time_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_system_time_t* system_time)
 {
-	return mavlink_msg_system_time_pack(system_id, component_id, msg, system_time->time_usec);
+    return mavlink_msg_system_time_pack(system_id, component_id, msg, system_time->time_usec);
 }
 
 /**
@@ -71,9 +71,9 @@ static inline uint16_t mavlink_msg_system_time_encode(uint8_t system_id, uint8_t
 
 static inline void mavlink_msg_system_time_send(mavlink_channel_t chan, uint64_t time_usec)
 {
-	mavlink_message_t msg;
-	mavlink_msg_system_time_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, time_usec);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_system_time_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, time_usec);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -86,16 +86,16 @@ static inline void mavlink_msg_system_time_send(mavlink_channel_t chan, uint64_t
  */
 static inline uint64_t mavlink_msg_system_time_get_time_usec(const mavlink_message_t* msg)
 {
-	generic_64bit r;
-	r.b[7] = (msg->payload)[0];
-	r.b[6] = (msg->payload)[1];
-	r.b[5] = (msg->payload)[2];
-	r.b[4] = (msg->payload)[3];
-	r.b[3] = (msg->payload)[4];
-	r.b[2] = (msg->payload)[5];
-	r.b[1] = (msg->payload)[6];
-	r.b[0] = (msg->payload)[7];
-	return (uint64_t)r.ll;
+    generic_64bit r;
+    r.b[7] = (msg->payload)[0];
+    r.b[6] = (msg->payload)[1];
+    r.b[5] = (msg->payload)[2];
+    r.b[4] = (msg->payload)[3];
+    r.b[3] = (msg->payload)[4];
+    r.b[2] = (msg->payload)[5];
+    r.b[1] = (msg->payload)[6];
+    r.b[0] = (msg->payload)[7];
+    return (uint64_t)r.ll;
 }
 
 /**
@@ -106,5 +106,5 @@ static inline uint64_t mavlink_msg_system_time_get_time_usec(const mavlink_messa
  */
 static inline void mavlink_msg_system_time_decode(const mavlink_message_t* msg, mavlink_system_time_t* system_time)
 {
-	system_time->time_usec = mavlink_msg_system_time_get_time_usec(msg);
+    system_time->time_usec = mavlink_msg_system_time_get_time_usec(msg);
 }

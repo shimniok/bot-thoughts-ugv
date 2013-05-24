@@ -5,6 +5,7 @@
 
 class Bargraph {
 public:
+    Bargraph() {}
     Bargraph(int x, int y, int size, char name);
     Bargraph(int x, int y, int size, int width, char name);
     void init(void);

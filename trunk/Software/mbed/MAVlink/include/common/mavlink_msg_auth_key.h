@@ -4,7 +4,7 @@
 
 typedef struct __mavlink_auth_key_t 
 {
-	char key[32]; ///< key
+    char key[32]; ///< key
 
 } mavlink_auth_key_t;
 
@@ -22,12 +22,12 @@ typedef struct __mavlink_auth_key_t
  */
 static inline uint16_t mavlink_msg_auth_key_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const char* key)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	i += put_array_by_index((const int8_t*)key, sizeof(char)*32, i, msg->payload); // key
+    i += put_array_by_index((const int8_t*)key, sizeof(char)*32, i, msg->payload); // key
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -41,12 +41,12 @@ static inline uint16_t mavlink_msg_auth_key_pack(uint8_t system_id, uint8_t comp
  */
 static inline uint16_t mavlink_msg_auth_key_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const char* key)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	i += put_array_by_index((const int8_t*)key, sizeof(char)*32, i, msg->payload); // key
+    i += put_array_by_index((const int8_t*)key, sizeof(char)*32, i, msg->payload); // key
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -59,7 +59,7 @@ static inline uint16_t mavlink_msg_auth_key_pack_chan(uint8_t system_id, uint8_t
  */
 static inline uint16_t mavlink_msg_auth_key_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_auth_key_t* auth_key)
 {
-	return mavlink_msg_auth_key_pack(system_id, component_id, msg, auth_key->key);
+    return mavlink_msg_auth_key_pack(system_id, component_id, msg, auth_key->key);
 }
 
 /**
@@ -72,9 +72,9 @@ static inline uint16_t mavlink_msg_auth_key_encode(uint8_t system_id, uint8_t co
 
 static inline void mavlink_msg_auth_key_send(mavlink_channel_t chan, const char* key)
 {
-	mavlink_message_t msg;
-	mavlink_msg_auth_key_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, key);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_auth_key_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, key);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -88,8 +88,8 @@ static inline void mavlink_msg_auth_key_send(mavlink_channel_t chan, const char*
 static inline uint16_t mavlink_msg_auth_key_get_key(const mavlink_message_t* msg, char* r_data)
 {
 
-	memcpy(r_data, msg->payload, sizeof(char)*32);
-	return sizeof(char)*32;
+    memcpy(r_data, msg->payload, sizeof(char)*32);
+    return sizeof(char)*32;
 }
 
 /**
@@ -100,5 +100,5 @@ static inline uint16_t mavlink_msg_auth_key_get_key(const mavlink_message_t* msg
  */
 static inline void mavlink_msg_auth_key_decode(const mavlink_message_t* msg, mavlink_auth_key_t* auth_key)
 {
-	mavlink_msg_auth_key_get_key(msg, auth_key->key);
+    mavlink_msg_auth_key_get_key(msg, auth_key->key);
 }

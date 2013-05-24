@@ -4,10 +4,10 @@
 
 typedef struct __mavlink_position_target_t 
 {
-	float x; ///< x position
-	float y; ///< y position
-	float z; ///< z position
-	float yaw; ///< yaw orientation in radians, 0 = NORTH
+    float x; ///< x position
+    float y; ///< y position
+    float z; ///< z position
+    float yaw; ///< yaw orientation in radians, 0 = NORTH
 
 } mavlink_position_target_t;
 
@@ -27,15 +27,15 @@ typedef struct __mavlink_position_target_t
  */
 static inline uint16_t mavlink_msg_position_target_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, float x, float y, float z, float yaw)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_POSITION_TARGET;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_POSITION_TARGET;
 
-	i += put_float_by_index(x, i, msg->payload); // x position
-	i += put_float_by_index(y, i, msg->payload); // y position
-	i += put_float_by_index(z, i, msg->payload); // z position
-	i += put_float_by_index(yaw, i, msg->payload); // yaw orientation in radians, 0 = NORTH
+    i += put_float_by_index(x, i, msg->payload); // x position
+    i += put_float_by_index(y, i, msg->payload); // y position
+    i += put_float_by_index(z, i, msg->payload); // z position
+    i += put_float_by_index(yaw, i, msg->payload); // yaw orientation in radians, 0 = NORTH
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -52,15 +52,15 @@ static inline uint16_t mavlink_msg_position_target_pack(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_position_target_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, float x, float y, float z, float yaw)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_POSITION_TARGET;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_POSITION_TARGET;
 
-	i += put_float_by_index(x, i, msg->payload); // x position
-	i += put_float_by_index(y, i, msg->payload); // y position
-	i += put_float_by_index(z, i, msg->payload); // z position
-	i += put_float_by_index(yaw, i, msg->payload); // yaw orientation in radians, 0 = NORTH
+    i += put_float_by_index(x, i, msg->payload); // x position
+    i += put_float_by_index(y, i, msg->payload); // y position
+    i += put_float_by_index(z, i, msg->payload); // z position
+    i += put_float_by_index(yaw, i, msg->payload); // yaw orientation in radians, 0 = NORTH
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -73,7 +73,7 @@ static inline uint16_t mavlink_msg_position_target_pack_chan(uint8_t system_id, 
  */
 static inline uint16_t mavlink_msg_position_target_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_position_target_t* position_target)
 {
-	return mavlink_msg_position_target_pack(system_id, component_id, msg, position_target->x, position_target->y, position_target->z, position_target->yaw);
+    return mavlink_msg_position_target_pack(system_id, component_id, msg, position_target->x, position_target->y, position_target->z, position_target->yaw);
 }
 
 /**
@@ -89,9 +89,9 @@ static inline uint16_t mavlink_msg_position_target_encode(uint8_t system_id, uin
 
 static inline void mavlink_msg_position_target_send(mavlink_channel_t chan, float x, float y, float z, float yaw)
 {
-	mavlink_message_t msg;
-	mavlink_msg_position_target_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, x, y, z, yaw);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_position_target_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, x, y, z, yaw);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -104,12 +104,12 @@ static inline void mavlink_msg_position_target_send(mavlink_channel_t chan, floa
  */
 static inline float mavlink_msg_position_target_get_x(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload)[0];
-	r.b[2] = (msg->payload)[1];
-	r.b[1] = (msg->payload)[2];
-	r.b[0] = (msg->payload)[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload)[0];
+    r.b[2] = (msg->payload)[1];
+    r.b[1] = (msg->payload)[2];
+    r.b[0] = (msg->payload)[3];
+    return (float)r.f;
 }
 
 /**
@@ -119,12 +119,12 @@ static inline float mavlink_msg_position_target_get_x(const mavlink_message_t* m
  */
 static inline float mavlink_msg_position_target_get_y(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -134,12 +134,12 @@ static inline float mavlink_msg_position_target_get_y(const mavlink_message_t* m
  */
 static inline float mavlink_msg_position_target_get_z(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -149,12 +149,12 @@ static inline float mavlink_msg_position_target_get_z(const mavlink_message_t* m
  */
 static inline float mavlink_msg_position_target_get_yaw(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -165,8 +165,8 @@ static inline float mavlink_msg_position_target_get_yaw(const mavlink_message_t*
  */
 static inline void mavlink_msg_position_target_decode(const mavlink_message_t* msg, mavlink_position_target_t* position_target)
 {
-	position_target->x = mavlink_msg_position_target_get_x(msg);
-	position_target->y = mavlink_msg_position_target_get_y(msg);
-	position_target->z = mavlink_msg_position_target_get_z(msg);
-	position_target->yaw = mavlink_msg_position_target_get_yaw(msg);
+    position_target->x = mavlink_msg_position_target_get_x(msg);
+    position_target->y = mavlink_msg_position_target_get_y(msg);
+    position_target->z = mavlink_msg_position_target_get_z(msg);
+    position_target->yaw = mavlink_msg_position_target_get_yaw(msg);
 }

@@ -10,8 +10,8 @@
 #include "mbed.h"
 
 /** Firmware modes */
-#define SFE_FW 0        // Stock SFE firmware
-#define SD_FW  1        // summoningdark firmware http://sourceforge.net/projects/serialglcd/
+#define SFE_FW 0x01       // Stock SFE firmware
+#define SD_FW  0x02       // summoningdark firmware http://sourceforge.net/projects/serialglcd/
 
 /** Modes for SD firmware */
 #define FILL 0xFF
@@ -150,7 +150,7 @@ public:
      * @param y2 is the y coordinate of the lower right of the rectangle
      * @param fillByte describes 1 8-pixel high stripe that is repeated every x 
      * pixels and every 8 y pixels. The most useful are CLEAR (0x00) to clear the box, and FILL (0xFF) to fill it.
-	 */
+     */
     void rectFill(int x1, int y1, int x2, int y2, char fillByte);
     
     /** erase a rectangular area

@@ -30,6 +30,10 @@ with MinIMU-9-Arduino-AHRS. If not, see <http://www.gnu.org/licenses/>.
 #ifndef __SENSORS_H
 #define __SENSORS_H
 
+/** Sensor interface library abstracts sensor drivers, next step to a pluggable architecture */
+
+#include "Ublox6.h"
+#include "Venus638flpx.h"
 #include "L3G4200D.h"
 #include "LSM303DLM.h"
 //#include "HMC5843.h"
@@ -113,6 +117,8 @@ public:
     float encDistance;                      // encoder distance since last check
     float encSpeed;                         // encoder calculated speed
 
+    Venus638flpx gps;                       // Venus GPS
+    //Ublox6 gps;                             // Ublox6 GPS
     AnalogIn _voltage;                      // Voltage from sensor board
     AnalogIn _current;                      // Current from sensor board
     IncrementalEncoder _left;               // Left wheel encoder

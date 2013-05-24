@@ -1,7 +1,7 @@
 /** @file
- *	@brief MAVLink comm protocol.
- *	@see http://qgroundcontrol.org/mavlink/
- *	 Generated on Sunday, September 11 2011, 13:52 UTC
+ *    @brief MAVLink comm protocol.
+ *    @see http://qgroundcontrol.org/mavlink/
+ *     Generated on Sunday, September 11 2011, 13:52 UTC
  */
 #ifndef PIXHAWK_H
 #define PIXHAWK_H
@@ -33,10 +33,10 @@ extern "C" {
 /** @brief  Content Types for data transmission handshake */
 enum DATA_TYPES
 {
-	DATA_TYPE_JPEG_IMAGE=1,
-	DATA_TYPE_RAW_IMAGE=2,
-	DATA_TYPE_KINECT=3,
-	DATA_TYPES_ENUM_END
+    DATA_TYPE_JPEG_IMAGE=1,
+    DATA_TYPE_RAW_IMAGE=2,
+    DATA_TYPE_KINECT=3,
+    DATA_TYPES_ENUM_END
 };
 
 

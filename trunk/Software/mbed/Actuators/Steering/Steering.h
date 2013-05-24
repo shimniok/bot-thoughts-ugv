@@ -47,12 +47,16 @@ class Steering
 
     /** compute steering angle based on pure pursuit algorithm
      */
-    float purePursuitSA(float hdg, float Bx, float By, float Ax, float Ay, float Bx, float By);
+    float purePursuitSA(float hdg, float Bx, float By, float Ax, float Ay, float Cx, float Cy);
     
+    /** compute steering angle based on a simpler path pursuit variant of pure pursuit
+     */
+    float pathPursuitSA(float hdg, float Bx, float By, float Ax, float Ay, float Cx, float Cy);
+
     /** Compute cross track error given last waypoint, next waypoint, and robot coordinates
      * @returns cross track error
      */
-    float crossTrack(float Bx, float By, float Ax, float Ay, float Bx, float By);
+    float crossTrack(float Bx, float By, float Ax, float Ay, float Cx, float Cy);
     
   private:
 

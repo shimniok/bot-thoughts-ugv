@@ -4,9 +4,9 @@
 
 typedef struct __mavlink_gps_local_origin_set_t 
 {
-	int32_t latitude; ///< Latitude (WGS84), expressed as * 1E7
-	int32_t longitude; ///< Longitude (WGS84), expressed as * 1E7
-	int32_t altitude; ///< Altitude(WGS84), expressed as * 1000
+    int32_t latitude; ///< Latitude (WGS84), expressed as * 1E7
+    int32_t longitude; ///< Longitude (WGS84), expressed as * 1E7
+    int32_t altitude; ///< Altitude(WGS84), expressed as * 1000
 
 } mavlink_gps_local_origin_set_t;
 
@@ -25,14 +25,14 @@ typedef struct __mavlink_gps_local_origin_set_t
  */
 static inline uint16_t mavlink_msg_gps_local_origin_set_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, int32_t latitude, int32_t longitude, int32_t altitude)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET;
 
-	i += put_int32_t_by_index(latitude, i, msg->payload); // Latitude (WGS84), expressed as * 1E7
-	i += put_int32_t_by_index(longitude, i, msg->payload); // Longitude (WGS84), expressed as * 1E7
-	i += put_int32_t_by_index(altitude, i, msg->payload); // Altitude(WGS84), expressed as * 1000
+    i += put_int32_t_by_index(latitude, i, msg->payload); // Latitude (WGS84), expressed as * 1E7
+    i += put_int32_t_by_index(longitude, i, msg->payload); // Longitude (WGS84), expressed as * 1E7
+    i += put_int32_t_by_index(altitude, i, msg->payload); // Altitude(WGS84), expressed as * 1000
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -48,14 +48,14 @@ static inline uint16_t mavlink_msg_gps_local_origin_set_pack(uint8_t system_id, 
  */
 static inline uint16_t mavlink_msg_gps_local_origin_set_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, int32_t latitude, int32_t longitude, int32_t altitude)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET;
 
-	i += put_int32_t_by_index(latitude, i, msg->payload); // Latitude (WGS84), expressed as * 1E7
-	i += put_int32_t_by_index(longitude, i, msg->payload); // Longitude (WGS84), expressed as * 1E7
-	i += put_int32_t_by_index(altitude, i, msg->payload); // Altitude(WGS84), expressed as * 1000
+    i += put_int32_t_by_index(latitude, i, msg->payload); // Latitude (WGS84), expressed as * 1E7
+    i += put_int32_t_by_index(longitude, i, msg->payload); // Longitude (WGS84), expressed as * 1E7
+    i += put_int32_t_by_index(altitude, i, msg->payload); // Altitude(WGS84), expressed as * 1000
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_gps_local_origin_set_pack_chan(uint8_t system
  */
 static inline uint16_t mavlink_msg_gps_local_origin_set_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_gps_local_origin_set_t* gps_local_origin_set)
 {
-	return mavlink_msg_gps_local_origin_set_pack(system_id, component_id, msg, gps_local_origin_set->latitude, gps_local_origin_set->longitude, gps_local_origin_set->altitude);
+    return mavlink_msg_gps_local_origin_set_pack(system_id, component_id, msg, gps_local_origin_set->latitude, gps_local_origin_set->longitude, gps_local_origin_set->altitude);
 }
 
 /**
@@ -83,9 +83,9 @@ static inline uint16_t mavlink_msg_gps_local_origin_set_encode(uint8_t system_id
 
 static inline void mavlink_msg_gps_local_origin_set_send(mavlink_channel_t chan, int32_t latitude, int32_t longitude, int32_t altitude)
 {
-	mavlink_message_t msg;
-	mavlink_msg_gps_local_origin_set_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, latitude, longitude, altitude);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_gps_local_origin_set_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, latitude, longitude, altitude);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -98,12 +98,12 @@ static inline void mavlink_msg_gps_local_origin_set_send(mavlink_channel_t chan,
  */
 static inline int32_t mavlink_msg_gps_local_origin_set_get_latitude(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload)[0];
-	r.b[2] = (msg->payload)[1];
-	r.b[1] = (msg->payload)[2];
-	r.b[0] = (msg->payload)[3];
-	return (int32_t)r.i;
+    generic_32bit r;
+    r.b[3] = (msg->payload)[0];
+    r.b[2] = (msg->payload)[1];
+    r.b[1] = (msg->payload)[2];
+    r.b[0] = (msg->payload)[3];
+    return (int32_t)r.i;
 }
 
 /**
@@ -113,12 +113,12 @@ static inline int32_t mavlink_msg_gps_local_origin_set_get_latitude(const mavlin
  */
 static inline int32_t mavlink_msg_gps_local_origin_set_get_longitude(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(int32_t))[0];
-	r.b[2] = (msg->payload+sizeof(int32_t))[1];
-	r.b[1] = (msg->payload+sizeof(int32_t))[2];
-	r.b[0] = (msg->payload+sizeof(int32_t))[3];
-	return (int32_t)r.i;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(int32_t))[0];
+    r.b[2] = (msg->payload+sizeof(int32_t))[1];
+    r.b[1] = (msg->payload+sizeof(int32_t))[2];
+    r.b[0] = (msg->payload+sizeof(int32_t))[3];
+    return (int32_t)r.i;
 }
 
 /**
@@ -128,12 +128,12 @@ static inline int32_t mavlink_msg_gps_local_origin_set_get_longitude(const mavli
  */
 static inline int32_t mavlink_msg_gps_local_origin_set_get_altitude(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[0];
-	r.b[2] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[1];
-	r.b[1] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[2];
-	r.b[0] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[3];
-	return (int32_t)r.i;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[0];
+    r.b[2] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[1];
+    r.b[1] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[2];
+    r.b[0] = (msg->payload+sizeof(int32_t)+sizeof(int32_t))[3];
+    return (int32_t)r.i;
 }
 
 /**
@@ -144,7 +144,7 @@ static inline int32_t mavlink_msg_gps_local_origin_set_get_altitude(const mavlin
  */
 static inline void mavlink_msg_gps_local_origin_set_decode(const mavlink_message_t* msg, mavlink_gps_local_origin_set_t* gps_local_origin_set)
 {
-	gps_local_origin_set->latitude = mavlink_msg_gps_local_origin_set_get_latitude(msg);
-	gps_local_origin_set->longitude = mavlink_msg_gps_local_origin_set_get_longitude(msg);
-	gps_local_origin_set->altitude = mavlink_msg_gps_local_origin_set_get_altitude(msg);
+    gps_local_origin_set->latitude = mavlink_msg_gps_local_origin_set_get_latitude(msg);
+    gps_local_origin_set->longitude = mavlink_msg_gps_local_origin_set_get_longitude(msg);
+    gps_local_origin_set->altitude = mavlink_msg_gps_local_origin_set_get_altitude(msg);
 }

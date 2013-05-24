@@ -1,6 +1,8 @@
 #ifndef __DCM_MATRIX_H
 #define __DCM_MATRIX_H
 
+/** Matrix math library */
+
 #define SINGULAR_MATRIX     (1<<0)
 #define ERR1                (1<<1)
 #define ERR2                (1<<2)

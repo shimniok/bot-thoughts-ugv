@@ -4,8 +4,8 @@
 
 typedef struct __mavlink_named_value_float_t 
 {
-	char name[10]; ///< Name of the debug variable
-	float value; ///< Floating point value
+    char name[10]; ///< Name of the debug variable
+    float value; ///< Floating point value
 
 } mavlink_named_value_float_t;
 
@@ -24,13 +24,13 @@ typedef struct __mavlink_named_value_float_t
  */
 static inline uint16_t mavlink_msg_named_value_float_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const char* name, float value)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
 
-	i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
-	i += put_float_by_index(value, i, msg->payload); // Floating point value
+    i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
+    i += put_float_by_index(value, i, msg->payload); // Floating point value
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -45,13 +45,13 @@ static inline uint16_t mavlink_msg_named_value_float_pack(uint8_t system_id, uin
  */
 static inline uint16_t mavlink_msg_named_value_float_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const char* name, float value)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
 
-	i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
-	i += put_float_by_index(value, i, msg->payload); // Floating point value
+    i += put_array_by_index((const int8_t*)name, sizeof(char)*10, i, msg->payload); // Name of the debug variable
+    i += put_float_by_index(value, i, msg->payload); // Floating point value
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_named_value_float_pack_chan(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_named_value_float_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_named_value_float_t* named_value_float)
 {
-	return mavlink_msg_named_value_float_pack(system_id, component_id, msg, named_value_float->name, named_value_float->value);
+    return mavlink_msg_named_value_float_pack(system_id, component_id, msg, named_value_float->name, named_value_float->value);
 }
 
 /**
@@ -78,9 +78,9 @@ static inline uint16_t mavlink_msg_named_value_float_encode(uint8_t system_id, u
 
 static inline void mavlink_msg_named_value_float_send(mavlink_channel_t chan, const char* name, float value)
 {
-	mavlink_message_t msg;
-	mavlink_msg_named_value_float_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, name, value);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_named_value_float_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, name, value);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -94,8 +94,8 @@ static inline void mavlink_msg_named_value_float_send(mavlink_channel_t chan, co
 static inline uint16_t mavlink_msg_named_value_float_get_name(const mavlink_message_t* msg, char* r_data)
 {
 
-	memcpy(r_data, msg->payload, sizeof(char)*10);
-	return sizeof(char)*10;
+    memcpy(r_data, msg->payload, sizeof(char)*10);
+    return sizeof(char)*10;
 }
 
 /**
@@ -105,12 +105,12 @@ static inline uint16_t mavlink_msg_named_value_float_get_name(const mavlink_mess
  */
 static inline float mavlink_msg_named_value_float_get_value(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(char)*10)[0];
-	r.b[2] = (msg->payload+sizeof(char)*10)[1];
-	r.b[1] = (msg->payload+sizeof(char)*10)[2];
-	r.b[0] = (msg->payload+sizeof(char)*10)[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(char)*10)[0];
+    r.b[2] = (msg->payload+sizeof(char)*10)[1];
+    r.b[1] = (msg->payload+sizeof(char)*10)[2];
+    r.b[0] = (msg->payload+sizeof(char)*10)[3];
+    return (float)r.f;
 }
 
 /**
@@ -121,6 +121,6 @@ static inline float mavlink_msg_named_value_float_get_value(const mavlink_messag
  */
 static inline void mavlink_msg_named_value_float_decode(const mavlink_message_t* msg, mavlink_named_value_float_t* named_value_float)
 {
-	mavlink_msg_named_value_float_get_name(msg, named_value_float->name);
-	named_value_float->value = mavlink_msg_named_value_float_get_value(msg);
+    mavlink_msg_named_value_float_get_name(msg, named_value_float->name);
+    named_value_float->value = mavlink_msg_named_value_float_get_value(msg);
 }

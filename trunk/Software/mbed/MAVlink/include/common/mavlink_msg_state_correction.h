@@ -4,15 +4,15 @@
 
 typedef struct __mavlink_state_correction_t 
 {
-	float xErr; ///< x position error
-	float yErr; ///< y position error
-	float zErr; ///< z position error
-	float rollErr; ///< roll error (radians)
-	float pitchErr; ///< pitch error (radians)
-	float yawErr; ///< yaw error (radians)
-	float vxErr; ///< x velocity
-	float vyErr; ///< y velocity
-	float vzErr; ///< z velocity
+    float xErr; ///< x position error
+    float yErr; ///< y position error
+    float zErr; ///< z position error
+    float rollErr; ///< roll error (radians)
+    float pitchErr; ///< pitch error (radians)
+    float yawErr; ///< yaw error (radians)
+    float vxErr; ///< x velocity
+    float vyErr; ///< y velocity
+    float vzErr; ///< z velocity
 
 } mavlink_state_correction_t;
 
@@ -37,20 +37,20 @@ typedef struct __mavlink_state_correction_t
  */
 static inline uint16_t mavlink_msg_state_correction_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, float xErr, float yErr, float zErr, float rollErr, float pitchErr, float yawErr, float vxErr, float vyErr, float vzErr)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_STATE_CORRECTION;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_STATE_CORRECTION;
 
-	i += put_float_by_index(xErr, i, msg->payload); // x position error
-	i += put_float_by_index(yErr, i, msg->payload); // y position error
-	i += put_float_by_index(zErr, i, msg->payload); // z position error
-	i += put_float_by_index(rollErr, i, msg->payload); // roll error (radians)
-	i += put_float_by_index(pitchErr, i, msg->payload); // pitch error (radians)
-	i += put_float_by_index(yawErr, i, msg->payload); // yaw error (radians)
-	i += put_float_by_index(vxErr, i, msg->payload); // x velocity
-	i += put_float_by_index(vyErr, i, msg->payload); // y velocity
-	i += put_float_by_index(vzErr, i, msg->payload); // z velocity
+    i += put_float_by_index(xErr, i, msg->payload); // x position error
+    i += put_float_by_index(yErr, i, msg->payload); // y position error
+    i += put_float_by_index(zErr, i, msg->payload); // z position error
+    i += put_float_by_index(rollErr, i, msg->payload); // roll error (radians)
+    i += put_float_by_index(pitchErr, i, msg->payload); // pitch error (radians)
+    i += put_float_by_index(yawErr, i, msg->payload); // yaw error (radians)
+    i += put_float_by_index(vxErr, i, msg->payload); // x velocity
+    i += put_float_by_index(vyErr, i, msg->payload); // y velocity
+    i += put_float_by_index(vzErr, i, msg->payload); // z velocity
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+    return mavlink_finalize_message(msg, system_id, component_id, i);
 }
 
 /**
@@ -72,20 +72,20 @@ static inline uint16_t mavlink_msg_state_correction_pack(uint8_t system_id, uint
  */
 static inline uint16_t mavlink_msg_state_correction_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, float xErr, float yErr, float zErr, float rollErr, float pitchErr, float yawErr, float vxErr, float vyErr, float vzErr)
 {
-	uint16_t i = 0;
-	msg->msgid = MAVLINK_MSG_ID_STATE_CORRECTION;
+    uint16_t i = 0;
+    msg->msgid = MAVLINK_MSG_ID_STATE_CORRECTION;
 
-	i += put_float_by_index(xErr, i, msg->payload); // x position error
-	i += put_float_by_index(yErr, i, msg->payload); // y position error
-	i += put_float_by_index(zErr, i, msg->payload); // z position error
-	i += put_float_by_index(rollErr, i, msg->payload); // roll error (radians)
-	i += put_float_by_index(pitchErr, i, msg->payload); // pitch error (radians)
-	i += put_float_by_index(yawErr, i, msg->payload); // yaw error (radians)
-	i += put_float_by_index(vxErr, i, msg->payload); // x velocity
-	i += put_float_by_index(vyErr, i, msg->payload); // y velocity
-	i += put_float_by_index(vzErr, i, msg->payload); // z velocity
+    i += put_float_by_index(xErr, i, msg->payload); // x position error
+    i += put_float_by_index(yErr, i, msg->payload); // y position error
+    i += put_float_by_index(zErr, i, msg->payload); // z position error
+    i += put_float_by_index(rollErr, i, msg->payload); // roll error (radians)
+    i += put_float_by_index(pitchErr, i, msg->payload); // pitch error (radians)
+    i += put_float_by_index(yawErr, i, msg->payload); // yaw error (radians)
+    i += put_float_by_index(vxErr, i, msg->payload); // x velocity
+    i += put_float_by_index(vyErr, i, msg->payload); // y velocity
+    i += put_float_by_index(vzErr, i, msg->payload); // z velocity
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
 }
 
 /**
@@ -98,7 +98,7 @@ static inline uint16_t mavlink_msg_state_correction_pack_chan(uint8_t system_id,
  */
 static inline uint16_t mavlink_msg_state_correction_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_state_correction_t* state_correction)
 {
-	return mavlink_msg_state_correction_pack(system_id, component_id, msg, state_correction->xErr, state_correction->yErr, state_correction->zErr, state_correction->rollErr, state_correction->pitchErr, state_correction->yawErr, state_correction->vxErr, state_correction->vyErr, state_correction->vzErr);
+    return mavlink_msg_state_correction_pack(system_id, component_id, msg, state_correction->xErr, state_correction->yErr, state_correction->zErr, state_correction->rollErr, state_correction->pitchErr, state_correction->yawErr, state_correction->vxErr, state_correction->vyErr, state_correction->vzErr);
 }
 
 /**
@@ -119,9 +119,9 @@ static inline uint16_t mavlink_msg_state_correction_encode(uint8_t system_id, ui
 
 static inline void mavlink_msg_state_correction_send(mavlink_channel_t chan, float xErr, float yErr, float zErr, float rollErr, float pitchErr, float yawErr, float vxErr, float vyErr, float vzErr)
 {
-	mavlink_message_t msg;
-	mavlink_msg_state_correction_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, xErr, yErr, zErr, rollErr, pitchErr, yawErr, vxErr, vyErr, vzErr);
-	mavlink_send_uart(chan, &msg);
+    mavlink_message_t msg;
+    mavlink_msg_state_correction_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg, xErr, yErr, zErr, rollErr, pitchErr, yawErr, vxErr, vyErr, vzErr);
+    mavlink_send_uart(chan, &msg);
 }
 
 #endif
@@ -134,12 +134,12 @@ static inline void mavlink_msg_state_correction_send(mavlink_channel_t chan, flo
  */
 static inline float mavlink_msg_state_correction_get_xErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload)[0];
-	r.b[2] = (msg->payload)[1];
-	r.b[1] = (msg->payload)[2];
-	r.b[0] = (msg->payload)[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload)[0];
+    r.b[2] = (msg->payload)[1];
+    r.b[1] = (msg->payload)[2];
+    r.b[0] = (msg->payload)[3];
+    return (float)r.f;
 }
 
 /**
@@ -149,12 +149,12 @@ static inline float mavlink_msg_state_correction_get_xErr(const mavlink_message_
  */
 static inline float mavlink_msg_state_correction_get_yErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -164,12 +164,12 @@ static inline float mavlink_msg_state_correction_get_yErr(const mavlink_message_
  */
 static inline float mavlink_msg_state_correction_get_zErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -179,12 +179,12 @@ static inline float mavlink_msg_state_correction_get_zErr(const mavlink_message_
  */
 static inline float mavlink_msg_state_correction_get_rollErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -194,12 +194,12 @@ static inline float mavlink_msg_state_correction_get_rollErr(const mavlink_messa
  */
 static inline float mavlink_msg_state_correction_get_pitchErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -209,12 +209,12 @@ static inline float mavlink_msg_state_correction_get_pitchErr(const mavlink_mess
  */
 static inline float mavlink_msg_state_correction_get_yawErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -224,12 +224,12 @@ static inline float mavlink_msg_state_correction_get_yawErr(const mavlink_messag
  */
 static inline float mavlink_msg_state_correction_get_vxErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -239,12 +239,12 @@ static inline float mavlink_msg_state_correction_get_vxErr(const mavlink_message
  */
 static inline float mavlink_msg_state_correction_get_vyErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -254,12 +254,12 @@ static inline float mavlink_msg_state_correction_get_vyErr(const mavlink_message
  */
 static inline float mavlink_msg_state_correction_get_vzErr(const mavlink_message_t* msg)
 {
-	generic_32bit r;
-	r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
-	r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
-	r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
-	r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
-	return (float)r.f;
+    generic_32bit r;
+    r.b[3] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[0];
+    r.b[2] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[1];
+    r.b[1] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[2];
+    r.b[0] = (msg->payload+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float)+sizeof(float))[3];
+    return (float)r.f;
 }
 
 /**
@@ -270,13 +270,13 @@ static inline float mavlink_msg_state_correction_get_vzErr(const mavlink_message
  */
 static inline void mavlink_msg_state_correction_decode(const mavlink_message_t* msg, mavlink_state_correction_t* state_correction)
 {
-	state_correction->xErr = mavlink_msg_state_correction_get_xErr(msg);
-	state_correction->yErr = mavlink_msg_state_correction_get_yErr(msg);
-	state_correction->zErr = mavlink_msg_state_correction_get_zErr(msg);
-	state_correction->rollErr = mavlink_msg_state_correction_get_rollErr(msg);
-	state_correction->pitchErr = mavlink_msg_state_correction_get_pitchErr(msg);
-	state_correction->yawErr = mavlink_msg_state_correction_get_yawErr(msg);
-	state_correction->vxErr = mavlink_msg_state_correction_get_vxErr(msg);
-	state_correction->vyErr = mavlink_msg_state_correction_get_vyErr(msg);
-	state_correction->vzErr = mavlink_msg_state_correction_get_vzErr(msg);
+    state_correction->xErr = mavlink_msg_state_correction_get_xErr(msg);
+    state_correction->yErr = mavlink_msg_state_correction_get_yErr(msg);
+    state_correction->zErr = mavlink_msg_state_correction_get_zErr(msg);
+    state_correction->rollErr = mavlink_msg_state_correction_get_rollErr(msg);
+    state_correction->pitchErr = mavlink_msg_state_correction_get_pitchErr(msg);
+    state_correction->yawErr = mavlink_msg_state_correction_get_yawErr(msg);
+    state_correction->vxErr = mavlink_msg_state_correction_get_vxErr(msg);
+    state_correction->vyErr = mavlink_msg_state_correction_get_vyErr(msg);
+    state_correction->vzErr = mavlink_msg_state_correction_get_vzErr(msg);
 }
