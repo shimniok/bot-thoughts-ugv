@@ -3957,10 +3957,10 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="JP1" library="pinhead-2" deviceset="PINHD-1X02" device="_2.54-S" value="1IN2OUT"/>
 <part name="JP2" library="pinhead-2" deviceset="PINHD-1X02" device="_2.54-S" value="1OUT2IN"/>
 <part name="JP3" library="pinhead-2" deviceset="PINHD-1X02" device="_2.54-S" value="POWER"/>
-<part name="R1" library="rcl" deviceset="R-US_" device="0204/5"/>
-<part name="R2" library="rcl" deviceset="R-US_" device="0204/5"/>
-<part name="R3" library="rcl" deviceset="R-US_" device="0204/5"/>
-<part name="R4" library="rcl" deviceset="R-US_" device="0204/5"/>
+<part name="R1" library="rcl" deviceset="R-US_" device="0204/5" value="470"/>
+<part name="R2" library="rcl" deviceset="R-US_" device="0204/5" value="470"/>
+<part name="R3" library="rcl" deviceset="R-US_" device="0204/5" value="51"/>
+<part name="R4" library="rcl" deviceset="R-US_" device="0204/5" value="51"/>
 <part name="GND1" library="mes" deviceset="GND" device=""/>
 <part name="GND2" library="mes" deviceset="GND" device=""/>
 <part name="GND3" library="mes" deviceset="GND" device=""/>
@@ -3968,12 +3968,14 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="GND5" library="mes" deviceset="GND" device=""/>
 <part name="U$1" library="SparkFun" deviceset="5V" device=""/>
 <part name="FRAME1" library="mes" deviceset="LETTER_L" device=""/>
+<part name="JP4" library="pinhead-2" deviceset="PINHD-1X02" device="_2.54-S" value="POWER"/>
+<part name="GND6" library="mes" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <text x="160.02" y="22.86" size="5.08" layer="94">Duplex Opto-Iso</text>
-<text x="233.68" y="22.86" size="5.08" layer="94">0.1</text>
+<text x="233.68" y="22.86" size="5.08" layer="94">0.2</text>
 </plain>
 <instances>
 <instance part="OK1" gate="A" x="93.98" y="106.68"/>
@@ -3993,6 +3995,8 @@ We've spent an enormous amount of time creating and checking these footprints an
 <instance part="U$1" gate="G$1" x="114.3" y="137.16"/>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
 <instance part="FRAME1" gate="G$2" x="147.32" y="2.54"/>
+<instance part="JP4" gate="A" x="132.08" y="127"/>
+<instance part="GND6" gate="1" x="119.38" y="119.38" rot="MR0"/>
 </instances>
 <busses>
 </busses>
@@ -4066,6 +4070,12 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pinref part="GND5" gate="1" pin="GND"/>
 <wire x1="81.28" y1="83.82" x2="81.28" y2="86.36" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="JP4" gate="A" pin="2"/>
+<wire x1="129.54" y1="127" x2="119.38" y2="127" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="127" x2="119.38" y2="121.92" width="0.1524" layer="91"/>
+<pinref part="GND6" gate="1" pin="GND"/>
+</segment>
 </net>
 <net name="IN1" class="0">
 <segment>
@@ -4089,6 +4099,8 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pinref part="JP3" gate="A" pin="1"/>
 <wire x1="99.06" y1="129.54" x2="114.3" y2="129.54" width="0.1524" layer="91"/>
 <junction x="114.3" y="129.54"/>
+<pinref part="JP4" gate="A" pin="1"/>
+<wire x1="129.54" y1="129.54" x2="114.3" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="IN2" class="0">
