@@ -23,7 +23,8 @@ When your robot is about to crash, the RC Multiplexer for Rovers lets you take c
  * What is your ESC's BEC output?
    * 5.5-6V: place the jumper in the 6V position
    * 5V: place the jumper in the 5V position
- * TBD: configuring board for CH1 or CH3 switchover
+ * The Mux will switch to R/C control if
+   * TBD
 
 The board is powered by the BEC which means you must turn on your ESC to turn on the Mux board. The Mux board distributes power to everything connected; you can design your autopilot board to draw power from the BEC with no additional wires needed.
 
