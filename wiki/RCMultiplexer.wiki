@@ -1,0 +1,32 @@
+#summary An RC Multiplexer for Self-Driving Rovers
+
+= Introduction =
+
+When your robot is about to crash, the RC Multiplexer for Rovers lets you take control of your self-driving robot. The 3-channel mux is a dedicated board that keeps running even if your MCU doesn't.
+
+= Source =
+
+ * [https://code.google.com/p/bot-thoughts-ugv/source/browse/#svn%2Ftrunk%2FElectronics%2FRC_MUX Schematics]
+ * [https://code.google.com/p/bot-thoughts-ugv/source/browse/#svn%2Ftrunk%2FSoftware%2FRC_MUX Firmware]
+
+= Instructions =
+
+ * Use #2 hardware to install
+ * Pins are labelled with channel (1, 2, 3)
+ * Ports are color coded with R/C colors. 
+   * Yellow/White: signal
+   * Red = 5V
+   * Black = GND
+ * Connect "R/C" ports to the R/C Transmitter (TX)
+ * Connect "MCU" ports to the microcontroller (autopilot)
+ * Connect "OUT" ports to the outputs: ESC, Steering, etc.
+ * What is your ESC's BEC output?
+   * 5.5-6V: place the jumper in the 6V position
+   * 5V: place the jumper in the 5V position
+ * TBD: configuring board for CH1 or CH3 switchover
+
+The board is powered by the BEC which means you must turn on your ESC to turn on the Mux board. The Mux board distributes power to everything connected; you can design your autopilot board to draw power from the BEC with no additional wires needed.
+
+= Programming =
+
+The ATtiny13 onboard can be reprogrammed. Pins for ISP are labeled on the bottom of the board: VTG, GND, SCK, !RESET, GND, MISO, and MOSI. Connect an AVR programmer, use your favorite IDE, download the code (sources above), modify and reprogram to your heart's content
