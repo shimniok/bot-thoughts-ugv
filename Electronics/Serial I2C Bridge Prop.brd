@@ -19,7 +19,7 @@
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
@@ -45,7 +45,7 @@
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
 <layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="53" name="tPadExt" color="7" fill="1" visible="no" active="no"/>
 <layer number="54" name="bPadExt" color="1" fill="1" visible="no" active="no"/>
 <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
@@ -113,31 +113,31 @@
 <hole x="35.56" y="41.1734" drill="3.2"/>
 <hole x="35.56" y="2.8194" drill="3.2"/>
 <hole x="2.794" y="2.8194" drill="3.2"/>
-<text x="14.732" y="27.2034" size="1.778" layer="25">AVRcam</text>
-<text x="13.462" y="24.6634" size="1.778" layer="25">I2C Bridge</text>
-<wire x1="16.710534375" y1="17.497934375" x2="21.389465625" y2="17.497934375" width="0.1524" layer="21"/>
-<wire x1="21.389465625" y1="17.497934375" x2="21.389465625" y2="19.8374" width="0.1524" layer="21"/>
-<wire x1="16.710534375" y1="17.497934375" x2="16.710534375" y2="19.8374" width="0.1524" layer="21"/>
-<wire x1="16.710534375" y1="19.8374" x2="19.05" y2="22.176865625" width="0.1524" layer="21" curve="-90"/>
-<wire x1="19.05" y1="22.176865625" x2="21.389465625" y2="19.8374" width="0.1524" layer="21" curve="-90"/>
-<wire x1="19.05" y1="22.176865625" x2="19.05" y2="22.410825" width="0.1524" layer="21"/>
-<circle x="18.58210625" y="20.071359375" radius="0.9357875" width="0.1524" layer="21"/>
-<circle x="20.219746875" y="19.930975" radius="0.715753125" width="0.1524" layer="21"/>
-<wire x1="17.880253125" y1="18.9016125" x2="20.687640625" y2="18.667653125" width="0.1524" layer="21" curve="30"/>
-<wire x1="20.687640625" y1="18.667653125" x2="20.45368125" y2="18.199759375" width="0.1524" layer="21"/>
-<wire x1="20.45368125" y1="18.199759375" x2="18.348146875" y2="18.199759375" width="0.1524" layer="21" curve="-30"/>
-<wire x1="18.348146875" y1="18.199759375" x2="17.880253125" y2="18.9016125" width="0.1524" layer="21"/>
-<wire x1="16.242640625" y1="17.965825" x2="14.838959375" y2="20.071359375" width="0.1524" layer="21" curve="120"/>
-<wire x1="14.838959375" y1="20.071359375" x2="15.306853125" y2="23.112653125" width="0.1524" layer="21" curve="140"/>
-<wire x1="15.306853125" y1="23.112653125" x2="18.348146875" y2="24.516359375" width="0.1524" layer="21" curve="120"/>
-<wire x1="18.348146875" y1="24.516359375" x2="21.389465625" y2="24.048440625" width="0.1524" layer="21" curve="120"/>
-<wire x1="21.389465625" y1="24.048440625" x2="23.02710625" y2="21.942934375" width="0.1524" layer="21" curve="140"/>
-<wire x1="23.02710625" y1="21.942934375" x2="23.02710625" y2="19.603440625" width="0.1524" layer="21" curve="140"/>
-<wire x1="23.02710625" y1="19.603440625" x2="22.09131875" y2="17.731865625" width="0.1524" layer="21" curve="140"/>
-<circle x="18.348146875" y="20.422259375" radius="0.3509" width="0" layer="21"/>
-<circle x="19.9857875" y="20.164934375" radius="0.23393125" width="0" layer="21"/>
-<circle x="19.05" y="22.87871875" radius="0.46789375" width="0" layer="21"/>
-<text x="11.43" y="15.7734" size="1.4224" layer="21">bot-thoughts.com</text>
+<text x="15.24" y="27.2034" size="1.778" layer="25">AVRcam</text>
+<text x="13.97" y="24.6634" size="1.778" layer="25">I2C Bridge</text>
+<wire x1="17.218534375" y1="17.497934375" x2="21.897465625" y2="17.497934375" width="0.1524" layer="21"/>
+<wire x1="21.897465625" y1="17.497934375" x2="21.897465625" y2="19.8374" width="0.1524" layer="21"/>
+<wire x1="17.218534375" y1="17.497934375" x2="17.218534375" y2="19.8374" width="0.1524" layer="21"/>
+<wire x1="17.218534375" y1="19.8374" x2="19.558" y2="22.176865625" width="0.1524" layer="21" curve="-90"/>
+<wire x1="19.558" y1="22.176865625" x2="21.897465625" y2="19.8374" width="0.1524" layer="21" curve="-90"/>
+<wire x1="19.558" y1="22.176865625" x2="19.558" y2="22.410825" width="0.1524" layer="21"/>
+<circle x="19.09010625" y="20.071359375" radius="0.9357875" width="0.1524" layer="21"/>
+<circle x="20.727746875" y="19.930975" radius="0.715753125" width="0.1524" layer="21"/>
+<wire x1="18.388253125" y1="18.9016125" x2="21.195640625" y2="18.667653125" width="0.1524" layer="21" curve="30"/>
+<wire x1="21.195640625" y1="18.667653125" x2="20.96168125" y2="18.199759375" width="0.1524" layer="21"/>
+<wire x1="20.96168125" y1="18.199759375" x2="18.856146875" y2="18.199759375" width="0.1524" layer="21" curve="-30"/>
+<wire x1="18.856146875" y1="18.199759375" x2="18.388253125" y2="18.9016125" width="0.1524" layer="21"/>
+<wire x1="16.750640625" y1="17.965825" x2="15.346959375" y2="20.071359375" width="0.1524" layer="21" curve="120"/>
+<wire x1="15.346959375" y1="20.071359375" x2="15.814853125" y2="23.112653125" width="0.1524" layer="21" curve="140"/>
+<wire x1="15.814853125" y1="23.112653125" x2="18.856146875" y2="24.516359375" width="0.1524" layer="21" curve="120"/>
+<wire x1="18.856146875" y1="24.516359375" x2="21.897465625" y2="24.048440625" width="0.1524" layer="21" curve="120"/>
+<wire x1="21.897465625" y1="24.048440625" x2="23.53510625" y2="21.942934375" width="0.1524" layer="21" curve="140"/>
+<wire x1="23.53510625" y1="21.942934375" x2="23.53510625" y2="19.603440625" width="0.1524" layer="21" curve="140"/>
+<wire x1="23.53510625" y1="19.603440625" x2="22.59931875" y2="17.731865625" width="0.1524" layer="21" curve="140"/>
+<circle x="18.856146875" y="20.422259375" radius="0.3509" width="0" layer="21"/>
+<circle x="20.4937875" y="20.164934375" radius="0.23393125" width="0" layer="21"/>
+<circle x="19.558" y="22.87871875" radius="0.46789375" width="0" layer="21"/>
+<text x="11.938" y="15.7734" size="1.4224" layer="21">bot-thoughts.com</text>
 <text x="16.256" y="39.3954" size="1.27" layer="21" rot="R90">5V</text>
 <text x="11.176" y="39.1414" size="1.27" layer="21" rot="R90">GND</text>
 <text x="34.036" y="14.7574" size="1.27" layer="21">GND</text>
@@ -331,8 +331,6 @@
 <rectangle x1="29.2481" y1="41.5671" x2="29.4767" y2="41.6433" layer="21"/>
 <rectangle x1="28.8671" y1="40.9575" x2="28.9433" y2="41.0337" layer="21"/>
 <rectangle x1="28.7909" y1="40.9575" x2="28.8671" y2="41.0337" layer="21"/>
-<dimension x1="0" y1="43.9574" x2="38.608" y2="43.942" x3="19.304909375" y3="46.23581875" layer="51"/>
-<dimension x1="38.532" y1="43.9574" x2="38.608" y2="0" x3="41.10999375" y3="21.983090625" layer="51"/>
 </plain>
 <libraries>
 <library name="pinhead-2">
@@ -2017,16 +2015,16 @@ Please make sure your boards conform to these design rules.</description>
 <element name="D1" library="diode" package="DO35-7" value="1N4148" x="23.622" y="9.6774" smashed="yes">
 <attribute name="NAME" x="18.796" y="11.2014" size="1.27" layer="25" ratio="10"/>
 </element>
-<element name="R1" library="rcl" package="0204/5" value="22K" x="7.874" y="15.24" smashed="yes" rot="R270">
+<element name="R1" library="rcl" package="0204/5" value="1.8K" x="7.874" y="15.24" smashed="yes" rot="R270">
 <attribute name="NAME" x="8.4836" y="14.2494" size="0.9906" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="R2" library="rcl" package="0204/5" value="22K" x="10.16" y="15.24" smashed="yes" rot="R270">
+<element name="R2" library="rcl" package="0204/5" value="1.8K" x="10.16" y="15.24" smashed="yes" rot="R270">
 <attribute name="NAME" x="10.7696" y="14.2494" size="0.9906" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="R3" library="rcl" package="0204/5" value="22K" x="17.272" y="8.4074" smashed="yes" rot="R270">
+<element name="R3" library="rcl" package="0204/5" value="1.8K" x="17.272" y="8.4074" smashed="yes" rot="R270">
 <attribute name="NAME" x="17.8816" y="7.1628" size="0.9906" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="R4" library="rcl" package="0204/5" value="22K" x="14.986" y="8.4074" smashed="yes" rot="R270">
+<element name="R4" library="rcl" package="0204/5" value="1.8K" x="14.986" y="8.4074" smashed="yes" rot="R270">
 <attribute name="NAME" x="15.5956" y="7.1628" size="0.9906" layer="25" ratio="10" rot="R90"/>
 </element>
 <element name="U$4" library="parallax_propeller" package="P8X32A-Q44" value="P8X32A-Q44" x="18.542" y="22.1234" smashed="yes" rot="MR0">
@@ -2060,13 +2058,13 @@ Please make sure your boards conform to these design rules.</description>
 <element name="JP1" library="pinhead-2" package="1X06" value="FTDI" x="17.018" y="37.3634" smashed="yes" rot="R180">
 <attribute name="VALUE" x="8.763" y="35.8394" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R6" library="rcl" package="0204/5" value="22K" x="19.304" y="33.2994" smashed="yes">
+<element name="R6" library="rcl" package="0204/5" value="1.8K" x="19.304" y="33.2994" smashed="yes">
 <attribute name="NAME" x="20.2946" y="33.909" size="0.9906" layer="25" ratio="10" rot="R180"/>
 </element>
 <element name="D2" library="diode" package="DO35-7" value="1N4148" x="27.178" y="31.0134" smashed="yes" rot="R270">
-<attribute name="NAME" x="25.654" y="30.5054" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="NAME" x="25.654" y="29.9974" size="1.27" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="R5" library="rcl" package="0204/5" value="22K" x="19.304" y="30.7594" smashed="yes">
+<element name="R5" library="rcl" package="0204/5" value="1.8K" x="19.304" y="30.7594" smashed="yes">
 <attribute name="NAME" x="20.2946" y="31.369" size="0.9906" layer="25" ratio="10" rot="R180"/>
 </element>
 <element name="IC1" library="microchip" package="SO-08" value="24LC256SN" x="4.572" y="32.2834" rot="MR90">
@@ -2084,10 +2082,10 @@ Please make sure your boards conform to these design rules.</description>
 <element name="D3" library="special" package="DUOLED" value="" x="34.544" y="8.6614" smashed="yes" rot="R270">
 <attribute name="VALUE" x="28.829" y="12.4714" size="1.27" layer="27" ratio="10" rot="R270"/>
 </element>
-<element name="R9" library="rcl" package="0204/5" value="330" x="26.162" y="14.2494" smashed="yes">
+<element name="R9" library="rcl" package="0204/5" value="390" x="26.162" y="14.2494" smashed="yes">
 <attribute name="NAME" x="25.1714" y="13.6398" size="0.9906" layer="25" ratio="10"/>
 </element>
-<element name="R10" library="rcl" package="0204/5" value="330" x="25.146" y="11.9634" smashed="yes" rot="R180">
+<element name="R10" library="rcl" package="0204/5" value="390" x="25.146" y="11.9634" smashed="yes" rot="R180">
 <attribute name="NAME" x="23.9014" y="11.3538" size="0.9906" layer="25" ratio="10"/>
 </element>
 </elements>
