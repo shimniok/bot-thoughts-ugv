@@ -166,7 +166,7 @@
 <wire x1="3.81" y1="-0.635" x2="3.175" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="3.175" y1="-1.27" x2="1.905" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="1.905" y1="-1.27" x2="1.27" y2="-0.635" width="0.1524" layer="21"/>
-<pad name="1" x="-2.54" y="0" drill="1.016" shape="square"/>
+<pad name="1" x="-2.54" y="0" drill="1.016" shape="octagon"/>
 <pad name="2" x="0" y="0" drill="1.016" shape="octagon"/>
 <pad name="3" x="2.54" y="0" drill="1.016" shape="octagon"/>
 <text x="-3.8862" y="1.8288" size="1.27" layer="25" ratio="10">&gt;NAME</text>
@@ -235,7 +235,7 @@
 <wire x1="3.25" y1="-1.25" x2="-3.25" y2="-1.25" width="0.2032" layer="21"/>
 <wire x1="-3.25" y1="-1.25" x2="-3.25" y2="1.25" width="0.2032" layer="21"/>
 <wire x1="-3.25" y1="1.25" x2="3.25" y2="1.25" width="0.2032" layer="21"/>
-<pad name="1" x="-2" y="0" drill="0.9144" shape="square"/>
+<pad name="1" x="-2" y="0" drill="0.9144"/>
 <pad name="2" x="0" y="0" drill="0.9144"/>
 <pad name="3" x="2" y="0" drill="0.9144" rot="R270"/>
 <text x="-4" y="-1" size="1.016" layer="25" ratio="14" rot="R90">&gt;NAME</text>
@@ -9126,11 +9126,10 @@ and use exposed RESET pin</text>
 </sheet>
 </sheets>
 <errors>
-<approved hash="104,1,55.88,121.92,U1,VCC,+5V,,,"/>
-<approved hash="104,1,22.86,132.08,U3P,VCC,+5V,,,"/>
+<approved hash="104,1,45.72,121.92,U1,VCC,+5V,,,"/>
+<approved hash="104,1,12.7,132.08,U3P,VCC,+5V,,,"/>
+<approved hash="202,1,33.02,68.58,U2,NC,,,,"/>
 <approved hash="115,1,124.356,92.606,FRAME1,,,,,"/>
-<approved hash="115,1,94.3017,113.03,LED1,,,,,"/>
-<approved hash="115,1,119.702,113.03,LED2,,,,,"/>
 </errors>
 </schematic>
 </drawing>
