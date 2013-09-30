@@ -16,85 +16,60 @@
 
 /*************** DEFINITIONS ****************/
 
-#define CH1RX		PB1
-#define CH1INT		PCINT1
-#define CH2RX		PB2
-#define CH2INT		PCINT2
+#define CH1RX		PB2
+#define CH1INT		PCINT2
+#define CH3RX		PB0
+#define CH3INT		PCINT0
 
-#define LEDAUTO		PB0
-#define LEDMANUAL	PB3
-#define ON 			1
-#define OFF 		0
+#define MINPERIOD	5000L
+#define MAXPERIOD	50000L
+#define MINONTIME	300L
+#define MAXONTIME	3000L
 
-#define B			PB4
+#define	TRUE		1
+#define FALSE		0
+
+#define MCUenable	PB3
+#define RCenable	PB4
 #define AUTO		1
 #define MANUAL		0
 
-#define VALIDCNT	3			// number of valid signals required to go manual
-#define DT			10			// delta time for ticks, usec
-#define TIMEOUT		200000UL	// timeout in microseconds
+#define VALIDCNT	3				// number of valid signals required to go manual
+#define DT			100				// delta time for ticks, usec
+#define TIMEOUT		60000L			// timeout in microseconds
 
 /************* GLOBAL VARIABLES **************/
 
-static char mode=AUTO;			// Mode of operation, auto or manual
-static int valid;				// RX signal valid counter
-static unsigned long ontime;  	// measure length of signal on time
-static unsigned long offtime; 	// measure length of signal off time
+volatile uint8_t mode=AUTO;			// Mode of operation, auto or manual
 
-/*********** FUNCTION PROTOTYPES *************/
+volatile uint8_t inactive1=VALIDCNT;// RX signal active pulse counter
+volatile long ontime1;  			// measure length of signal on time
+volatile long offtime1; 			// measure length of signal off time
 
-void init_timer(void);
-void init_detector(void);
-void pin(int pin, int value);
-void led(int pin, int value);
+volatile uint8_t inactive3=VALIDCNT;// RX signal valid counter
+volatile long ontime3;  			// measure length of signal on time
+volatile long offtime3; 			// measure length of signal off time
 
 /****************** CODE *********************/
 
 int main() {
 	/* setup pins for output */
-	DDRB = (1<<LEDAUTO)|(1<<LEDMANUAL)|(1<<B);
-
-	/* enable pull-up on MUX inputs */
-	//PORTB = (1<<CH1RX)|(1<<CH2RX);
+	DDRB = (1<<MCUenable)|(1<<RCenable);
 
 	/* Setup timer to keep track of timing of signal */
-	init_timer();
+	TCCR0A = (1<<WGM01);					// CTC mode
+	TCCR0B = (0<<CS02)|(1<<CS01)|(0<<CS00); // clk/8, 9.6MHz -> 1.2MHz
+	OCR0A = 111; 							// 1.2MHz / 120 -> 10kHz, 100usec
+	TIMSK0 = (1<<OCIE0A);					// Enable output compare A interrupt
 
 	/* Setup pin interrupts for input signals */
-	init_detector();
+	PCMSK |= (1<<CH1INT)|(1<<CH3INT);	// Enable interrupt for PB1/PCINT1
+	GIMSK |= (1<<PCIE);					// Enable pin change interrupts
 
 	/* Ready to receive interrupts, now */
 	sei();
 
-	while (1) {
-		switch (mode) {
-		case AUTO:
-			// set mux
-			pin(B, OFF);
-			// set indicators
-			led(LEDMANUAL, OFF);
-			led(LEDAUTO, ON);
-			break;
-		case MANUAL:
-			// set mux
-			pin(B, ON);
-			// set indicators
-			led(LEDAUTO, OFF);
-			led(LEDMANUAL, ON);
-			break;
-		}
-		_delay_us(100);
-	}
-}
-
-
-
-/**
- * Initialize signal detector
- */
-void init_detector() {
-	PCMSK |= (1<<CH1INT);	// Enable interrupt for PB1/PCINT1
-	GIMSK |= (1<<PCIE);		// Enable pin change interrupts
+	while (1);
 }
 
 
@@ -102,30 +77,35 @@ void init_detector() {
  * Interupt handler for pin change, detects and tracks RC signal
  */
 ISR(PCINT0_vect) {
+	long p;
 	// Check ontime, period on rising edge
 	if ((PINB & (1<<CH1RX)) != 0) {
 		// If signal period is around 20ms and on-period is ~1-2ms, we have a valid signal
-		int p = ontime+offtime;
-		if (p > 10000 && p < 50000 && ontime > 500 && ontime < 2500) {
-			if (++valid > VALIDCNT) {
-				valid = VALIDCNT+1;
-				mode = MANUAL;
-			}
+		p = ontime1+offtime1;
+		if (inactive1 && p > MINPERIOD && p < MAXPERIOD && ontime1 > MINONTIME && ontime1 < MAXONTIME) {
+			--inactive1;
 		}
-		ontime = 0;
-		offtime = 0;
+		ontime1 = offtime1 = 0;
 	}
-}
 
+	if ((PINB & (1<<CH3RX)) != 0) {
+		p = ontime3+offtime3;
+		if (inactive3 && p > MINPERIOD && p < MAXPERIOD && ontime3 > MINONTIME && ontime3 < MAXONTIME) {
+			--inactive3;
+		}
+		ontime3 = offtime3 = 0;
+	}
 
-/**
- * Initialize timer for tracking signal timing, timeout, etc.
- */
-void init_timer() {
-	TCCR0A = (1<<WGM01);					// CTC mode
-	TCCR0B = (0<<CS02)|(1<<CS01)|(0<<CS00); // clk/8, 9.6MHz -> 1.2MHz
-	OCR0A = 12; 							// 1.2MHz / 12 -> 100kHz, 10usec
-	TIMSK0 = (1<<OCIE0A);					// Enable output compare A interrupt
+	if (!inactive3) {
+		if (ontime3 > 1500) {
+			PORTB = (1<<RCenable);
+		} else {
+			PORTB = (1<<MCUenable);
+		}
+	} else if (!inactive1) {
+		PORTB = (1<<RCenable);
+	}
+
 }
 
 
@@ -134,33 +114,27 @@ void init_timer() {
  */
 ISR(TIM0_COMPA_vect) {
 	if ((PINB & (1<<CH1RX)) == 0) {
-		offtime += DT;  // track off time
-		if (offtime > TIMEOUT) {
-			valid = 0;
-			mode = AUTO;
+		offtime1 += DT;  // track off time
+		if (offtime1 > TIMEOUT) {
+			inactive1 = VALIDCNT;
+			ontime1 = offtime1 = 0;
 		}
 	} else {
-		ontime += DT;   // track on time
+		ontime1 += DT;   // track on time
 	}
-}
 
-
-void led(int pin, int value) {
-	if (value) {
-		DDRB |= (1<<pin);
-		PORTB |= (1<<pin);
+	if ((PINB & (1<<CH3RX)) == 0) {
+		offtime3 += DT;  // track off time
+		if (offtime3 > TIMEOUT) {
+			inactive3 = VALIDCNT;
+			ontime3 = offtime1 = 0;
+		}
 	} else {
-		DDRB &= ~(1<<pin);
-		PORTB &= ~(1<<pin);
+		ontime3 += DT;   // track on time
+	}
+
+	if (inactive1 && inactive3) {
+		PORTB = (1<<MCUenable);
 	}
 }
-
-void pin(int pin, int value) {
-	if (value) {
-		PORTB |= (1<<pin);
-	} else {
-		PORTB &= ~(1<<pin);
-	}
-}
-
 
