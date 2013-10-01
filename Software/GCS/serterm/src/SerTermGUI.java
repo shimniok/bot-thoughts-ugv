@@ -532,6 +532,6 @@ public class SerTermGUI extends javax.swing.JFrame implements SerialPortEventLis
     private LineMode lineMode = LineMode.CRLF;
     // TODO: user input for download path
     // TODO: save preferences (com port, baud, download path, etc
-    private StringBuilder downloadPath = new StringBuilder().append(System.getProperty("user.home").toString()).append("\\My Documents\\Downloads\\");
+    private StringBuilder downloadPath = new StringBuilder().append(System.getProperty("user.home").toString()).append("/Downloads/");//.append("\\My Documents\\Downloads\\");
 
 }

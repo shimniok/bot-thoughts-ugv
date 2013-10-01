@@ -1,4 +1,5 @@
 #include "mbed.h"
+#include "updater.h"
 #include "Config.h"
 #include "Actuators.h"
 #include "Sensors.h"
@@ -12,6 +13,8 @@
 #include "GeoPosition.h"
 #include "kalman.h"
 
+#define UPDATE_PERIOD 0.010             // update period in s
+
 #define _x_ 0
 #define _y_ 1
 #define _z_ 2
@@ -24,8 +27,9 @@
 // The following is for main loop at 10ms = 100hz
 #define CTRL_SKIP 5 // 50ms (20hz), control update
 #define MAG_SKIP 2  // 20ms (50hz), magnetometer update
-#define LOG_SKIP 2  // 20ms (50hz), log entry entered into fifo
+//#define LOG_SKIP 2  // 20ms (50hz), log entry entered into fifo
 //#define LOG_SKIP 5  // 50ms (20hz), log entry entered into fifo
+#define LOG_SKIP 10 // 100ms (10Hz), log entry entered into fifo
 
 int control_count=CTRL_SKIP;
 int update_count=MAG_SKIP;              // call Update_mag() every update_count calls to schedHandler()
@@ -45,6 +49,7 @@ extern Mapping mapper;
 extern Steering steerCalc;              // steering calculator
 extern Timer timer;
 extern DigitalOut ahrsStatus;           // AHRS status LED
+Ticker sched;                           // scheduler for interrupt driven routines
 
 // Navigation
 extern Config config;
@@ -87,7 +92,7 @@ float biasErrAngle = 0;
 
 #define MAXHIST 128 // must be multiple of 0x08
 #define inc(x)  (x) = ((x)+1)&(MAXHIST-1)
-struct {
+struct history_struct {
     float x;        // x coordinate
     float y;        // y coordinate
     float hdg;      // heading
@@ -103,6 +108,12 @@ int prev = 0;      // previous fifo iput index
 int lag = 0;        // fifo output index
 int lagPrev = 0;    // previous fifo output index
 
+
+/** attach update to Ticker */
+void startUpdater()
+{
+    sched.attach(&update, UPDATE_PERIOD);
+}
 
 /** set flag to initialize navigation at next schedHandler() call
  */
@@ -152,6 +163,7 @@ void setSpeed(float speed)
 void update()
 {
     tReal = timer.read_us();
+    bool useGps = false;
 
     ahrsStatus = 0;
     thisTime = timer.read_ms();
@@ -227,11 +239,10 @@ void update()
     // Obtain GPS data                        
     //////////////////////////////////////////////////////////////////////////////
 
-    // synchronize when RMC and GGA sentences received w/ AHRS
-    // Do this in schedHandler??  GPS data is coming in not entirely in sync
-    // with the logging info
+    // Use GPS data only when all the requisite data is finally in (e.g., GGA and RMC sentences)
     if (sensors.gps.available()) {
-        // update system status struct for logging
+        // update system status struct for logging, so that the last known GPS data is logged at each
+    	// log entry.
         gpsStatus = !gpsStatus;
         state[inState].gpsLatitude = sensors.gps.latitude();
         state[inState].gpsLongitude = sensors.gps.longitude();
@@ -239,22 +250,21 @@ void update()
         state[inState].gpsCourse_deg = sensors.gps.heading_deg();
         state[inState].gpsSpeed_mps = sensors.gps.speed_mps(); // if need to convert from mph to mps, use *0.44704
         state[inState].gpsSats = sensors.gps.sat_count();
-    }
 
-    /*
-    if (gps2.available()) {
-        // update system status struct for logging
-        DigitalOut gps2led(LED2);
-        gps2led = !gps2led;
-        state[inState].gpsLatitude2 = gps2.latitude();
-        state[inState].gpsLongitude2 = gps2.longitude();
-        state[inState].gpsHDOP2 = gps2.hdop();
-        state[inState].gpsCourse_deg2 = gps2.heading_deg();
-        state[inState].gpsSpeed_mps2 = gps2.speed_mps(); // if need to convert from mph to mps, use *0.44704
-        state[inState].gpsSats2 = gps2.sat_count();
-    }
-    */
+        // May 26, 2013, moved the useGps setting in here, so that we'd only use the GPS heading in the
+        // Kalman filter when it has just been received. Before this I had a bug where it was using the
+        // last known GPS data at every call to this function, meaning the more stale the GPS data, the more
+        // it would likely throw off the GPS/gyro error term. Hopefully this will be a tad more acccurate.
+        // Only an issue when heading is changing, I think.
 
+        // GPS heading is unavailable from this particular GPS at speeds < 0.5 mph
+        // Also, best to only use GPS if we've got at least 4 sats active -- really should be like 5 or 6
+        // Finally, it takes 3-5 secs of runtime for the gps heading to converge.
+		useGps = (state[inState].gpsSats > 4 &&
+				  state[inState].lrEncSpeed > 1.0 &&
+				  state[inState].rrEncSpeed > 1.0 &&
+				  (thisTime-timeZero) > 3000); // gps hdg converges by 3-5 sec.
+    }
     
     //////////////////////////////////////////////////////////////////////////////
     // HEADING AND POSITION UPDATE
@@ -291,7 +301,6 @@ void update()
     // Store distance travelled in a fifo for later use
     history[now].dist = (sensors.lrEncDistance + sensors.rrEncDistance) / 2.0;
 
-
     // Calc and store heading
     history[now].ghdg = history[prev].ghdg + dt*history[now].gyro; // raw gyro calculated heading
     //history[now].hdg = history[prev].ghdg - dt*gyroBias;           // bias-corrected gyro heading
@@ -314,32 +323,31 @@ void update()
         ////////////////////////////////////////////////////////////////////////////////
         // UPDATE LAGGED ESTIMATE
         
-        // Recover data from 1 second ago which will be used to generate
-        // updated lag estimates
-
-        // GPS heading is unavailable from this particular GPS at speeds < 0.5 mph
-        bool useGps = (state[inState].gpsSats > 4 &&
-                       state[inState].lrEncSpeed > 1.0 &&
-                       state[inState].rrEncSpeed > 1.0 &&
-                       (thisTime-timeZero) > 3000); // gps hdg converges by 3-5 sec.
-
-        // This represents the best estimate for heading... for one second ago
-        // If we do nothing else, the robot will think it is located at a position 1 second behind
-        // where it actually is. That means that any control feedback needs to have a longer time
-        // constant than 1 sec or the robot will have unstable heading correction.
-        // Use gps data when available, always use gyro data
-
-        // Clamp heading to initial heading when we're not moving; hopefully this will
-        // give the KF a head start figuring out how to deal with the gyro
+        // Recover data from 1 second ago which will be used to generate updated lag estimates
+    	//
+        // This represents the best estimate for heading... for one second ago.
+    	//
+        // If the robot runs off of this old estimate, the estimate will be 1 second behind
+    	// reality. This means control feedback will tend to cause oscillation because any
+    	// gain combined with significant phase shit results in oscillation.
+    	//
+    	// Instead, we want to use this old estimate to find the estimated error between
+    	// gyro integrated heading and gps from 1 second ago, then use that error to correct
+    	// all gyro integrated heading from 1 second ago to present.
+    	//
         if (go) {
+        	// We're calling this KF every UPDATE_PERIOD but the GPS data only comes in periodically
+        	// say at 10Hz, so we have the useGps set to true only when GPS data is fresh and when
+        	// certain other conditions are met to be sure the GPS heading info is a good estimate.
             lagHeading = headingKalman(history[lag].dt, state[inState].gpsCourse_deg, useGps, history[lag].gyro, true);
         } else {    
+            // Clamp heading to initial heading when we're not moving; hopefully this will
+            // give the KF a head start figuring out how to deal with the gyro
+            //
             lagHeading = headingKalman(history[lag].dt, initialHeading, true, history[lag].gyro, true);
         }
 
-        // TODO 1: need to figure out exactly how to update t-1 position correctly
         // Update the lagged position estimate
-        //lagHere.move(lagHeading, history[lag].dist);
         history[lag].x = history[lagPrev].x + history[lag].dist * sin(lagHeading);
         history[lag].y = history[lagPrev].y + history[lag].dist * cos(lagHeading);
         
@@ -347,7 +355,9 @@ void update()
         // UPDATE CURRENT ESTIMATE
        
         // Now we need to re-calculate the current heading and position, starting with the most recent
-        // heading estimate representing the heading 1 second ago.
+        // heading estimate representing the heading 1 second ago. We're updating the gyro integrated heading
+        // from past to present, and updating the positions previously calculated from that gyro integrated
+        // heading and distance.
         //        
         // Nuance: lag and now have already been incremented so that works out beautifully for this loop
         //
@@ -356,7 +366,7 @@ void update()
         //
         // For position re-calculation, we iterate 100 times up to present record. Haversine is way, way too slow,
         // trig calcs is marginal. Update rate is 10ms and we can't hog more than maybe 2-3ms as the outer
-        // loop has logging work to do. Rotating each point is faster; pre-calculate sin/cos, etc. for rotation
+        // loop has logging work to do. Rotating each point is faster, pre-calculate sin/cos for the rotation
         // matrix.
         //
         // initialize these once
@@ -382,7 +392,7 @@ void update()
             inc(i);
         }
         
-        // gyro bias, correct only with shallow steering angles
+        // Gyro bias, correct only with shallow steering angles
         // if we're not going, assume heading rate is 0 and correct accordingly
         // If we are going, compare gyro-generated heading estimate with kalman
         // heading estimate and correct bias accordingly using PI controller with
@@ -390,24 +400,31 @@ void update()
         // TODO: 3 Add something in here to stop updating if the gps is unreliable; need to find out what indicates poor gps heading
         // Note, only time gps heading is paritcularly terrible is high bandwidth, at least for the Venus GPS, even with high dynamic
         // firmware installed it still does fairly heavy handed low pass filtering
+        /*
         if (history[lag].dt > 0 && fabs(steerAngle) < 5.0 && useGps) {
             // I think we should normalize heading err here (4/7/2013) as this will be a mess if you 
             // have, say, ghdg==359.0 and gpsCourse==1, herr should be 2 but would otherwise come out 358
+
+        	// Calculate the error term between Gyro integrated heading (from 1 sec ago) and GPS heading (1 sec old)
             float herr = history[lag].ghdg - state[inState].gpsCourse_deg;
-            if (herr <= -180.0) herr += 360.0;
+            if (herr <= -180.0) herr += 360.0;	// normalize to within -180 to 180 degrees
             if (herr > 180.0) herr -= 360.0;
+
+            // Calculate a bias error angle, an exponential filtering of heading error over time.
             biasErrAngle = Kbias*biasErrAngle + (1-Kbias)*herr; // can use this to compute gyro bias
-            if (biasErrAngle <= -180.0) biasErrAngle += 360.0;
+            if (biasErrAngle <= -180.0) biasErrAngle += 360.0; // normalize to within -180 to 180 degrees
             if (biasErrAngle > 180) biasErrAngle -= 360.0;
-        
+
+            // Calculate the error rate using the filtered bias error angle divided by delta time.
             float errRate = biasErrAngle / history[lag].dt;
 
             //if (!go) errRate = history[lag].gyro;
 
-            // Filter bias based on errRate which is based on filtered biasErrAngle
+            // Compute exponentially filtered gyro bias based on errRate which is based on filtered biasErrAngle
             gyroBias = Kbias*gyroBias + (1-Kbias)*errRate;
             //fprintf(stdout, "%d %.2f, %.2f, %.4f %.4f %.4f\n", lag, lagHeading, history[lag].hdg, errAngle, errRate, gyroBias);
         }
+        */
         
         // make sure we update the lag heading with the new estimate
         history[lag].hdg = lagHeading;
@@ -494,12 +511,12 @@ void update()
     if (--control_count == 0) {
   
         // Compute cross track error
-    	/*
+        /*
         cte = steerCalc.crossTrack(history[now].x, history[now].y,
                                    config.cwpt[lastWaypoint]._x, config.cwpt[lastWaypoint]._y,
                                    config.cwpt[nextWaypoint]._x, config.cwpt[nextWaypoint]._y);
         cteI += cte;
-		*/
+        */
 
         steerAngle = steerCalc.pathPursuitSA(state[inState].estHeading, 
                                              history[now].x, history[now].y,
@@ -586,13 +603,6 @@ void update()
         state[inState].gpsCourse_deg = 0;
         state[inState].gpsSpeed_mps = 0;
         state[inState].gpsSats = 0;
-
-        state[inState].gpsLatitude2 = 0;
-        state[inState].gpsLongitude2 = 0;
-        state[inState].gpsHDOP2 = 0;
-        state[inState].gpsCourse_deg2 = 0;
-        state[inState].gpsSpeed_mps2 = 0;
-        state[inState].gpsSats2 = 0;
 
         log_count = LOG_SKIP;       // reset counter
         bufCount++;

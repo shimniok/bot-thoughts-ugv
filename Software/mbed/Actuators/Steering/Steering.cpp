@@ -82,7 +82,7 @@ float Steering::crossTrack(float Bx, float By, float Ax, float Ay, float Cx, flo
     // this is hypoteneuse length squared
     float ACd2 = dx*dx+dy*dy;
     // length of hyptoenuse
-    //float ACd = sqrtf( ACd2 );
+    // float ACd = sqrtf( ACd2 );
 
     float Rd = Rx*dx + Ry*dy;
     float t = Rd / ACd2;

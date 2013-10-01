@@ -30,7 +30,10 @@ public class GaugePanel extends javax.swing.JLayeredPane {
     private double[] sweepMax;
     private double[] min;
     private double[] max;
+    private double[] spread;
+    private boolean[] wrap;
     private double[] value;
+    private double damping;
     
     /** Instantiates a new GaugePanel
      * 
@@ -46,13 +49,18 @@ public class GaugePanel extends javax.swing.JLayeredPane {
         sweepMax = new double[LAYERS];
         min = new double[LAYERS];
         max = new double[LAYERS];
+        spread = new double[LAYERS];
         value = new double[LAYERS];
+        wrap = new boolean[LAYERS];
+        damping = 1.0;
 
         for (int i=0; i < LAYERS; i++) {
             layer[i] = new JPanel();
             this.add(layer[i], new Integer(i));      // add needle panel in foreground
         }
         this.add(faceLayer, new Integer(LAYERS));    // add face in background
+        
+        
     }
 
     /** returns the default needle angle
@@ -90,7 +98,7 @@ public class GaugePanel extends javax.swing.JLayeredPane {
      */
     public void setNeedleAngle(int i, double angle) {
         needleAngle[i] = angle;
-        System.out.println("Needle "+i+" angle "+angle);
+        //System.out.println("Needle "+i+" angle "+angle);
     }
     
     
@@ -150,12 +158,31 @@ public class GaugePanel extends javax.swing.JLayeredPane {
      * @param sweepMax 
      */
     
-    public void calibrate(double minValue, double maxValue, double sweepMax) {
-        calibrate(0, minValue, maxValue, sweepMax);
+    //public void calibrate(double minValue, double maxValue, double sweepMax) {
+    //    calibrate(0, minValue, maxValue, sweepMax);
+    //}
+
+    /** calibrate a continuous/wraparound gauge like a compass
+     * 
+     * @param maxValue maximum value/wrap point
+     * @param maxSweep maximum sweep in radians
+     */
+    //public void calibrate(double maxValue, double maxSweep) {
+    //    calibrate(0, 0.0, maxValue, maxSweep, true);
+    //}
+
+    
+    /** calibrate a continuous/wraparound gauge like a compass
+     * 
+     * @param i
+     * @param maxValue maximum value/wrap point
+     * @param maxSweep maximum sweep in radians
+     */
+    public void calibrate(int i, double maxValue, double maxSweep) {
+        calibrate(i, 0.0, maxValue, maxSweep, true);
     }
     
-    
-    /**
+    /** calibrate a standard gauge like speedometer
      * 
      * @param i
      * @param minValue
@@ -163,23 +190,98 @@ public class GaugePanel extends javax.swing.JLayeredPane {
      * @param maxSweep 
      */
     public void calibrate(int i, double minValue, double maxValue, double maxSweep) {
+        calibrate(i, minValue, maxValue, maxSweep, false);
+    }
+
+    /** calibrate a standard gauge like speedometer
+     * 
+     * @param i
+     * @param minValue
+     * @param maxValue
+     * @param maxSweep 
+     * @param doWrap
+     */
+    public void calibrate(int i, double minValue, double maxValue, double maxSweep, boolean doWrap) {
         if ( i >= 0 && i < LAYERS) {
             min[i] = minValue;
             max[i] = maxValue;
+            spread[i] = maxValue - minValue;
             sweepMax[i] = maxSweep;
+            wrap[i] = doWrap;
         }
     }
+
     
+    public void setDamping(double d) {
+        damping = d;
+    }
     
     public void setValue(double value) {
         setValue(0, value);
     }
             
+    public void updateValueDamped(double newValue) {
+        updateValueDamped(0, newValue);
+    }
+    
+    /** updates the value with some damping */
+    public void updateValueDamped(int i, double newValue) {
+        if ( i >= 0 && i < LAYERS) {
+            if (wrap[i]) {
+                while (newValue >= max[i]) {
+                    newValue -= spread[i];
+                }
+                while (newValue < min[i]) {
+                    newValue += spread[i];
+                }
+            }
+            /* if you run the algebra on: value = (1-damp)*value + damp*new
+             * you get: value = value + damp(new - value)
+             * That sets us up to handle a wraparound (modulus) case like
+             * 0-360, where we can adjust the delta value to between -180 and 180
+             */
+            System.out.println("1. newValue="+Double.toString(newValue));
+            System.out.println("2. value["+Integer.toString(i)+"]="+Double.toString(value[i]));
+            double delta = newValue - value[i];
+            System.out.println("3. delta=" + Double.toString(delta));
+            if (wrap[i]) {
+                /* e.g. if delta < -180, delta += 360 */
+                if (delta < -spread[i]/2.0) {
+                    delta += spread[i];
+                }
+                /* e.g., if delta > 180, delta -= 360 */
+                if (delta > spread[i]/2.0) {
+                    delta -= spread[i];
+                }
+                System.out.println("4. delta=" + Double.toString(delta));
+            }
+            /* algebraically equivalent to value[i] = (1-damping) * value[i] + damping * newValue; */
+            double theValue = value[i] + delta * damping;
+            if (wrap[i]) {
+                while (theValue >= max[i]) {
+                    theValue -= spread[i];
+                }
+                while (theValue < min[i]) {
+                    theValue += spread[i];
+                }
+            }
+            setValue(i, theValue);
+            System.out.println();
+        }
+    }
+    
     public void setValue(int i, double newValue) {
         if ( i >= 0 && i < LAYERS) {
             value[i] = newValue;
+            if (value[i] < min[i]) {
+                value[i] = 0.8 * min[i];
+            }
+            if (value[i] > max[i]) {
+                value[i] = 1.2 * max[i];
+            }
             setNeedleAngle(i, ( value[i] - min[i] ) * sweepMax[i] / ( max[i] - min[i] ));
         }
+        this.repaint();
     }
     
     /**
@@ -238,8 +340,6 @@ public class GaugePanel extends javax.swing.JLayeredPane {
                 layer[i].repaint();
             }
         }
-        
-        
     }
     
     /**

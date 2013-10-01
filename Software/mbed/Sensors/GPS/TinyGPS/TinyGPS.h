@@ -227,7 +227,7 @@ private:
     char _term[15];
     byte _sentence_type;
     byte _term_number;
-    unsigned char _term_offset;
+    byte _term_offset;
     bool _gps_data_good;
     bool _rmc_ready;
     bool _gga_ready;
