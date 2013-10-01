@@ -61,11 +61,12 @@ void setup()
   background(0);
   noStroke();
   smooth();
-
+  frameRate(15);
 }
 
 void draw() 
 {
+  float wx, wy;
   // Path fadeout
   fill(0, 20);
   rectMode(CORNER);
@@ -79,8 +80,8 @@ void draw()
     } else {
       fill(blue);
     }
-    float wx = lonToX( waypoint[i].longitude() );
-    float wy = latToY( waypoint[i].latitude() );
+    wx = lonToX( waypoint[i].longitude() );
+    wy = latToY( waypoint[i].latitude() );
 /*
     print("i=");
     print(i);
@@ -94,17 +95,34 @@ void draw()
   }
   // Draw bearing and car
   if (index < lines.length) {
+
     pieces = split(lines[index], ',');
     wpt = int(pieces[3]);
-    // convert from lat/lon to x and y
-    x = lonToX( float(pieces[2]) );
-    y = latToY( float(pieces[1]) );
+
     // calculate bearing and distance
     float brg = float(pieces[4]);
     float dist = float(pieces[5]);
+
+    wx = lonToX( waypoint[wpt].longitude() );
+    wy = latToY( waypoint[wpt].latitude() );
+
+
+    // convert from lat/lon to x and y
+    if (x == 0.0)
+      x = lonToX( float(pieces[2]) );
+    else
+      /* calculate pos based on distance/bearing, ignore estlat/estlon */
+      /* means you are not seeing what the robot thinks its estlat/estlon is */
+      x = wx - scaleMx * dist * sin(radians(brg)); 
+    
+    if (y == 0.0) 
+      y = latToY( float(pieces[1]) );
+    else
+      y = wy - scaleMy * dist * cos(radians(brg));
+      
     // calculate ratios for plotting target and bearing indicators
     float x1 = cos(radians(brg-90));
-    float y1 = sin(radians(brg-90));
+    float y1 = sin(radians(90-brg));
     // determine vehicle heading
     h = float(pieces[6]);
     stroke(255);     // Set line drawing color to white
@@ -130,7 +148,7 @@ void drawCar(float x, float y, float h)
   stroke(255);
   fill(yellow);
   translate(x,y);
-  rotate(radians(h+90));
+  rotate(radians(90-h));
   rectMode(CENTER);
   rect(0, 0, 20, 5);
   popMatrix();
@@ -207,6 +225,7 @@ float lonToX(float lon)
  */
 float latToY(float lat)
 {
-  return sizeY - (scaleLat*(lat - latMin) + float(padding)/2.0);
+ //return sizeY - (scaleLat*(lat - latMin) + float(padding)/2.0);
+ return (scaleLat*(lat - latMin) + float(padding)/2.0);
 }
 

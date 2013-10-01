@@ -121,6 +121,7 @@
  * Release: 0.1
  */
  
+#include "mbed.h"
 #include "SDHCFileSystem.h"
 
 #define DEBUG

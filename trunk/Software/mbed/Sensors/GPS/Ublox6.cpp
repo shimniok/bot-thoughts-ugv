@@ -171,21 +171,17 @@ void Ublox6::parse(unsigned char cc)
                     case 0x01:      // NAV-
                         switch (id) {
                             case POSLLH_MSG:  // NAV-POSLLH
-                            {
-                            	long int lon = LONG(4);
-                            	long int lat = LONG(8);
-                                _longitude = lon/10000000.0;
-                                _latitude = lat/10000000.0;
+                                //_longitude = ((float)LONG(4))/10000000.0;
+                                //_latitude = ((float)LONG(8))/10000000.0;
                                 // vAcc = ULONG(24); // mm
                                 // hAcc = ULONG(20); // mm
                                 _available |= POSLLH_BIT;
                                 break;
-                            }
                             case DOP_MSG:  // NAV-DOP
                                 //gDOP = ((float) UINT(4))/100.0;
                                 //tDOP = ((float) UINT(8))/100.0;
                                 //vDOP = ((float) UINT(10))/100.0;
-                                _hdop = ((float) UINT(12))/100.0;
+                                //_hdop = ((float) UINT(12))/100.0;
                                 _available |= DOP_BIT;
                                 break;
                             case SOL_MSG:  // NAV-SOL
@@ -196,9 +192,9 @@ void Ublox6::parse(unsigned char cc)
                                 _available |= SOL_BIT;
                                 break;
                             case VELNED_MSG:  // NAV-VELNED
-                                _speed_mps = ULONG(20)/100.0;
+                                //_speed_mps = ULONG(20)/100.0;
                                 //sAcc = ULONG(28)/100.0;
-                                _course_deg = ((float) LONG(24))/100000.0;
+                                //_course_deg = ((float) LONG(24))/100000.0;
                                 //cAcc = ((float) LONG(32))/100000.0;
                                 _available |= VELNED_BIT;                                
                                 break;

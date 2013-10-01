@@ -205,6 +205,7 @@ bool TinyGPS::term_complete()
                 _gga_ready = true;
                 _hdop      = _new_hdop;
                 _sat_count = _new_sat_count;
+                break;
             case _GPS_SENTENCE_GPGSV:
                 _gsv_ready = true;
                 break;

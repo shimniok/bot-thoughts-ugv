@@ -1,6 +1,5 @@
 #include "mbed.h"
 #include "Menu.h"
-#include <string.h>
 
 Menu::Menu():
     _item(0), _itemCount(0)

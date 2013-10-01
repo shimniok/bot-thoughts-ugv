@@ -101,11 +101,9 @@ void Sensors::Read_Encoders()
     leftTotal += leftCount;
     rightTotal += rightCount;
             
-    // TODO--> sanity check on encoders; if difference between them
+    // TODO 3 Sanity check on encoders; if difference between them
     //  is huge, what do we do?  Slipping wheel?  Skidding wheel?
     //  front encoders would be ideal as additional sanity check
-    
-    // TODO: move this into scheduler??
     
     // TODO: how do we track distance, should we only check distance everytime we do a nav/pos update?
     // TODO: get rid of state variable

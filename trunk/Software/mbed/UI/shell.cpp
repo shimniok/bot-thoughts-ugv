@@ -1,12 +1,9 @@
-#include <stdio.h>
 #include "mbed.h"
-#include "stdint.h"
 #include "DirHandle.h"
 #include "SDHCFileSystem.h"
 #include "util.h"
 #include "Buttons.h"
 
-extern SDFileSystem sd;
 extern Serial pc;
 extern Buttons keypad;
 

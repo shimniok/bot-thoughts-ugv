@@ -46,8 +46,6 @@
 #define GPS_MIN_SPEED   2.0             // speed below which we won't trust GPS course
 #define GPS_MAX_HDOP    2.0             // HDOP above which we won't trust GPS course/position
 
-#define UPDATE_PERIOD 0.010             // update period in s
-
 // Driver configuration parameters
 #define SONARLEFT_CHAN   0
 #define SONARRIGHT_CHAN  1
@@ -106,7 +104,6 @@ Config config;                          // Persistent configuration
 
 // Timing
 Timer timer;                            // For main loop scheduling
-Ticker sched;                           // scheduler for interrupt driven routines
 
 // Overall system state (used for logging but also convenient for general use
 SystemState state[SSBUF];               // system state for logging, FIFO buffer
@@ -170,7 +167,46 @@ int resetMe()
 
 int main()
 {
-    // Send data back to the PC
+    // Let's try setting priorities...
+    NVIC_SetPriority(TIMER3_IRQn, 0);	// updater running off Ticker
+    NVIC_SetPriority(DMA_IRQn, 1);
+    NVIC_SetPriority(EINT0_IRQn, 5);	// wheel encoders
+    NVIC_SetPriority(EINT1_IRQn, 5);	// wheel encoders
+    NVIC_SetPriority(EINT2_IRQn, 5);	// wheel encoders
+    NVIC_SetPriority(EINT3_IRQn, 5);	// wheel encoders
+    NVIC_SetPriority(UART1_IRQn, 10);	// GPS p25,p26
+    NVIC_SetPriority(I2C0_IRQn, 20);	// sensors?
+    NVIC_SetPriority(I2C1_IRQn, 20);	// sensors?
+    NVIC_SetPriority(I2C2_IRQn, 20);	// sensors?
+    NVIC_SetPriority(UART3_IRQn, 30);	// LCD p17,p18
+    NVIC_SetPriority(UART0_IRQn, 30);	// USB
+    NVIC_SetPriority(ADC_IRQn, 40);		// Voltage/current
+    NVIC_SetPriority(TIMER0_IRQn, 255);	// unused(?)
+    NVIC_SetPriority(TIMER1_IRQn, 255);	// unused(?)
+    NVIC_SetPriority(TIMER2_IRQn, 255); // unused(?)
+    NVIC_SetPriority(SPI_IRQn, 255);	// uSD card, logging
+
+
+    /*
+     * PWM1_IRQn
+     * SSP0_IRQn
+     * SSP1_IRQn
+     * PLL0_IRQn
+     * RTC_IRQn
+     * BOD_IRQn
+     * I2S_IRQn
+     * CAN_IRQn
+     * ENET_IRQn
+     * RIT_IRQn
+     * MCPWM_IRQn
+     * QEI_IRQn
+     * PLL1_IRQn
+     * USB_IRQn
+     * USBActivity_IRQn
+     * CANActivity_IRQn
+     */
+
+	// Send data back to the PC
     pc.baud(115200);
     fprintf(stdout, "Data Bus mAGV Control System\n");
 
@@ -209,7 +245,7 @@ int main()
 
     // Convert lat/lon waypoints to cartesian
     mapper.init(config.wptCount, config.wpt);
-    for (int w = 0; w < MAXWPT && w < config.wptCount; w++) {
+    for (unsigned int w = 0; w < MAXWPT && w < config.wptCount; w++) {
         mapper.geoToCart(config.wpt[w], &(config.cwpt[w]));
         pc.printf("Waypoint #%d (%.4f, %.4f) lat: %.6f lon: %.6f\n", 
                     w, config.cwpt[w]._x, config.cwpt[w]._y, config.wpt[w].latitude(), config.wpt[w].longitude());
@@ -245,7 +281,7 @@ int main()
     wait(0.2);
     // Startup sensor/AHRS ticker; update every UPDATE_PERIOD
     restartNav();
-    sched.attach(&update, UPDATE_PERIOD);
+    startUpdater();
 
 /*
     fprintf(stdout, "Starting Camera...\n");
@@ -254,11 +290,6 @@ int main()
     cam.start();
 */
 
-    // Let's try setting serial IRQs lower and see if that alleviates issues with I2C reads and AHRS reads
-    //NVIC_SetPriority(UART0_IRQn, 1); // USB
-    //NVIC_SetPriority(UART1_IRQn, 2); // GPS p25,p26
-    //NVIC_SetPriority(UART3_IRQn, 3); // LCD p17,p18
-       
     // Insert menu system here w/ timeout
     //bool autoBoot=false;
 
@@ -297,7 +328,8 @@ int main()
         }*/
 
         if ((thisUpdate = timer.read_ms()) > nextUpdate) {
-            // TODO 1: wtf is this?!?!  why not pull out of state[outstate]
+        	// Pull data out of the current state (instate) so we're sure
+        	// to get up to date info to display
             SystemState s = state[inState];
             s.gpsHDOP = sensors.gps.hdop();
             s.gpsSats = sensors.gps.sat_count();
@@ -434,9 +466,7 @@ int main()
                 case '9' :
                     display.select("Serial bridge 2");
                     display.status("Standby.");
-                    //gps2.enableVerbose();
-                    //serialBridge( *(gps2.getSerial()) );
-                    //gps2.disableVerbose();                   
+                    break;
                 default :
                     break;
             } // switch        
