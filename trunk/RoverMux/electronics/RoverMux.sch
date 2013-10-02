@@ -8452,14 +8452,17 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <pad name="4" x="0" y="1.27" drill="1.016" diameter="1.6764" shape="octagon"/>
 <pad name="5" x="2.54" y="-1.27" drill="1.016" diameter="1.6764" shape="octagon"/>
 <pad name="6" x="2.54" y="1.27" drill="1.016" diameter="1.6764" shape="octagon"/>
-<text x="5.08" y="0" size="1.27" layer="25" font="vector" ratio="16">&gt;NAME</text>
-<text x="5.08" y="-2.54" size="1.27" layer="27" font="vector" ratio="16">&gt;VALUE</text>
+<text x="-3.22" y="2.86" size="1.27" layer="27" font="vector" ratio="16">&gt;VALUE</text>
 <polygon width="0.127" layer="21">
 <vertex x="-1.27" y="-2.54"/>
 <vertex x="-1.27" y="-3.175"/>
 <vertex x="1.27" y="-3.175"/>
 <vertex x="1.27" y="-2.54"/>
 </polygon>
+<wire x1="-6.15" y1="3" x2="-6.15" y2="-3" width="0.127" layer="51"/>
+<wire x1="6.15" y1="3" x2="6.15" y2="-3" width="0.127" layer="51"/>
+<wire x1="-6.15" y1="-3" x2="6.15" y2="-3" width="0.127" layer="51"/>
+<wire x1="-6.15" y1="3" x2="6.15" y2="3" width="0.127" layer="51"/>
 </package>
 <package name="2X3-SHROUDED">
 <wire x1="4.5" y1="7.56" x2="4.5" y2="-7.56" width="0.2032" layer="21"/>
