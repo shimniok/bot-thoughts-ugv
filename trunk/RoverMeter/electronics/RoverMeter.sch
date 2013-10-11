@@ -9151,6 +9151,32 @@ Metric Code Size 5664</description>
 
 &lt;p&gt;Created by Michael Shimniok &lt;a href="http://www.bot-thoughts.com/"&gt;www.bot-thoughts.com&lt;/a&gt;&lt;/b&gt;</description>
 <packages>
+<package name="0316/20">
+<description>&lt;b&gt;Current Sense Resistor&lt;/b&gt;
+&lt;p&gt;03x20mm, body 03x16mm&lt;/p&gt;</description>
+<wire x1="-8" y1="0.75" x2="-8" y2="2" width="0.127" layer="21"/>
+<wire x1="-8" y1="2" x2="8" y2="2" width="0.127" layer="21"/>
+<wire x1="8" y1="2" x2="8" y2="0.75" width="0.127" layer="21"/>
+<wire x1="-8" y1="-0.75" x2="-8" y2="-2" width="0.127" layer="21"/>
+<wire x1="-8" y1="-2" x2="8" y2="-2" width="0.127" layer="21"/>
+<wire x1="8" y1="-2" x2="8" y2="-0.75" width="0.127" layer="21"/>
+<pad name="P$1" x="-10" y="0" drill="1" shape="octagon"/>
+<pad name="P$2" x="10" y="0" drill="1" shape="octagon"/>
+<text x="-8" y="3" size="1.27" layer="21">&gt;NAME</text>
+<text x="-8" y="-4" size="1.27" layer="21">&gt;VALUE</text>
+<rectangle x1="-9" y1="-0.25" x2="-8" y2="0.25" layer="21"/>
+<rectangle x1="8" y1="-0.25" x2="9" y2="0.25" layer="21"/>
+</package>
+<package name="WSLP3921">
+<smd name="P$1" x="-4.2418" y="0" dx="6.1976" dy="2.6924" layer="1" rot="R90"/>
+<smd name="P$2" x="4.2418" y="0" dx="6.1976" dy="2.6924" layer="1" rot="R90"/>
+<wire x1="-6.096" y1="3.556" x2="6.096" y2="3.556" width="0.127" layer="21"/>
+<wire x1="6.096" y1="3.556" x2="6.096" y2="-3.556" width="0.127" layer="21"/>
+<wire x1="6.096" y1="-3.556" x2="-6.096" y2="-3.556" width="0.127" layer="21"/>
+<wire x1="-6.096" y1="-3.556" x2="-6.096" y2="3.556" width="0.127" layer="21"/>
+<text x="-3.302" y="4.064" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3.81" y="-5.334" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="LETTER_L">
@@ -9204,6 +9230,21 @@ Metric Code Size 5664</description>
 <text x="-2.54" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="GND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
 </symbol>
+<symbol name="R-US">
+<wire x1="-2.54" y1="0" x2="-2.159" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="-2.159" y1="1.016" x2="-1.524" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="-1.524" y1="-1.016" x2="-0.889" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="-0.889" y1="1.016" x2="-0.254" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="-0.254" y1="-1.016" x2="0.381" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="0.381" y1="1.016" x2="1.016" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="1.016" y1="-1.016" x2="1.651" y2="1.016" width="0.2032" layer="94"/>
+<wire x1="1.651" y1="1.016" x2="2.286" y2="-1.016" width="0.2032" layer="94"/>
+<wire x1="2.286" y1="-1.016" x2="2.54" y2="0" width="0.2032" layer="94"/>
+<text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
+<text x="-3.81" y="-3.302" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="LETTER_L" prefix="FRAME" uservalue="yes">
@@ -9241,6 +9282,32 @@ LETTER landscape</description>
 </gates>
 <devices>
 <device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="R-US_" prefix="R" uservalue="yes">
+<description>&lt;B&gt;RESISTOR&lt;/B&gt;, American symbol</description>
+<gates>
+<gate name="G$1" symbol="R-US" x="0" y="0"/>
+</gates>
+<devices>
+<device name="0316/20" package="0316/20">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="WSLP3921" package="WSLP3921">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -9587,67 +9654,141 @@ LETTER landscape</description>
 </deviceset>
 </devicesets>
 </library>
-<library name="bt_regulator">
-<description>&lt;b&gt;Common Voltage Regulators&lt;/b&gt;
-&lt;p&gt;Created by Michael Shimniok &lt;a href="http://www.bot-thoughts.com/"&gt;www.bot-thoughts.com&lt;/a&gt;&lt;/b&gt;</description>
+<library name="v-reg-3">
+<description>&lt;b&gt;Voltage Regulators&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;&lt;/p&gt;
+&lt;p&gt;&lt;date&gt;2008-05-16&lt;/date&gt;, updates by &lt;author&gt;Eike Schmidt&lt;/author&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;integrated library "ltc_swr.lbr" with switching regulators from &lt;a href=http://www.linear.com&gt;Linear Technology&lt;/a&gt;, created by &lt;author&gt;Claudius Stern&lt;/author&gt;&lt;/li&gt;&lt;li&gt;added step-down switching regulator LT1767&lt;/li&gt;&lt;li&gt;combined identical symbols for positive regulators&lt;/li&gt;&lt;li&gt;added packages SO8 and SOT89 for 78Lxx and 79Lxx&lt;/li&gt;&lt;li&gt;added package SO8 for LM317L and LM337L&lt;/li&gt;&lt;li&gt;added linear regulators L4931, L4949E, LM2931&lt;/li&gt;&lt;li&gt;added micropower, ultra-low dropout family LP298x&lt;/li&gt;&lt;li&gt;added ultra-low dropout regulators IRU1205, TK112, TK113&lt;/li&gt;&lt;li&gt;added low power, low dropout regulator family S-812&lt;/li&gt;&lt;li&gt;added NPN "Simple Switcher"(c) family LM257x&lt;/li&gt;&lt;li&gt;added DMOS "Simple Switcher"(c) family LM267x&lt;/li&gt;&lt;li&gt;added NPN Darlington switching regulator MC34063A&lt;/li&gt;&lt;li&gt;added LED boost drivers PR4401, PR4402, PR4403&lt;/li&gt;&lt;/ul&gt;</description>
 <packages>
-<package name="SOT23-5">
-<description>&lt;b&gt;Small Outline Transistor&lt;/b&gt;</description>
-<smd name="1" x="-0.95" y="-1.3001" dx="0.69" dy="0.99" layer="1"/>
-<smd name="2" x="0" y="-1.3001" dx="0.69" dy="0.99" layer="1"/>
-<smd name="3" x="0.95" y="-1.3001" dx="0.69" dy="0.99" layer="1"/>
-<smd name="4" x="0.95" y="1.3001" dx="0.69" dy="0.99" layer="1"/>
-<smd name="5" x="-0.95" y="1.3001" dx="0.69" dy="0.99" layer="1"/>
-<text x="-1.6095" y="-1.1525" size="0.4064" layer="27" rot="R90">&gt;VALUE</text>
-<wire x1="0.01" y1="-1.29" x2="0.01" y2="-1.3" width="0.01" layer="21"/>
-<wire x1="1.43" y1="0.8" x2="1.43" y2="-0.8" width="0.127" layer="21"/>
-<wire x1="1.43" y1="-0.8" x2="-1.41" y2="-0.8" width="0.127" layer="51"/>
-<wire x1="-1.41" y1="-0.8" x2="-1.41" y2="0.8" width="0.127" layer="21"/>
-<wire x1="-1.41" y1="0.8" x2="1.43" y2="0.8" width="0.127" layer="51"/>
-<text x="-0.495" y="-0.395" size="0.8128" layer="25">&gt;NAME</text>
-<rectangle x1="-1.1" y1="0.8" x2="-0.77" y2="1.43" layer="51"/>
-<rectangle x1="0.8" y1="0.8" x2="1.13" y2="1.42" layer="51"/>
-<rectangle x1="-1.1" y1="-1.42" x2="-0.77" y2="-0.8" layer="51"/>
-<rectangle x1="-0.15" y1="-1.42" x2="0.18" y2="-0.8" layer="51"/>
-<rectangle x1="0.8" y1="-1.42" x2="1.13" y2="-0.8" layer="51"/>
-<rectangle x1="-1.365" y1="-0.75" x2="-0.615" y2="0" layer="21"/>
+<package name="78LXX">
+<description>&lt;b&gt;VOLTAGE REGULATOR&lt;/b&gt;</description>
+<wire x1="-2.0946" y1="-1.651" x2="-0.7863" y2="2.5485" width="0.1778" layer="21" curve="-111.098957" cap="flat"/>
+<wire x1="0.7868" y1="2.5484" x2="2.095" y2="-1.651" width="0.1778" layer="21" curve="-111.09954" cap="flat"/>
+<wire x1="-2.095" y1="-1.651" x2="2.095" y2="-1.651" width="0.1778" layer="21"/>
+<wire x1="-2.655" y1="-0.254" x2="-2.254" y2="-0.254" width="0.1778" layer="21"/>
+<wire x1="2.254" y1="-0.254" x2="2.655" y2="-0.254" width="0.1778" layer="21"/>
+<wire x1="-0.7863" y1="2.5485" x2="0.7863" y2="2.5485" width="0.1778" layer="51" curve="-34.293591" cap="flat"/>
+<pad name="OUT" x="-1.27" y="0" drill="0.8128" shape="octagon"/>
+<pad name="GND" x="0" y="1.905" drill="0.8128" shape="octagon"/>
+<pad name="IN" x="1.27" y="0" drill="0.8128" shape="octagon"/>
+<text x="-0.635" y="0.889" size="1.27" layer="51" ratio="10">-</text>
+<text x="3.175" y="0.635" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="3.175" y="-1.27" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+<text x="-1.778" y="-0.635" size="1.27" layer="51" ratio="10">O</text>
+<text x="0.635" y="-0.635" size="1.27" layer="51" ratio="10">I</text>
+</package>
+<package name="SO08">
+<description>&lt;b&gt;SMALL OUTLINE INTEGRATED CIRCUIT&lt;/b&gt;&lt;p&gt;
+body 3.9 mm/JEDEC MS-012AA</description>
+<wire x1="-2.9" y1="3.9" x2="2.9" y2="3.9" width="0.1998" layer="39"/>
+<wire x1="2.9" y1="3.9" x2="2.9" y2="-3.9" width="0.1998" layer="39"/>
+<wire x1="2.9" y1="-3.9" x2="-2.9" y2="-3.9" width="0.1998" layer="39"/>
+<wire x1="-2.9" y1="-3.9" x2="-2.9" y2="3.9" width="0.1998" layer="39"/>
+<wire x1="2.4" y1="1.9" x2="2.4" y2="-1.9" width="0.1778" layer="21"/>
+<wire x1="2.4" y1="-1.9" x2="-2.4" y2="-1.9" width="0.1778" layer="51"/>
+<wire x1="-2.4" y1="-1.9" x2="-2.4" y2="1.9" width="0.1778" layer="21"/>
+<wire x1="-2.4" y1="1.9" x2="2.4" y2="1.9" width="0.1778" layer="51"/>
+<wire x1="2.4" y1="-1.4" x2="-2.4" y2="-1.4" width="0.0508" layer="51"/>
+<circle x="-1.905" y="-0.9525" radius="0.2245" width="0" layer="21"/>
+<smd name="2" x="-0.635" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="7" x="-0.635" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="1" x="-1.905" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="3" x="0.635" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="4" x="1.905" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="8" x="-1.905" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="6" x="0.635" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="5" x="1.905" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<text x="-3.175" y="-1.905" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
+<text x="4.445" y="-1.905" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-2.1501" y1="-3.1001" x2="-1.6599" y2="-2" layer="51"/>
+<rectangle x1="-0.8801" y1="-3.1001" x2="-0.3899" y2="-2" layer="51"/>
+<rectangle x1="0.3899" y1="-3.1001" x2="0.8801" y2="-2" layer="51"/>
+<rectangle x1="1.6599" y1="-3.1001" x2="2.1501" y2="-2" layer="51"/>
+<rectangle x1="1.6599" y1="2" x2="2.1501" y2="3.1001" layer="51"/>
+<rectangle x1="0.3899" y1="2" x2="0.8801" y2="3.1001" layer="51"/>
+<rectangle x1="-0.8801" y1="2" x2="-0.3899" y2="3.1001" layer="51"/>
+<rectangle x1="-2.1501" y1="2" x2="-1.6599" y2="3.1001" layer="51"/>
+</package>
+<package name="SOT89">
+<wire x1="2.2724" y1="1.6104" x2="2.2724" y2="-1.1104" width="0.1778" layer="51"/>
+<wire x1="2.2724" y1="-1.1104" x2="-2.2724" y2="-1.1104" width="0.1778" layer="51"/>
+<wire x1="-2.2724" y1="-1.1104" x2="-2.2724" y2="1.6104" width="0.1778" layer="51"/>
+<wire x1="-2.2724" y1="1.6104" x2="2.2724" y2="1.6104" width="0.1778" layer="51"/>
+<wire x1="-2.2724" y1="-1.1024" x2="-2.2724" y2="1.6104" width="0.1778" layer="21"/>
+<wire x1="-2.2724" y1="1.6104" x2="-1.3636" y2="1.6104" width="0.1778" layer="21"/>
+<wire x1="2.2724" y1="1.6104" x2="2.2724" y2="-1.1024" width="0.1778" layer="21"/>
+<wire x1="1.3636" y1="1.6104" x2="2.2724" y2="1.6104" width="0.1778" layer="21"/>
+<wire x1="-0.5776" y1="-1.1104" x2="-0.9364" y2="-1.1104" width="0.1778" layer="21"/>
+<wire x1="0.9224" y1="-1.1104" x2="0.5636" y2="-1.1104" width="0.1778" layer="21"/>
+<smd name="3" x="1.5" y="-1.75" dx="0.8" dy="1.5" layer="1"/>
+<smd name="1" x="-1.5" y="-1.75" dx="0.8" dy="1.5" layer="1"/>
+<smd name="2" x="0" y="-1.75" dx="0.8" dy="1.5" layer="1"/>
+<smd name="4" x="0" y="1.304" dx="2.5" dy="3" layer="1"/>
+<text x="-2.205" y="2.7725" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.205" y="-3.825" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.75" y1="-2.15" x2="-1.25" y2="-1.15" layer="51"/>
+<rectangle x1="-0.25" y1="-2.15" x2="0.25" y2="-1.15" layer="51"/>
+<rectangle x1="1.25" y1="-2.15" x2="1.75" y2="-1.15" layer="51"/>
+<rectangle x1="-0.85" y1="1.65" x2="0.85" y2="2.2" layer="51"/>
 </package>
 </packages>
 <symbols>
-<symbol name="V-REG-LDO-ADJ">
-<wire x1="-7.62" y1="-7.62" x2="5.08" y2="-7.62" width="0.4064" layer="94"/>
-<wire x1="5.08" y1="-7.62" x2="5.08" y2="7.62" width="0.4064" layer="94"/>
-<wire x1="5.08" y1="7.62" x2="-7.62" y2="7.62" width="0.4064" layer="94"/>
-<wire x1="-7.62" y1="7.62" x2="-7.62" y2="-7.62" width="0.4064" layer="94"/>
-<text x="-7.62" y="9.144" size="1.778" layer="95">&gt;NAME</text>
-<text x="-7.62" y="-11.43" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="IN" x="-10.16" y="5.08" visible="pin" length="short" direction="in"/>
-<pin name="GND" x="-10.16" y="0" visible="pin" length="short" direction="in"/>
-<pin name="OUT" x="7.62" y="5.08" visible="pin" length="short" direction="pas" rot="R180"/>
-<pin name="EN" x="-10.16" y="-5.08" visible="pin" length="short" direction="in"/>
-<pin name="ADJ" x="7.62" y="-5.08" visible="pin" length="short" direction="in" rot="R180"/>
+<symbol name="78XX">
+<wire x1="-5.08" y1="-5.08" x2="5.08" y2="-5.08" width="0.4064" layer="94"/>
+<wire x1="5.08" y1="-5.08" x2="5.08" y2="2.54" width="0.4064" layer="94"/>
+<wire x1="5.08" y1="2.54" x2="-5.08" y2="2.54" width="0.4064" layer="94"/>
+<wire x1="-5.08" y1="2.54" x2="-5.08" y2="-5.08" width="0.4064" layer="94"/>
+<text x="2.54" y="-7.62" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="-10.16" size="1.778" layer="96">&gt;VALUE</text>
+<text x="-2.032" y="-4.318" size="1.524" layer="95">GND</text>
+<text x="-4.445" y="-0.635" size="1.524" layer="95">IN</text>
+<text x="0.635" y="-0.635" size="1.524" layer="95">OUT</text>
+<pin name="IN" x="-7.62" y="0" visible="off" length="short" direction="in"/>
+<pin name="GND" x="0" y="-7.62" visible="off" length="short" direction="in" rot="R90"/>
+<pin name="OUT" x="7.62" y="0" visible="off" length="short" direction="pas" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="MCP1824" prefix="U">
-<description>&lt;B&gt;MCP1824 LDO voltage regulator&lt;/B&gt;
-&lt;p&gt;The MCP1824/MCP1824S is a 300 mA Low Dropout
-(LDO) linear regulator that provides high current and
-low output voltages. The MCP1824 comes in a fixed or
-adjustable output voltage version, with an output
-voltage range of 0.8V to 5.0V.&lt;/P&gt;
-&lt;p&gt;&lt;a href="http://ww1.microchip.com/downloads/en/devicedoc/22070a.pdf"&gt;Datasheet.pdf&lt;/a&gt;&lt;/p&gt;</description>
+<deviceset name="78LXX" prefix="IC" uservalue="yes">
+<description>&lt;b&gt;VOLTAGE REGULATOR&lt;/b&gt;</description>
 <gates>
-<gate name="G$1" symbol="V-REG-LDO-ADJ" x="0" y="0"/>
+<gate name="1" symbol="78XX" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="SOT23-5">
+<device name="" package="78LXX">
 <connects>
-<connect gate="G$1" pin="ADJ" pad="4"/>
-<connect gate="G$1" pin="EN" pad="3"/>
-<connect gate="G$1" pin="GND" pad="2"/>
-<connect gate="G$1" pin="IN" pad="1"/>
-<connect gate="G$1" pin="OUT" pad="5"/>
+<connect gate="1" pin="GND" pad="GND"/>
+<connect gate="1" pin="IN" pad="IN"/>
+<connect gate="1" pin="OUT" pad="OUT"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-SO8" package="SO08">
+<connects>
+<connect gate="1" pin="GND" pad="2"/>
+<connect gate="1" pin="IN" pad="8"/>
+<connect gate="1" pin="OUT" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-SO8_GNDPIN7" package="SO08">
+<connects>
+<connect gate="1" pin="GND" pad="7"/>
+<connect gate="1" pin="IN" pad="8"/>
+<connect gate="1" pin="OUT" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-SOT89" package="SOT89">
+<connects>
+<connect gate="1" pin="GND" pad="2"/>
+<connect gate="1" pin="IN" pad="3"/>
+<connect gate="1" pin="OUT" pad="1"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -9667,7 +9808,10 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 </class>
 </classes>
 <parts>
-<part name="R1" library="rcl" deviceset="R-US_" device="R4527" value="0.001"/>
+<part name="R1" library="bt" deviceset="R-US_" device="WSLP3921" value="0.001">
+<attribute name="PARTNO" value="WSLP3921L5000FEB"/>
+<attribute name="POWER" value="6W+"/>
+</part>
 <part name="IC1" library="burr-brown" deviceset="INA168" device=""/>
 <part name="GND1" library="SparkFun" deviceset="GND" device=""/>
 <part name="R2" library="rcl" deviceset="R-US_" device="R0603" value="68k"/>
@@ -9684,7 +9828,6 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <part name="J1" library="bt_avr" deviceset="AVRISP6" device="" value="AVRISP"/>
 <part name="U$2" library="bt" deviceset="5V" device=""/>
 <part name="GND2" library="bt" deviceset="GND" device=""/>
-<part name="U1" library="bt_regulator" deviceset="MCP1824" device=""/>
 <part name="SUPPLY3" library="supply2" deviceset="V+" device=""/>
 <part name="IC3" library="bt_avr" deviceset="TINY25/45/85" device="-20SU" value="TINY85"/>
 <part name="U$3" library="bt" deviceset="5V" device=""/>
@@ -9695,6 +9838,9 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <part name="C4" library="rcl" deviceset="C-US" device="C0603" value="105"/>
 <part name="U$1" library="bt" deviceset="5V" device=""/>
 <part name="R5" library="resistor" deviceset="R-US_" device="R0603" value="10K"/>
+<part name="IC2" library="v-reg-3" deviceset="78LXX" device="-SOT89" value="KA78L05AIMTF">
+<attribute name="VOLTAGE" value="30V"/>
+</part>
 </parts>
 <sheets>
 <sheet>
@@ -9703,10 +9849,12 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <text x="232.41" y="24.13" size="3.81" layer="94">0.1</text>
 <text x="35.56" y="22.86" size="1.778" layer="94">Verify design for:
 2S-3S (12.6V), 150A ideally</text>
-<text x="50.8" y="152.4" size="1.778" layer="91">Verify Regulator input voltage</text>
 </plain>
 <instances>
-<instance part="R1" gate="G$1" x="78.74" y="101.6"/>
+<instance part="R1" gate="G$1" x="78.74" y="101.6">
+<attribute name="POWER" x="76.454" y="95.758" size="1.778" layer="96"/>
+<attribute name="PARTNO" x="75.184" y="93.218" size="1.778" layer="96"/>
+</instance>
 <instance part="IC1" gate="G$1" x="101.6" y="71.12"/>
 <instance part="GND1" gate="1" x="116.84" y="40.64"/>
 <instance part="R2" gate="G$1" x="134.62" y="60.96" rot="R90"/>
@@ -9724,8 +9872,7 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <instance part="J1" gate="A" x="104.14" y="139.7"/>
 <instance part="U$2" gate="G$1" x="83.82" y="154.94"/>
 <instance part="GND2" gate="1" x="27.94" y="119.38"/>
-<instance part="U1" gate="G$1" x="55.88" y="142.24"/>
-<instance part="SUPPLY3" gate="1" x="43.18" y="157.48"/>
+<instance part="SUPPLY3" gate="1" x="27.94" y="157.48"/>
 <instance part="IC3" gate="1" x="187.96" y="139.7" rot="MR0"/>
 <instance part="U$3" gate="G$1" x="226.06" y="154.94"/>
 <instance part="GND4" gate="1" x="226.06" y="129.54"/>
@@ -9735,6 +9882,9 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <instance part="C4" gate="G$1" x="27.94" y="139.7"/>
 <instance part="U$1" gate="G$1" x="147.32" y="167.64"/>
 <instance part="R5" gate="G$1" x="147.32" y="157.48" rot="R90"/>
+<instance part="IC2" gate="1" x="43.18" y="147.32">
+<attribute name="VOLTAGE" x="45.72" y="134.62" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -9794,18 +9944,17 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <wire x1="68.58" y1="134.62" x2="68.58" y2="127" width="0.1524" layer="91"/>
 <wire x1="68.58" y1="127" x2="83.82" y2="127" width="0.1524" layer="91"/>
 <wire x1="83.82" y1="127" x2="83.82" y2="144.78" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="GND"/>
-<wire x1="45.72" y1="142.24" x2="40.64" y2="142.24" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="142.24" x2="40.64" y2="127" width="0.1524" layer="91"/>
 <pinref part="GND2" gate="1" pin="GND"/>
 <pinref part="C4" gate="G$1" pin="2"/>
-<junction x="40.64" y="127"/>
-<wire x1="68.58" y1="127" x2="40.64" y2="127" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="127" x2="27.94" y2="127" width="0.1524" layer="91"/>
+<wire x1="68.58" y1="127" x2="43.18" y2="127" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="127" x2="27.94" y2="127" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="121.92" x2="27.94" y2="127" width="0.1524" layer="91"/>
 <junction x="27.94" y="127"/>
 <wire x1="27.94" y1="127" x2="27.94" y2="134.62" width="0.1524" layer="91"/>
 <junction x="68.58" y="127"/>
+<pinref part="IC2" gate="1" pin="GND"/>
+<wire x1="43.18" y1="139.7" x2="43.18" y2="127" width="0.1524" layer="91"/>
+<junction x="43.18" y="127"/>
 </segment>
 <segment>
 <pinref part="IC3" gate="1" pin="GND"/>
@@ -9872,17 +10021,13 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <pinref part="IC1" gate="G$1" pin="V+"/>
 </segment>
 <segment>
-<pinref part="U1" gate="G$1" pin="IN"/>
 <pinref part="SUPPLY3" gate="1" pin="V+"/>
-<wire x1="45.72" y1="147.32" x2="43.18" y2="147.32" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="147.32" x2="43.18" y2="154.94" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="EN"/>
-<wire x1="45.72" y1="137.16" x2="43.18" y2="137.16" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="137.16" x2="43.18" y2="147.32" width="0.1524" layer="91"/>
-<junction x="43.18" y="147.32"/>
+<wire x1="35.56" y1="147.32" x2="27.94" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="147.32" x2="27.94" y2="154.94" width="0.1524" layer="91"/>
+<junction x="27.94" y="147.32"/>
 <pinref part="C4" gate="G$1" pin="1"/>
-<wire x1="43.18" y1="147.32" x2="27.94" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="147.32" x2="27.94" y2="142.24" width="0.1524" layer="91"/>
+<pinref part="IC2" gate="1" pin="IN"/>
 </segment>
 </net>
 <net name="VOLT" class="0">
@@ -9949,9 +10094,8 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 </net>
 <net name="5V" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="OUT"/>
 <pinref part="U$2" gate="G$1" pin="5V"/>
-<wire x1="63.5" y1="147.32" x2="68.58" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="147.32" x2="68.58" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="68.58" y1="147.32" x2="83.82" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="83.82" y1="147.32" x2="83.82" y2="152.4" width="0.1524" layer="91"/>
 <pinref part="J1" gate="A" pin="VCC"/>
@@ -9959,6 +10103,9 @@ voltage range of 0.8V to 5.0V.&lt;/P&gt;
 <junction x="83.82" y="147.32"/>
 <pinref part="C3" gate="G$1" pin="1"/>
 <wire x1="68.58" y1="142.24" x2="68.58" y2="147.32" width="0.1524" layer="91"/>
+<pinref part="IC2" gate="1" pin="OUT"/>
+<junction x="68.58" y="147.32"/>
+<label x="53.34" y="147.32" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="IC3" gate="1" pin="VCC"/>
