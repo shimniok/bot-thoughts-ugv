@@ -6992,9 +6992,6 @@ Source: www.farnell.com/datasheets/247.pdf</description>
 <text x="284.48" y="208.28" size="1.778" layer="97">DIGITAL CONNECTORS</text>
 <wire x1="14.732" y1="141.224" x2="174.752" y2="141.224" width="0.1524" layer="97" style="shortdash"/>
 <text x="174.752" y="142.494" size="1.778" layer="97" rot="MR0">MBED</text>
-<text x="152.4" y="238.76" size="2.54" layer="91">Verify:</text>
-<text x="154.94" y="228.6" size="2.54" layer="91">ISP bootloader can work w/ zigbee</text>
-<text x="152.4" y="243.84" size="2.54" layer="91">Add Capacitors</text>
 <text x="14.732" y="142.24" size="1.778" layer="97">MBED</text>
 <wire x1="0" y1="248.92" x2="480.06" y2="248.92" width="0.1524" layer="94"/>
 <wire x1="480.06" y1="248.92" x2="480.06" y2="0" width="0.1524" layer="94"/>
