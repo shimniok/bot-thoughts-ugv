@@ -6993,10 +6993,8 @@ Source: www.farnell.com/datasheets/247.pdf</description>
 <wire x1="14.732" y1="141.224" x2="174.752" y2="141.224" width="0.1524" layer="97" style="shortdash"/>
 <text x="174.752" y="142.494" size="1.778" layer="97" rot="MR0">MBED</text>
 <text x="152.4" y="238.76" size="2.54" layer="91">Verify:</text>
-<text x="154.94" y="233.68" size="2.54" layer="91">I2C &amp; UART layout works</text>
 <text x="154.94" y="228.6" size="2.54" layer="91">ISP bootloader can work w/ zigbee</text>
 <text x="152.4" y="243.84" size="2.54" layer="91">Add Capacitors</text>
-<text x="154.94" y="223.52" size="2.54" layer="91">CAN pins can be used as GPIO, interrupts (encoders)</text>
 <text x="14.732" y="142.24" size="1.778" layer="97">MBED</text>
 <wire x1="0" y1="248.92" x2="480.06" y2="248.92" width="0.1524" layer="94"/>
 <wire x1="480.06" y1="248.92" x2="480.06" y2="0" width="0.1524" layer="94"/>
@@ -7005,8 +7003,6 @@ Source: www.farnell.com/datasheets/247.pdf</description>
 <text x="53.34" y="96.52" size="1.778" layer="97">ENCODER CONNECTORS</text>
 <text x="76.2" y="208.28" size="2.54" layer="97">LPXpresso / MBED</text>
 <text x="322.58" y="76.2" size="1.778" layer="97">POWER SUPPLY</text>
-<text x="154.94" y="213.36" size="2.54" layer="91">3v3 regulator required?</text>
-<text x="154.94" y="218.44" size="2.54" layer="91">I2C/Serial/SPI peripherals are NOT allocated twice?</text>
 </plain>
 <instances>
 <instance part="SUPPLY3" gate="GND" x="43.18" y="198.12"/>
