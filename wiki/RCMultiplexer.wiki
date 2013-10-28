@@ -43,4 +43,6 @@ For instantaneous control, you can use CH3. Solder the CH3 jumper, then connect 
 
 The ATtiny13A onboard can be reprogrammed. Pins for ISP are labeled on the bottom of the board: VTG, GND, SCK, !RESET, GND, MISO, and MOSI. Connect an AVR programmer, use your favorite IDE, download the code (sources above), modify and reprogram to your heart's content
 
-The Rev 0.3 version of the board has a minor flaw. To program it requires that you solder a jumper wire between MISO and pin 6 of the ATtiny13A.
+The Rev 0.3 version of the board has a minor flaw. To program it requires that you solder a jumper wire between MISO and pin 6 of the ATtiny13A as seen in the picture below.
+
+[https://lh3.googleusercontent.com/-1qtcyvQ-ARI/Um6rRyoJgoI/AAAAAAAAJfA/pIT0FQwvJl4/s800/Photo%2520Oct%252028%252C%252012%252012%252001%2520PM.jpg]
