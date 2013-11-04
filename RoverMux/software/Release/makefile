@@ -30,56 +30,56 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 LSS += \
-RC_MUX.lss \
+RoverMux.lss \
 
 FLASH_IMAGE += \
-RC_MUX.hex \
+RoverMux.hex \
 
 EEPROM_IMAGE += \
-RC_MUX.eep \
+RoverMux.eep \
 
 SIZEDUMMY += \
 sizedummy \
 
 
 # All Target
-all: RC_MUX.elf secondary-outputs
+all: RoverMux.elf secondary-outputs
 
 # Tool invocations
-RC_MUX.elf: $(OBJS) $(USER_OBJS)
+RoverMux.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: AVR C Linker'
-	avr-gcc -Wl,-Map,RC_MUX.map -mmcu=attiny13 -o "RC_MUX.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	avr-gcc -Wl,-Map,RoverMux.map -mmcu=attiny13 -o "RoverMux.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-RC_MUX.lss: RC_MUX.elf
+RoverMux.lss: RoverMux.elf
 	@echo 'Invoking: AVR Create Extended Listing'
-	-avr-objdump -h -S RC_MUX.elf  >"RC_MUX.lss"
+	-avr-objdump -h -S RoverMux.elf  >"RoverMux.lss"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-RC_MUX.hex: RC_MUX.elf
+RoverMux.hex: RoverMux.elf
 	@echo 'Create Flash image (ihex format)'
-	-avr-objcopy -R .eeprom -O ihex RC_MUX.elf  "RC_MUX.hex"
+	-avr-objcopy -R .eeprom -O ihex RoverMux.elf  "RoverMux.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-RC_MUX.eep: RC_MUX.elf
+RoverMux.eep: RoverMux.elf
 	@echo 'Create eeprom image (ihex format)'
-	-avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex RC_MUX.elf  "RC_MUX.eep"
+	-avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex RoverMux.elf  "RoverMux.eep"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-sizedummy: RC_MUX.elf
+sizedummy: RoverMux.elf
 	@echo 'Invoking: Print Size'
-	-avr-size --format=berkeley -t RC_MUX.elf
+	-avr-size --format=berkeley -t RoverMux.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(ASM_DEPS)$(EEPROM_IMAGE)$(FLASH_IMAGE)$(ELFS)$(LSS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS) RC_MUX.elf
+	-$(RM) $(OBJS)$(C_DEPS)$(ASM_DEPS)$(EEPROM_IMAGE)$(FLASH_IMAGE)$(ELFS)$(LSS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS) RoverMux.elf
 	-@echo ' '
 
 secondary-outputs: $(LSS) $(FLASH_IMAGE) $(EEPROM_IMAGE) $(SIZEDUMMY)
