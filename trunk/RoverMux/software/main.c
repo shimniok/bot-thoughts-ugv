@@ -26,8 +26,8 @@
 #define MINONTIME	300L
 #define MAXONTIME	3000L
 
-#define MCUenable	PB3
-#define RCenable	PB4
+#define MCUenable	PB4
+#define RCenable	PB3
 
 #define VALIDCNT	3				// number of valid signals required to go manual
 #define DT			100				// delta time for ticks, usec

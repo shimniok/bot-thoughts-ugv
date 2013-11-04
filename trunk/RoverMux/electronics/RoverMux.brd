@@ -14,12 +14,12 @@
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="yes"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
@@ -177,7 +177,7 @@
 </polygon>
 <text x="33.3756" y="15.494" size="1.016" layer="22" font="vector" rot="MR0">BEC</text>
 <hole x="2.54" y="19.05" drill="2.3876"/>
-<text x="34.6306" y="4.914" size="1.27" layer="26" font="vector" rot="MR0">R0.3</text>
+<text x="34.6306" y="4.914" size="1.27" layer="26" font="vector" rot="MR0">R0.4</text>
 <text x="33.9471" y="8.9535" size="1.016" layer="22" font="vector" rot="MR90">6V | 5V</text>
 <text x="0.5" y="4.04" size="1.016" layer="21" font="vector">2mm/#2</text>
 <wire x1="6.2738" y1="13.462" x2="6.2738" y2="10.922" width="0.254" layer="22"/>
@@ -2079,6 +2079,7 @@ Please make sure your boards conform to these design rules.</description>
 <element name="C3" library="rcl" package="C0603" value="106" x="28.8718" y="11.054" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="CL10A106MP8NNNC" x="28.8718" y="11.054" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="29.5703" y="12.3875" size="1.016" layer="27" font="vector" rot="R270"/>
+<attribute name="VOLTAGE" value="10V" x="28.8718" y="11.054" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="U3" library="74xx-us" package="SO16" value="74LS157D" x="20.2438" y="14.478" smashed="yes">
 <attribute name="NAME" x="23.9508" y="15.4" size="1.016" layer="25" font="vector" ratio="10" rot="R270"/>
@@ -2201,7 +2202,7 @@ Please make sure your boards conform to these design rules.</description>
 <via x="29.5778" y="14.4525" extent="1-16" drill="0.3302"/>
 <via x="28.6253" y="18.961" extent="1-16" drill="0.3302"/>
 <via x="26.5298" y="8.928" extent="1-16" drill="0.3302"/>
-<via x="5.8923" y="17.1195" extent="1-16" drill="0.3302"/>
+<via x="5.6383" y="17.6275" extent="1-16" drill="0.3302"/>
 </signal>
 <signal name="CH2RX">
 <contactref element="JP22" pad="1"/>
@@ -2209,11 +2210,19 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="U1" pad="6"/>
 <wire x1="22.1488" y1="11.4046" x2="22.1488" y2="8.763" width="0.254" layer="1"/>
 <wire x1="22.1488" y1="8.763" x2="20.2438" y2="6.858" width="0.254" layer="1"/>
-<wire x1="11.2368" y1="17.1082" x2="11.2368" y2="15.357" width="0.254" layer="1"/>
+<wire x1="11.2368" y1="17.1082" x2="11.2368" y2="17.018" width="0.254" layer="1"/>
+<wire x1="11.2368" y1="17.018" x2="11.2368" y2="15.357" width="0.254" layer="1"/>
 <wire x1="11.2368" y1="15.357" x2="12.8778" y2="13.716" width="0.254" layer="1"/>
 <wire x1="12.8778" y1="13.716" x2="21.2598" y2="13.716" width="0.254" layer="1"/>
 <wire x1="22.1488" y1="11.4046" x2="22.1488" y2="12.827" width="0.254" layer="1"/>
 <wire x1="22.1488" y1="12.827" x2="21.2598" y2="13.716" width="0.254" layer="1"/>
+<contactref element="J1" pad="1"/>
+<wire x1="4.318" y1="14.732" x2="4.318" y2="15.748" width="0.254" layer="1"/>
+<wire x1="4.318" y1="15.748" x2="5.08" y2="16.51" width="0.254" layer="1"/>
+<via x="5.08" y="16.51" extent="1-16" drill="0.3302"/>
+<wire x1="5.08" y1="16.51" x2="10.7288" y2="16.51" width="0.254" layer="16"/>
+<wire x1="10.7288" y1="16.51" x2="11.2368" y2="17.018" width="0.254" layer="16"/>
+<via x="11.2368" y="17.018" extent="1-16" drill="0.3302"/>
 </signal>
 <signal name="CH3RX">
 <contactref element="JP23" pad="1"/>
@@ -2403,9 +2412,6 @@ Please make sure your boards conform to these design rules.</description>
 <via x="14.1478" y="12.954" extent="1-16" drill="0.3302"/>
 <wire x1="14.1478" y1="12.954" x2="15.1358" y2="12.954" width="0.254" layer="16"/>
 <wire x1="15.1358" y1="12.954" x2="22.2478" y2="20.066" width="0.254" layer="16"/>
-</signal>
-<signal name="MISO">
-<contactref element="J1" pad="1"/>
 </signal>
 </signals>
 </board>
