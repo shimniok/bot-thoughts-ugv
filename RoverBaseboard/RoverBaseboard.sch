@@ -8,20 +8,20 @@
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="no"/>
-<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="no"/>
-<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="no"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="no"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="no"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="no"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
@@ -30,8 +30,8 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="no"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="no"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="no"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="no"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="no"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="no"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="no"/>
@@ -39,16 +39,16 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="no"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="no"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="no"/>
-<layer number="48" name="Document" color="7" fill="1" visible="yes" active="no"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="no"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="no"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="yes" active="no"/>
-<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="yes" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="yes" active="no"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
+<layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="93" name="Pins" color="2" fill="1" visible="no" active="yes"/>
@@ -13090,7 +13090,6 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <parts>
 <part name="SUPPLY3" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY4" library="supply2" deviceset="GND" device=""/>
-<part name="P+2" library="supply1" deviceset="+5V" device=""/>
 <part name="R5" library="rcl" deviceset="R-US_" device="R0603" value="2.2K">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
@@ -13286,6 +13285,7 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <part name="C17" library="rcl" deviceset="CPOL-US" device="140CLH-0810" value="100"/>
 <part name="IC1" library="v-reg-3" deviceset="78XXS" device="" value="7805"/>
 <part name="BECSEL" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="5V | 6V"/>
+<part name="+3V2" library="supply1" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -13311,9 +13311,8 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <text x="264.16" y="15.24" size="5.08" layer="91">Verify input cap values</text>
 </plain>
 <instances>
-<instance part="SUPPLY3" gate="GND" x="43.18" y="198.12"/>
+<instance part="SUPPLY3" gate="GND" x="15.24" y="182.88"/>
 <instance part="SUPPLY4" gate="GND" x="373.38" y="91.44"/>
-<instance part="P+2" gate="1" x="33.02" y="205.74"/>
 <instance part="R5" gate="G$1" x="215.9" y="185.42" rot="R90">
 <attribute name="OC_NEWARK" x="215.9" y="185.42" size="1.778" layer="96" display="off"/>
 <attribute name="MF" x="215.9" y="185.42" size="1.778" layer="96" display="off"/>
@@ -13509,15 +13508,15 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <instance part="C17" gate="G$1" x="360.68" y="50.8"/>
 <instance part="IC1" gate="1" x="276.86" y="68.58"/>
 <instance part="BECSEL" gate="A" x="297.18" y="78.74"/>
+<instance part="+3V2" gate="G$1" x="132.08" y="203.2"/>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="GND" class="0">
 <segment>
-<wire x1="63.5" y1="190.5" x2="35.56" y2="190.5" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="190.5" x2="35.56" y2="200.66" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="200.66" x2="43.18" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="190.5" x2="15.24" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="190.5" x2="15.24" y2="185.42" width="0.1524" layer="91"/>
 <pinref part="SUPPLY3" gate="GND" pin="GND"/>
 <pinref part="U$1" gate="G$1" pin="GND1"/>
 </segment>
@@ -13795,12 +13794,6 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 </net>
 <net name="+5V" class="0">
 <segment>
-<wire x1="63.5" y1="187.96" x2="33.02" y2="187.96" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="187.96" x2="33.02" y2="203.2" width="0.1524" layer="91"/>
-<pinref part="P+2" gate="1" pin="+5V"/>
-<pinref part="U$1" gate="G$1" pin="EXT_POWX"/>
-</segment>
-<segment>
 <pinref part="P+3" gate="1" pin="+5V"/>
 <wire x1="327.66" y1="53.34" x2="327.66" y2="58.42" width="0.1524" layer="91"/>
 <wire x1="327.66" y1="58.42" x2="314.96" y2="58.42" width="0.1524" layer="91"/>
@@ -14019,12 +14012,23 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="OUT"/>
-<wire x1="350.52" y1="58.42" x2="360.68" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="350.52" y1="58.42" x2="355.6" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="355.6" y1="58.42" x2="360.68" y2="58.42" width="0.1524" layer="91"/>
 <wire x1="360.68" y1="58.42" x2="360.68" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="+3V8" gate="G$1" pin="+3V3"/>
 <pinref part="C17" gate="G$1" pin="+"/>
 <wire x1="360.68" y1="53.34" x2="360.68" y2="58.42" width="0.1524" layer="91"/>
 <junction x="360.68" y="58.42"/>
+<pinref part="IC3" gate="G$1" pin="OUT@1"/>
+<wire x1="350.52" y1="55.88" x2="355.6" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="355.6" y1="55.88" x2="355.6" y2="58.42" width="0.1524" layer="91"/>
+<junction x="355.6" y="58.42"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="VOUT/3.3V"/>
+<wire x1="124.46" y1="190.5" x2="132.08" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="190.5" x2="132.08" y2="200.66" width="0.1524" layer="91"/>
+<pinref part="+3V2" gate="G$1" pin="+3V3"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -14559,13 +14563,6 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <pinref part="BECSEL" gate="A" pin="1"/>
 <wire x1="294.64" y1="81.28" x2="266.7" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="266.7" y1="81.28" x2="266.7" y2="68.58" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="SINK" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="OUT@1"/>
-<wire x1="350.52" y1="55.88" x2="355.6" y2="55.88" width="0.1524" layer="91"/>
-<label x="350.52" y="55.88" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
