@@ -13082,6 +13082,172 @@ ground current values are important attributes. &lt;/p&gt;
 </deviceset>
 </devicesets>
 </library>
+<library name="bt_electromech">
+<description>&lt;b&gt;Electromechanical devices&lt;/b&gt;
+&lt;p&gt;Created by Michael Shimniok &lt;a href="http://www.bot-thoughts.com/"&gt;www.bot-thoughts.com&lt;/a&gt;&lt;/b&gt;</description>
+<packages>
+<package name="OFFBOARD_2">
+<pad name="P$1" x="-1.27" y="0" drill="0.8" shape="octagon"/>
+<pad name="P$2" x="1.27" y="0" drill="0.8" shape="octagon"/>
+<text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-2.54" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="EVQ11X09">
+<wire x1="-0.508" y1="3.048" x2="-0.508" y2="-3.048" width="0.127" layer="21"/>
+<wire x1="-0.508" y1="3.048" x2="5.588" y2="3.048" width="0.127" layer="21"/>
+<wire x1="5.588" y1="3.048" x2="5.588" y2="-3.048" width="0.127" layer="21"/>
+<wire x1="5.588" y1="-3.048" x2="-0.508" y2="-3.048" width="0.127" layer="21"/>
+<pad name="1" x="0" y="0" drill="1.0414" diameter="1.6764" shape="octagon"/>
+<pad name="2" x="5.08" y="0" drill="1.0414" diameter="1.6764" shape="octagon"/>
+<text x="0" y="3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="0" y="-5.08" size="1.27" layer="25">&gt;VALUE</text>
+</package>
+<package name="6MMTACTILE">
+<description>6mm Through-Hole Tactile Mometary Switch</description>
+<wire x1="-3" y1="3" x2="3" y2="3" width="0.127" layer="21"/>
+<wire x1="3" y1="-3" x2="-3" y2="-3" width="0.127" layer="21"/>
+<wire x1="-3" y1="3" x2="-3" y2="0.8" width="0.127" layer="21"/>
+<wire x1="-3" y1="-3" x2="-3" y2="-0.8" width="0.127" layer="21"/>
+<wire x1="3" y1="3" x2="3" y2="0.8" width="0.127" layer="21"/>
+<wire x1="3" y1="-3" x2="3" y2="-0.8" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="1.4142" width="0.127" layer="21"/>
+<pad name="P$1" x="-2.54" y="0" drill="0.8"/>
+<pad name="P$2" x="2.54" y="0" drill="0.8"/>
+</package>
+<package name="6MMTACTILE_RECT">
+<wire x1="-3" y1="-1.75" x2="3" y2="-1.75" width="0.127" layer="21"/>
+<wire x1="3" y1="1.75" x2="-3" y2="1.75" width="0.127" layer="21"/>
+<wire x1="-1.5" y1="0.75" x2="-1.5" y2="-0.75" width="0.127" layer="21"/>
+<wire x1="-1.5" y1="-0.75" x2="1.5" y2="-0.75" width="0.127" layer="21"/>
+<wire x1="1.5" y1="-0.75" x2="1.5" y2="0.75" width="0.127" layer="21"/>
+<wire x1="1.5" y1="0.75" x2="-1.5" y2="0.75" width="0.127" layer="21"/>
+<wire x1="-3" y1="1.7" x2="-3" y2="1.1" width="0.127" layer="21"/>
+<wire x1="-3" y1="-1.7" x2="-3" y2="-1.1" width="0.127" layer="21"/>
+<wire x1="3" y1="1.7" x2="3" y2="1.1" width="0.127" layer="21"/>
+<wire x1="3" y1="-1.7" x2="3" y2="-1.1" width="0.127" layer="21"/>
+<pad name="P$1" x="-3.5" y="0" drill="1.2"/>
+<pad name="P$2" x="3.5" y="0" drill="1.2"/>
+<text x="-3.048" y="2.54" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3.048" y="-3.556" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="EVQPJ">
+<description>&lt;B&gt;Panasonic EVQ-PJC tact switch&lt;/B&gt;</description>
+<wire x1="-1.25" y1="1.75" x2="7.75" y2="1.75" width="0.127" layer="21"/>
+<wire x1="7.75" y1="1.75" x2="7.75" y2="-1.75" width="0.127" layer="21"/>
+<wire x1="7.75" y1="-1.75" x2="-1.25" y2="-1.75" width="0.127" layer="21"/>
+<wire x1="-1.25" y1="-1.75" x2="-1.25" y2="1.75" width="0.127" layer="21"/>
+<pad name="A" x="0" y="0" drill="1.3" diameter="2.1844" shape="octagon"/>
+<pad name="B" x="6.5" y="0" drill="1.3" diameter="2.1844" shape="octagon"/>
+<text x="-1" y="2" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1" y="-3.5" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="OFFBOARD_2_LG">
+<pad name="P$1" x="-2.54" y="0" drill="1.2" diameter="2.54" shape="octagon"/>
+<pad name="P$2" x="2.54" y="0" drill="1.2" diameter="2.54" shape="octagon"/>
+<text x="-3.81" y="-3.81" size="1.27" layer="27">&gt;VALUE</text>
+<text x="-3.81" y="2.54" size="1.27" layer="25">&gt;NAME</text>
+</package>
+<package name="6MMTACTTILE_RECT_SMD">
+<smd name="P$1" x="-4.6" y="0" dx="1.6" dy="2.19" layer="1" rot="R90"/>
+<smd name="P$2" x="4.6" y="0" dx="1.6" dy="2.19" layer="1" rot="R90"/>
+<wire x1="-3" y1="1.75" x2="3" y2="1.75" width="0.127" layer="21"/>
+<wire x1="3" y1="1.75" x2="3" y2="-1.75" width="0.127" layer="21"/>
+<wire x1="-3" y1="1.75" x2="-3" y2="-1.75" width="0.127" layer="21"/>
+<wire x1="-3" y1="-1.75" x2="3" y2="-1.75" width="0.127" layer="21"/>
+<wire x1="-1.5" y1="0.76" x2="1.5" y2="0.76" width="0.127" layer="21"/>
+<wire x1="1.5" y1="0.76" x2="1.5" y2="-0.76" width="0.127" layer="21"/>
+<wire x1="1.5" y1="-0.76" x2="-1.5" y2="-0.76" width="0.127" layer="21"/>
+<wire x1="-1.5" y1="-0.76" x2="-1.5" y2="0.76" width="0.127" layer="21"/>
+<text x="-3" y="2.5" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-3.5" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+</packages>
+<symbols>
+<symbol name="SPST">
+<wire x1="-3.175" y1="0" x2="-2.54" y2="0" width="0.254" layer="94"/>
+<wire x1="2.54" y1="0" x2="3.175" y2="0" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="0" x2="0" y2="0.635" width="0.254" layer="94"/>
+<wire x1="0" y1="0.635" x2="2.54" y2="1.27" width="0.254" layer="94"/>
+<text x="-3.937" y="2.794" size="1.778" layer="95">&gt;NAME</text>
+<text x="-4.699" y="-3.556" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="P" x="-5.08" y="0" visible="off" length="short" direction="pas"/>
+<pin name="S" x="5.08" y="0" visible="off" length="short" direction="pas" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="SPST" prefix="S">
+<description>&lt;b&gt;SPST SWITCH&lt;/b&gt;</description>
+<gates>
+<gate name="G$1" symbol="SPST" x="0" y="0"/>
+</gates>
+<devices>
+<device name="_OFFBOARD" package="OFFBOARD_2">
+<connects>
+<connect gate="G$1" pin="P" pad="P$1"/>
+<connect gate="G$1" pin="S" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_TACT1" package="EVQ11X09">
+<connects>
+<connect gate="G$1" pin="P" pad="1"/>
+<connect gate="G$1" pin="S" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_TACT2" package="6MMTACTILE">
+<connects>
+<connect gate="G$1" pin="P" pad="P$1"/>
+<connect gate="G$1" pin="S" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_TAC_RECT1" package="6MMTACTILE_RECT">
+<connects>
+<connect gate="G$1" pin="P" pad="P$1"/>
+<connect gate="G$1" pin="S" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_TACT_RECT2" package="EVQPJ">
+<connects>
+<connect gate="G$1" pin="P" pad="A"/>
+<connect gate="G$1" pin="S" pad="B"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_OFFBOARD_LG" package="OFFBOARD_2_LG">
+<connects>
+<connect gate="G$1" pin="P" pad="P$1"/>
+<connect gate="G$1" pin="S" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_TACT_RECT_SMD" package="6MMTACTTILE_RECT_SMD">
+<connects>
+<connect gate="G$1" pin="P" pad="P$1"/>
+<connect gate="G$1" pin="S" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 <attribute name="DATABASE" value="/home/mes/eagle/PARTSDB.txt"/>
@@ -13292,6 +13458,14 @@ ground current values are important attributes. &lt;/p&gt;
 <part name="+3V2" library="supply1" deviceset="+3V3" device=""/>
 <part name="U1" library="bt_regulator" deviceset="LD29150" device="DT" value="LD29150DT50R"/>
 <part name="C1" library="rcl" deviceset="C-US" device="C1206" value="106"/>
+<part name="S1" library="bt_electromech" deviceset="SPST" device="_TAC_RECT1" value="ISP"/>
+<part name="SUPPLY6" library="supply2" deviceset="GND" device=""/>
+<part name="R11" library="rcl" deviceset="R-US_" device="R0603" value="10K">
+<attribute name="MF" value=""/>
+<attribute name="MPN" value="WCR0805-220RFI"/>
+<attribute name="OC_NEWARK" value="98K2621"/>
+</part>
+<part name="+3V10" library="supply1" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -13482,7 +13656,7 @@ ground current values are important attributes. &lt;/p&gt;
 <attribute name="MPN" x="139.7" y="25.4" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="+3V7" gate="G$1" x="368.3" y="129.54"/>
-<instance part="SUPPLY9" gate="GND" x="157.48" y="116.84"/>
+<instance part="SUPPLY9" gate="GND" x="157.48" y="114.3"/>
 <instance part="JP28" gate="A" x="309.88" y="137.16">
 <attribute name="OC_NEWARK" x="309.88" y="137.16" size="1.778" layer="96" display="off"/>
 <attribute name="MF" x="309.88" y="137.16" size="1.778" layer="96" display="off"/>
@@ -13516,6 +13690,14 @@ ground current values are important attributes. &lt;/p&gt;
 <instance part="+3V2" gate="G$1" x="132.08" y="203.2"/>
 <instance part="U1" gate="G$1" x="276.86" y="66.04"/>
 <instance part="C1" gate="G$1" x="264.16" y="50.8"/>
+<instance part="S1" gate="G$1" x="182.88" y="124.46" rot="R90"/>
+<instance part="SUPPLY6" gate="GND" x="182.88" y="114.3"/>
+<instance part="R11" gate="G$1" x="182.88" y="144.78" rot="MR90">
+<attribute name="OC_NEWARK" x="182.88" y="144.78" size="1.778" layer="96" rot="MR270" display="off"/>
+<attribute name="MF" x="182.88" y="144.78" size="1.778" layer="96" rot="MR270" display="off"/>
+<attribute name="MPN" x="182.88" y="144.78" size="1.778" layer="96" rot="MR270" display="off"/>
+</instance>
+<instance part="+3V10" gate="G$1" x="182.88" y="157.48"/>
 </instances>
 <busses>
 </busses>
@@ -13739,8 +13921,13 @@ ground current values are important attributes. &lt;/p&gt;
 <segment>
 <pinref part="U$1" gate="G$1" pin="GND2"/>
 <wire x1="124.46" y1="124.46" x2="157.48" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="157.48" y1="124.46" x2="157.48" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="124.46" x2="157.48" y2="116.84" width="0.1524" layer="91"/>
 <pinref part="SUPPLY9" gate="GND" pin="GND"/>
+</segment>
+<segment>
+<pinref part="SUPPLY6" gate="GND" pin="GND"/>
+<pinref part="S1" gate="G$1" pin="P"/>
+<wire x1="182.88" y1="116.84" x2="182.88" y2="119.38" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="MOSI1" class="0">
@@ -14040,6 +14227,11 @@ ground current values are important attributes. &lt;/p&gt;
 <wire x1="124.46" y1="190.5" x2="132.08" y2="190.5" width="0.1524" layer="91"/>
 <wire x1="132.08" y1="190.5" x2="132.08" y2="200.66" width="0.1524" layer="91"/>
 <pinref part="+3V2" gate="G$1" pin="+3V3"/>
+</segment>
+<segment>
+<pinref part="R11" gate="G$1" pin="2"/>
+<pinref part="+3V10" gate="G$1" pin="+3V3"/>
+<wire x1="182.88" y1="154.94" x2="182.88" y2="149.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -14430,9 +14622,14 @@ ground current values are important attributes. &lt;/p&gt;
 </net>
 <net name="!ISP" class="0">
 <segment>
-<wire x1="124.46" y1="132.08" x2="157.48" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="132.08" x2="182.88" y2="132.08" width="0.1524" layer="91"/>
 <label x="157.48" y="132.08" size="1.778" layer="95" rot="MR0"/>
 <pinref part="U$1" gate="G$1" pin="P2.10"/>
+<pinref part="R11" gate="G$1" pin="1"/>
+<wire x1="182.88" y1="132.08" x2="182.88" y2="139.7" width="0.1524" layer="91"/>
+<junction x="182.88" y="132.08"/>
+<pinref part="S1" gate="G$1" pin="S"/>
+<wire x1="182.88" y1="129.54" x2="182.88" y2="132.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="ENC0" class="0">
