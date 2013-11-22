@@ -14567,7 +14567,7 @@ ground current values are important attributes. &lt;/p&gt;
 <pinref part="U$1" gate="G$1" pin="P1.31/AD0.5"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="VBEC" class="0">
 <segment>
 <wire x1="269.24" y1="68.58" x2="264.16" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="BECSEL" gate="A" pin="1"/>
