@@ -1,0 +1,61 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+= Assembly =
+
+== Install pin headers ==
+
+=== MCU Sockets ===
+ # Cut black female sockets to 27 pins 
+ # Install 1 female socket in each LPCXPRESSO/mbed row of holes
+
+=== LPCXPresso Preparation ===
+ # Optionally, cut apart LPCXpresso from LPC-Link. 
+ # Follow [http://www.bot-thoughts.com/2012/01/lpcxpresso-surgery.html Instructions] for separating boards
+ # Install male pin headers on LPCXpresso, top
+ # Install female pin headers on LPC-Link, bottom
+
+=== Power and Reset Ports ===
+ # Black 2-pin header on POWER and RST
+ # Black 3-pin header on BECSEL
+
+=== Control Port ===
+ # Yellow 4-pin header on CONTROL:SIG
+ # Red 4-pin header on CONTROL:5V/6V
+ # Black 4-pin header on CONTROL:GND
+
+=== Encoders Port ===
+ # Black 4-pin header on one of two ENCODERS
+ # White 4-pin header on one of two ENCODERS
+
+=== I2C Port ===
+ # Yellow 5-pin header on I2C:SDA
+ # Blue 5-pin header on I2C:SCL
+ # 2x Red 5-pin header on I2C:3V and IC2:5V
+ # Black 5-pin header on I2C:GND, 
+
+=== UART Ports ===
+ # Black 5-pin headers on UART0, UART1, UART2, UART3
+
+=== Rear analog/digital/pwm ports ===
+ # Yellow 11-pin header on rearmost port with 11 pins, SIG
+ # Red 11-pin header on rearmost port with 11 pins, 3.3V
+ # Black 11-pin header on rearmost port with 11 pins, GND
+
+== Install 5V Regulator ==
+
+ # Rev 0.5 boards: don't install the regulator.
+
+= Power =
+
+You can power your !RoverBaseboard in two ways.
+
+ * Power with an external 5V supply
+   * Connect 5V to the 5V POWER input
+ * Power with your ESC's BEC
+   * If your BEC is 5V, put the BECSEL jumper on 5V
+   * If your BEC is 6V (up to 25V for UA7805C), put BECSEL jumper on 6V
+   * Connect CONTROL:SPEED to your ESC through RoverMux
