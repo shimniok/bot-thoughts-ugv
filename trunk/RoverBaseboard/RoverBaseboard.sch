@@ -158,10 +158,14 @@
 <wire x1="2.54" y1="-0.635" x2="1.905" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="1.905" y1="-1.27" x2="0.635" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="0.635" y1="-1.27" x2="0" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="-5.08" y1="1.27" x2="-2.54" y2="1.27" width="0.1524" layer="21"/>
-<wire x1="-2.54" y1="1.27" x2="-2.54" y2="0.635" width="0.1524" layer="21"/>
+<wire x1="-3.175" y1="1.27" x2="-4.445" y2="1.27" width="0.1524" layer="21"/>
+<wire x1="-4.445" y1="1.27" x2="-5.08" y2="0.635" width="0.1524" layer="21"/>
+<wire x1="-3.175" y1="-1.27" x2="-4.445" y2="-1.27" width="0.1524" layer="21"/>
+<wire x1="-4.445" y1="-1.27" x2="-5.08" y2="-0.635" width="0.1524" layer="21"/>
+<wire x1="-5.08" y1="-0.635" x2="-5.08" y2="0.635" width="0.1524" layer="21"/>
+<wire x1="-3.175" y1="1.27" x2="-2.54" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="-2.54" y1="0.635" x2="-2.54" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="-2.54" y1="-0.635" x2="-2.54" y2="-1.27" width="0.1524" layer="21"/>
+<wire x1="-2.54" y1="-0.635" x2="-3.175" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="-2.54" y1="0.635" x2="-1.905" y2="1.27" width="0.1524" layer="21"/>
 <wire x1="-1.905" y1="1.27" x2="-0.635" y2="1.27" width="0.1524" layer="21"/>
 <wire x1="-0.635" y1="1.27" x2="0" y2="0.635" width="0.1524" layer="21"/>
@@ -169,8 +173,6 @@
 <wire x1="0" y1="-0.635" x2="-0.635" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="-0.635" y1="-1.27" x2="-1.905" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="-1.905" y1="-1.27" x2="-2.54" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="-5.08" y1="1.27" x2="-5.08" y2="-1.27" width="0.1524" layer="21"/>
-<wire x1="-2.54" y1="-1.27" x2="-5.08" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="3.175" y1="1.27" x2="4.445" y2="1.27" width="0.1524" layer="21"/>
 <wire x1="4.445" y1="1.27" x2="5.08" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="5.08" y1="0.635" x2="5.08" y2="-0.635" width="0.1524" layer="21"/>
@@ -13007,67 +13009,70 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 </deviceset>
 </devicesets>
 </library>
-<library name="v-reg-3">
-<description>&lt;b&gt;Voltage Regulators&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;&lt;/p&gt;
-&lt;p&gt;&lt;date&gt;2008-05-16&lt;/date&gt;, updates by &lt;author&gt;Eike Schmidt&lt;/author&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;integrated library "ltc_swr.lbr" with switching regulators from &lt;a href=http://www.linear.com&gt;Linear Technology&lt;/a&gt;, created by &lt;author&gt;Claudius Stern&lt;/author&gt;&lt;/li&gt;&lt;li&gt;added step-down switching regulator LT1767&lt;/li&gt;&lt;li&gt;combined identical symbols for positive regulators&lt;/li&gt;&lt;li&gt;added packages SO8 and SOT89 for 78Lxx and 79Lxx&lt;/li&gt;&lt;li&gt;added package SO8 for LM317L and LM337L&lt;/li&gt;&lt;li&gt;added linear regulators L4931, L4949E, LM2931&lt;/li&gt;&lt;li&gt;added micropower, ultra-low dropout family LP298x&lt;/li&gt;&lt;li&gt;added ultra-low dropout regulators IRU1205, TK112, TK113&lt;/li&gt;&lt;li&gt;added low power, low dropout regulator family S-812&lt;/li&gt;&lt;li&gt;added NPN "Simple Switcher"(c) family LM257x&lt;/li&gt;&lt;li&gt;added DMOS "Simple Switcher"(c) family LM267x&lt;/li&gt;&lt;li&gt;added NPN Darlington switching regulator MC34063A&lt;/li&gt;&lt;li&gt;added LED boost drivers PR4401, PR4402, PR4403&lt;/li&gt;&lt;/ul&gt;</description>
+<library name="bt_regulator">
+<description>&lt;b&gt;Common Voltage Regulators&lt;/b&gt;
+&lt;p&gt;Created by Michael Shimniok &lt;a href="http://www.bot-thoughts.com/"&gt;www.bot-thoughts.com&lt;/a&gt;&lt;/b&gt;</description>
 <packages>
-<package name="78XXS">
-<description>&lt;b&gt;VOLTAGE REGULATOR&lt;/b&gt;</description>
-<wire x1="4.826" y1="-4.318" x2="5.08" y2="-4.064" width="0.1778" layer="21"/>
-<wire x1="4.826" y1="-4.318" x2="-4.826" y2="-4.318" width="0.1778" layer="21"/>
-<wire x1="-5.08" y1="-4.064" x2="-4.826" y2="-4.318" width="0.1778" layer="21"/>
-<wire x1="5.08" y1="-1.143" x2="5.08" y2="-4.064" width="0.1778" layer="21"/>
-<wire x1="-5.08" y1="-4.064" x2="-5.08" y2="-1.143" width="0.1778" layer="21"/>
-<circle x="-4.6228" y="-3.7084" radius="0.254" width="0" layer="21"/>
-<pad name="IN" x="-2.54" y="-2.54" drill="1.016" shape="long" rot="R90"/>
-<pad name="GND" x="0" y="-2.54" drill="1.016" shape="long" rot="R90"/>
-<pad name="OUT" x="2.54" y="-2.54" drill="1.016" shape="long" rot="R90"/>
-<text x="-5.08" y="-6.0452" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="-5.08" y="-7.62" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
-<text x="-0.635" y="-3.81" size="1.27" layer="51" ratio="10">-</text>
-<text x="-3.175" y="-3.81" size="1.27" layer="51" ratio="10">I</text>
-<text x="1.905" y="-3.81" size="1.27" layer="51" ratio="10">O</text>
-<rectangle x1="-5.334" y1="-1.27" x2="-3.429" y2="0" layer="21"/>
-<rectangle x1="-3.429" y1="-0.762" x2="-1.651" y2="0" layer="21"/>
-<rectangle x1="-1.651" y1="-1.27" x2="-0.889" y2="0" layer="21"/>
-<rectangle x1="-0.889" y1="-0.762" x2="0.889" y2="0" layer="21"/>
-<rectangle x1="0.889" y1="-1.27" x2="1.651" y2="0" layer="21"/>
-<rectangle x1="1.651" y1="-0.762" x2="3.429" y2="0" layer="21"/>
-<rectangle x1="3.429" y1="-1.27" x2="5.334" y2="0" layer="21"/>
-<rectangle x1="-3.429" y1="-1.27" x2="-1.651" y2="-0.762" layer="51"/>
-<rectangle x1="-0.889" y1="-1.27" x2="0.889" y2="-0.762" layer="51"/>
-<rectangle x1="1.651" y1="-1.27" x2="3.429" y2="-0.762" layer="51"/>
+<package name="DPAK">
+<wire x1="3.1496" y1="-1.7526" x2="3.1496" y2="4.2418" width="0.1778" layer="21"/>
+<wire x1="-3.2004" y1="4.2418" x2="-3.2004" y2="-1.7526" width="0.1778" layer="21"/>
+<wire x1="-1.7272" y1="4.8006" x2="1.7018" y2="4.8006" width="1.016" layer="51"/>
+<wire x1="-3.2004" y1="4.2418" x2="-2.4638" y2="4.2418" width="0.1778" layer="21"/>
+<wire x1="3.1496" y1="4.2418" x2="2.4638" y2="4.2418" width="0.1778" layer="21"/>
+<wire x1="2.4638" y1="4.2418" x2="-2.4638" y2="4.2418" width="0.1524" layer="51"/>
+<wire x1="3.1496" y1="-1.7526" x2="-3.2004" y2="-1.7526" width="0.1778" layer="21"/>
+<smd name="4" x="0" y="4.6228" dx="4.826" dy="4.191" layer="1"/>
+<smd name="3" x="2.2098" y="-3.6576" dx="1.6002" dy="2.9972" layer="1"/>
+<smd name="1" x="-2.2606" y="-3.6576" dx="1.6002" dy="2.9972" layer="1"/>
+<text x="-2.54" y="0.762" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-2.54" y="-0.762" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+<text x="-2.413" y="-1.5748" size="0.6096" layer="51">1</text>
+<text x="-0.2032" y="-1.5748" size="0.6096" layer="51">2</text>
+<text x="1.9812" y="-1.5748" size="0.6096" layer="51">3</text>
+<text x="-0.3302" y="3.429" size="0.6096" layer="51">4</text>
+<rectangle x1="-2.6416" y1="-4.4704" x2="-1.8796" y2="-1.8034" layer="51"/>
+<rectangle x1="1.8288" y1="-4.4704" x2="2.5908" y2="-1.8034" layer="51"/>
+<rectangle x1="-0.381" y1="-2.5654" x2="0.381" y2="-1.8034" layer="51"/>
 </package>
 </packages>
 <symbols>
-<symbol name="78XX">
-<wire x1="-5.08" y1="-5.08" x2="5.08" y2="-5.08" width="0.4064" layer="94"/>
-<wire x1="5.08" y1="-5.08" x2="5.08" y2="2.54" width="0.4064" layer="94"/>
-<wire x1="5.08" y1="2.54" x2="-5.08" y2="2.54" width="0.4064" layer="94"/>
-<wire x1="-5.08" y1="2.54" x2="-5.08" y2="-5.08" width="0.4064" layer="94"/>
-<text x="2.54" y="-7.62" size="1.778" layer="95">&gt;NAME</text>
-<text x="2.54" y="-10.16" size="1.778" layer="96">&gt;VALUE</text>
-<text x="-2.032" y="-4.318" size="1.524" layer="95">GND</text>
-<text x="-4.445" y="-0.635" size="1.524" layer="95">IN</text>
-<text x="0.635" y="-0.635" size="1.524" layer="95">OUT</text>
-<pin name="IN" x="-7.62" y="0" visible="off" length="short" direction="in"/>
-<pin name="GND" x="0" y="-7.62" visible="off" length="short" direction="in" rot="R90"/>
-<pin name="OUT" x="7.62" y="0" visible="off" length="short" direction="pas" rot="R180"/>
+<symbol name="V-REG-3-FIX">
+<description>3-pin voltage regulator</description>
+<pin name="VIN" x="-7.62" y="2.54" visible="off" length="short"/>
+<pin name="VOUT" x="7.62" y="2.54" visible="off" length="short" rot="R180"/>
+<pin name="GND" x="0" y="-5.08" visible="off" length="short" rot="R90"/>
+<wire x1="-5.08" y1="-2.54" x2="5.08" y2="-2.54" width="0.4064" layer="94"/>
+<wire x1="5.08" y1="-2.54" x2="5.08" y2="5.08" width="0.4064" layer="94"/>
+<wire x1="5.08" y1="5.08" x2="-5.08" y2="5.08" width="0.4064" layer="94"/>
+<wire x1="-5.08" y1="5.08" x2="-5.08" y2="-2.54" width="0.4064" layer="94"/>
+<text x="2.54" y="-5.08" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="-7.62" size="1.778" layer="96">&gt;VALUE</text>
+<text x="-2.032" y="-1.778" size="1.524" layer="95">GND</text>
+<text x="-4.445" y="1.905" size="1.524" layer="95">IN</text>
+<text x="0.635" y="1.905" size="1.524" layer="95">OUT</text>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="78XXS" prefix="IC" uservalue="yes">
-<description>&lt;b&gt;VOLTAGE REGULATOR&lt;/b&gt;</description>
+<deviceset name="LD29150" prefix="U">
+<description>&lt;B&gt;STM LD29150 LDO Voltage Regulator&lt;/b&gt;
+&lt;p&gt;The LD29150xx is a high current, high accuracy, 
+low-dropout voltage regulator series. These 
+regulators feature 400 mV dropout voltage and 
+very low ground current. Designed for high 
+current loads, these devices are also used in 
+lower current, extremely low dropout-critical 
+systems, where their tiny dropout voltage and 
+ground current values are important attributes. &lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.st.com/web/en/resource/technical/document/datasheet/CD00003403.pdf"&gt;Datasheet.pdf&lt;/a&gt;&lt;/p&gt;</description>
 <gates>
-<gate name="1" symbol="78XX" x="0" y="0"/>
+<gate name="G$1" symbol="V-REG-3-FIX" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="78XXS">
+<device name="DT" package="DPAK">
 <connects>
-<connect gate="1" pin="GND" pad="GND"/>
-<connect gate="1" pin="IN" pad="IN"/>
-<connect gate="1" pin="OUT" pad="OUT"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="VIN" pad="1"/>
+<connect gate="G$1" pin="VOUT" pad="3"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -13264,28 +13269,29 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="C2" library="rcl" deviceset="C-US" device="C1206" value="10"/>
-<part name="C4" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C5" library="rcl" deviceset="C-US" device="C0603" value="0.1"/>
-<part name="C6" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C7" library="rcl" deviceset="C-US" device="C0603" value="0.1"/>
-<part name="C8" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C9" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C10" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C11" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C12" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C13" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C14" library="rcl" deviceset="C-US" device="C0603" value="10"/>
-<part name="C15" library="rcl" deviceset="C-US" device="C0603" value="10"/>
+<part name="C2" library="rcl" deviceset="C-US" device="C1206" value="106"/>
+<part name="C4" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C5" library="rcl" deviceset="C-US" device="C0603" value="104"/>
+<part name="C6" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C7" library="rcl" deviceset="C-US" device="C0603" value="104"/>
+<part name="C8" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C9" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C10" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C11" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C12" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C13" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C14" library="rcl" deviceset="C-US" device="C0603" value="106"/>
+<part name="C15" library="rcl" deviceset="C-US" device="C0603" value="106"/>
 <part name="SUPPLY12" library="supply2" deviceset="GND" device=""/>
-<part name="C3" library="rcl" deviceset="C-US" device="C1206" value="10"/>
+<part name="C3" library="rcl" deviceset="C-US" device="C1206" value="106"/>
 <part name="P+4" library="supply1" deviceset="+5V" device=""/>
 <part name="IC3" library="SparkFun" deviceset="V_REG_LM1117" device="SOT223" value="3.3V"/>
 <part name="+3V8" library="supply1" deviceset="+3V3" device=""/>
-<part name="C17" library="rcl" deviceset="CPOL-US" device="140CLH-0810" value="100"/>
-<part name="IC1" library="v-reg-3" deviceset="78XXS" device="" value="7805"/>
+<part name="C17" library="rcl" deviceset="CPOL-US" device="140CLH-0810" value="33uF"/>
 <part name="BECSEL" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="5V | 6V"/>
 <part name="+3V2" library="supply1" deviceset="+3V3" device=""/>
+<part name="U1" library="bt_regulator" deviceset="LD29150" device="DT" value="LD29150DT50R"/>
+<part name="C1" library="rcl" deviceset="C-US" device="C1206" value="106"/>
 </parts>
 <sheets>
 <sheet>
@@ -13384,10 +13390,10 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <attribute name="MPN" x="426.72" y="132.08" size="1.778" layer="96" rot="MR0" display="off"/>
 </instance>
 <instance part="U2" gate="G$1" x="228.6" y="40.64"/>
-<instance part="JP3" gate="A" x="299.72" y="55.88" rot="MR0">
-<attribute name="OC_NEWARK" x="299.72" y="55.88" size="1.778" layer="96" display="off"/>
-<attribute name="MF" x="299.72" y="55.88" size="1.778" layer="96" display="off"/>
-<attribute name="MPN" x="299.72" y="55.88" size="1.778" layer="96" display="off"/>
+<instance part="JP3" gate="A" x="304.8" y="55.88" rot="MR0">
+<attribute name="OC_NEWARK" x="304.8" y="55.88" size="1.778" layer="96" display="off"/>
+<attribute name="MF" x="304.8" y="55.88" size="1.778" layer="96" display="off"/>
+<attribute name="MPN" x="304.8" y="55.88" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="P+3" gate="1" x="314.96" y="78.74"/>
 <instance part="JP7" gate="A" x="462.28" y="182.88"/>
@@ -13487,7 +13493,7 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <attribute name="MF" x="309.88" y="119.38" size="1.778" layer="96" display="off"/>
 <attribute name="MPN" x="309.88" y="119.38" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="C2" gate="G$1" x="289.56" y="53.34"/>
+<instance part="C2" gate="G$1" x="292.1" y="50.8"/>
 <instance part="C4" gate="G$1" x="297.18" y="185.42" rot="R90"/>
 <instance part="C5" gate="G$1" x="297.18" y="167.64" rot="R90"/>
 <instance part="C6" gate="G$1" x="124.46" y="76.2" rot="R90"/>
@@ -13506,9 +13512,10 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <instance part="IC3" gate="G$1" x="342.9" y="58.42"/>
 <instance part="+3V8" gate="G$1" x="360.68" y="71.12"/>
 <instance part="C17" gate="G$1" x="360.68" y="50.8"/>
-<instance part="IC1" gate="1" x="276.86" y="68.58"/>
-<instance part="BECSEL" gate="A" x="297.18" y="78.74"/>
+<instance part="BECSEL" gate="A" x="302.26" y="78.74"/>
 <instance part="+3V2" gate="G$1" x="132.08" y="203.2"/>
+<instance part="U1" gate="G$1" x="276.86" y="66.04"/>
+<instance part="C1" gate="G$1" x="264.16" y="50.8"/>
 </instances>
 <busses>
 </busses>
@@ -13644,14 +13651,14 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 </segment>
 <segment>
 <pinref part="JP3" gate="A" pin="2"/>
-<wire x1="307.34" y1="35.56" x2="307.34" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="307.34" y1="55.88" x2="302.26" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="312.42" y1="35.56" x2="312.42" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="312.42" y1="55.88" x2="307.34" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="SUPPLY12" gate="GND" pin="GND"/>
 <wire x1="327.66" y1="33.02" x2="327.66" y2="35.56" width="0.1524" layer="91"/>
 <pinref part="C3" gate="G$1" pin="2"/>
 <wire x1="327.66" y1="35.56" x2="327.66" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="C17" gate="G$1" pin="-"/>
-<wire x1="307.34" y1="35.56" x2="327.66" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="312.42" y1="35.56" x2="327.66" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="327.66" y1="35.56" x2="342.9" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="342.9" y1="35.56" x2="360.68" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="360.68" y1="35.56" x2="360.68" y2="45.72" width="0.1524" layer="91"/>
@@ -13660,13 +13667,17 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <wire x1="342.9" y1="50.8" x2="342.9" y2="35.56" width="0.1524" layer="91"/>
 <junction x="342.9" y="35.56"/>
 <pinref part="C2" gate="G$1" pin="2"/>
-<pinref part="IC1" gate="1" pin="GND"/>
 <wire x1="276.86" y1="60.96" x2="276.86" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="276.86" y1="35.56" x2="289.56" y2="35.56" width="0.1524" layer="91"/>
-<junction x="307.34" y="35.56"/>
-<wire x1="289.56" y1="35.56" x2="307.34" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="289.56" y1="48.26" x2="289.56" y2="35.56" width="0.1524" layer="91"/>
-<junction x="289.56" y="35.56"/>
+<wire x1="276.86" y1="35.56" x2="292.1" y2="35.56" width="0.1524" layer="91"/>
+<junction x="312.42" y="35.56"/>
+<wire x1="292.1" y1="35.56" x2="312.42" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="292.1" y1="45.72" x2="292.1" y2="35.56" width="0.1524" layer="91"/>
+<junction x="292.1" y="35.56"/>
+<pinref part="U1" gate="G$1" pin="GND"/>
+<pinref part="C1" gate="G$1" pin="2"/>
+<wire x1="276.86" y1="35.56" x2="264.16" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="35.56" x2="264.16" y2="45.72" width="0.1524" layer="91"/>
+<junction x="276.86" y="35.56"/>
 </segment>
 <segment>
 <wire x1="444.5" y1="55.88" x2="444.5" y2="60.96" width="0.1524" layer="91"/>
@@ -13804,18 +13815,18 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 <pinref part="JP3" gate="A" pin="1"/>
 <wire x1="314.96" y1="76.2" x2="314.96" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="314.96" y1="68.58" x2="314.96" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="314.96" y1="58.42" x2="302.26" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="314.96" y1="58.42" x2="307.34" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="1"/>
 <junction x="314.96" y="58.42"/>
-<wire x1="284.48" y1="68.58" x2="289.56" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="1" pin="OUT"/>
+<wire x1="284.48" y1="68.58" x2="292.1" y2="68.58" width="0.1524" layer="91"/>
 <junction x="314.96" y="68.58"/>
 <pinref part="BECSEL" gate="A" pin="3"/>
-<wire x1="289.56" y1="68.58" x2="314.96" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="294.64" y1="76.2" x2="289.56" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="289.56" y1="76.2" x2="289.56" y2="68.58" width="0.1524" layer="91"/>
-<junction x="289.56" y="68.58"/>
-<wire x1="289.56" y1="55.88" x2="289.56" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="292.1" y1="68.58" x2="314.96" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="299.72" y1="76.2" x2="292.1" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="292.1" y1="76.2" x2="292.1" y2="68.58" width="0.1524" layer="91"/>
+<junction x="292.1" y="68.58"/>
+<wire x1="292.1" y1="53.34" x2="292.1" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="VOUT"/>
 </segment>
 <segment>
 <pinref part="JP27" gate="A" pin="1"/>
@@ -14528,7 +14539,7 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 </segment>
 <segment>
 <label x="279.4" y="78.74" size="1.778" layer="95"/>
-<wire x1="294.64" y1="78.74" x2="279.4" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="299.72" y1="78.74" x2="279.4" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="BECSEL" gate="A" pin="2"/>
 </segment>
 </net>
@@ -14558,11 +14569,14 @@ Standard adjustable voltage regulator but in SMD form. Spark Fun Electronics SKU
 </net>
 <net name="N$3" class="0">
 <segment>
-<pinref part="IC1" gate="1" pin="IN"/>
-<wire x1="269.24" y1="68.58" x2="266.7" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="68.58" x2="264.16" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="BECSEL" gate="A" pin="1"/>
-<wire x1="294.64" y1="81.28" x2="266.7" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="266.7" y1="81.28" x2="266.7" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="299.72" y1="81.28" x2="264.16" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="81.28" x2="264.16" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="VIN"/>
+<junction x="264.16" y="68.58"/>
+<pinref part="C1" gate="G$1" pin="1"/>
+<wire x1="264.16" y1="53.34" x2="264.16" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
