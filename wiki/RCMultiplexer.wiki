@@ -4,7 +4,7 @@
 
 = Introduction =
 
-When your robot is about to crash, the RoverMux lets you take control of your self-driving robot. The 3-channel multiplexer is a dedicated board that keeps running even if your MCU doesn't.
+When your robot is about to crash, the !RoverMux lets you take control of your self-driving robot. The 3-channel multiplexer is a dedicated board that keeps running even if your MCU doesn't.
 
 = Source =
 
@@ -45,13 +45,13 @@ The board is powered by the BEC which means you must turn on your ESC to turn on
 
 = Taking Control =
 
-If you want to take control by turning on your transmitter, leave 3R/C unconnected -or- unsolder the CH3 jumper. Then, power on your transmitter and the RoverMux switches to RC mode. Turn it off and it switches back to MCU mode.
+If you want to take control by turning on your transmitter, leave 3R/C unconnected -or- unsolder the CH3 jumper. Then, power on your transmitter and the !RoverMux switches to RC mode. Turn it off and it switches back to MCU mode.
 
 If you have a receiver that generates a failsafe signal when the transmitter signal is lost, this approach won't work. 
 
 Also, if your receiver takes a long time to recognize that the transmitter is on, this approach won't work very well.
 
-For instantaneous control, you can use CH3. Solder the CH3 jumper, then connect the receiver CH3 to the 3R/C port. Turn on your transmitter and configure it so that when you press the CH3 switch it will rapidly switch the RoverMux between R/C and MCU mode.
+For instantaneous control, you can use CH3. Solder the CH3 jumper, then connect the receiver CH3 to the 3R/C port. Turn on your transmitter and configure it so that when you press the CH3 switch it will rapidly switch the !RoverMux between R/C and MCU mode.
 
 = Programming =
 
