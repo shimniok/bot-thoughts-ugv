@@ -14,14 +14,14 @@
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="yes"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
@@ -184,8 +184,8 @@
 <text x="20.066" y="1.016" size="1.27" layer="26" font="vector" ratio="16" rot="MR0">#2/2mm</text>
 <polygon width="0.254" layer="29">
 <vertex x="3.694" y="15.3"/>
-<vertex x="21.014" y="15.3"/>
-<vertex x="21.014" y="11.2"/>
+<vertex x="11.616" y="15.3"/>
+<vertex x="11.616" y="11.2"/>
 <vertex x="3.694" y="11.2"/>
 </polygon>
 <polygon width="0.254" layer="29">
@@ -367,6 +367,12 @@
 <text x="11.176" y="21.463" size="1.016" layer="122" font="vector" ratio="20" rot="MR90">106</text>
 <text x="16.256" y="21.463" size="1.016" layer="122" font="vector" ratio="20" rot="MR90">106</text>
 <text x="17.86049375" y="9.2075" size="1.27" layer="122" font="vector" ratio="16" rot="MR90">L7805</text>
+<polygon width="0.254" layer="29">
+<vertex x="12.838" y="15.3"/>
+<vertex x="21.014" y="15.3"/>
+<vertex x="21.014" y="11.2"/>
+<vertex x="12.838" y="11.2"/>
+</polygon>
 </plain>
 <libraries>
 <library name="rcl">
@@ -1910,8 +1916,8 @@ Please make sure your boards conform to these design rules.</description>
 <element name="ESC-" library="bt_electromech" package="PAD_12GA" value="WIREPAD_12GA" x="21.082" y="7.112" smashed="yes" rot="R270">
 <attribute name="NAME" x="24.003" y="5.588" size="1.016" layer="25" font="vector" ratio="10" rot="R90"/>
 </element>
-<element name="R1" library="bt" package="R2512" value="0.0005" x="12.065" y="13.208" smashed="yes">
-<attribute name="VALUE" x="14.659" y="11.098" size="1.016" layer="27" font="vector" rot="R180"/>
+<element name="R1" library="bt" package="R2512" value="0.0005" x="12.192" y="13.208" smashed="yes">
+<attribute name="VALUE" x="14.786" y="11.098" size="1.016" layer="27" font="vector" rot="R180"/>
 </element>
 <element name="IC1" library="burr-brown" package="SOT23-5" value="INA139" x="20.701" y="17.907" smashed="yes" rot="R270">
 <attribute name="OC_NEWARK" value="35C1744" x="-8.509" y="1.397" size="1.778" layer="27" rot="R270" display="off"/>
@@ -1962,7 +1968,7 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="18.735" y1="16.957" x2="17.526" y2="15.748" width="0.254" layer="1"/>
 <wire x1="17.526" y1="15.748" x2="11.608" y2="15.748" width="0.254" layer="1"/>
 <wire x1="11.608" y1="15.748" x2="10.271" y2="14.411" width="0.254" layer="1"/>
-<wire x1="10.265" y1="13.208" x2="10.271" y2="14.411" width="0.254" layer="1"/>
+<wire x1="10.392" y1="13.208" x2="10.271" y2="14.411" width="0.254" layer="1"/>
 <contactref element="BAT+" pad="P$1"/>
 <contactref element="R3" pad="2"/>
 <contactref element="IC1" pad="5"/>
@@ -1977,8 +1983,8 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="21" y1="18.6" x2="21" y2="17.4" width="0.254" layer="1"/>
 <polygon width="0.254" layer="1">
 <vertex x="1" y="15.2"/>
-<vertex x="11.546" y="15.2"/>
-<vertex x="11.546" y="11.2"/>
+<vertex x="11.8" y="15.2"/>
+<vertex x="11.8" y="11.2"/>
 <vertex x="1" y="11.2"/>
 </polygon>
 </signal>
@@ -2135,7 +2141,7 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="12.446" y1="13.97" x2="20.32" y2="13.97" width="0.8128" layer="16"/>
 <wire x1="20.32" y1="13.97" x2="21.082" y2="13.208" width="0.8128" layer="16"/>
 <polygon width="0.254" layer="1">
-<vertex x="12.5" y="15.3"/>
+<vertex x="12.6" y="15.3"/>
 <vertex x="23.2" y="15.3"/>
 <vertex x="23.2" y="11.2"/>
 <vertex x="12.6" y="11.2"/>
