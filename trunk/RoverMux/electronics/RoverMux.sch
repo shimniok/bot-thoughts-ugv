@@ -9116,6 +9116,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <pinref part="U3" gate="P" pin="VCC"/>
 <wire x1="147.32" y1="78.74" x2="134.62" y2="78.74" width="0.1524" layer="91"/>
 <wire x1="134.62" y1="78.74" x2="134.62" y2="76.2" width="0.1524" layer="91"/>
+<junction x="147.32" y="78.74"/>
 </segment>
 <segment>
 <pinref part="R1" gate="G$1" pin="2"/>
