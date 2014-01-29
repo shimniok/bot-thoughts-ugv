@@ -11339,7 +11339,7 @@ Metric Code Size 5664</description>
 <part name="J1" library="bt_avr" deviceset="AVRISP6" device="" value="I2C/ISP"/>
 <part name="U$2" library="bt" deviceset="5V" device=""/>
 <part name="GND3" library="bt" deviceset="GND" device=""/>
-<part name="IC3" library="bt_avr" deviceset="TINY25/45/85" device="-20SU" value="TINY85"/>
+<part name="IC3" library="bt_avr" deviceset="TINY25/45/85" device="-20SU" value="TINY25"/>
 <part name="U$3" library="bt" deviceset="5V" device=""/>
 <part name="GND4" library="bt" deviceset="GND" device=""/>
 <part name="C4" library="rcl" deviceset="C-US" device="C0603" value="104"/>
