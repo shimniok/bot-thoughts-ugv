@@ -55,4 +55,4 @@ You can power your !RoverBaseboard in the following ways.
  * Power with your ESC's BEC
    * If your BEC is 5V, jumper VBEC to 5V
    * If your BEC is 6V, jumper VBEC to REG
-   * Connect CONTROL:SPEED to your ESC through RoverMux
+   * Connect CONTROL:SPEED to your ESC through !RoverMux
