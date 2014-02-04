@@ -1992,7 +1992,7 @@ Please make sure your boards conform to these design rules.</description>
 <element name="C12" library="rcl" package="SMC_B" value="33uF" x="20.32" y="33.274" smashed="yes" rot="R90">
 <attribute name="NAME" x="18.669" y="32.385" size="1.016" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="BEC" library="pinhead-2" package="1X03-S" value="BYP | REG" x="47.498" y="52.07" smashed="yes" rot="R270"/>
+<element name="BEC" library="pinhead-2" package="1X03-S" value="REG | BYP | 5VIN" x="47.498" y="52.07" smashed="yes" rot="R270"/>
 <element name="U1" library="bt_regulator" package="DPAK" value="LD29150DT50R" x="34.29" y="56.642" smashed="yes" rot="MR270">
 <attribute name="NAME" x="33.528" y="59.182" size="1.27" layer="26" ratio="10" rot="MR270"/>
 </element>
