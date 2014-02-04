@@ -13455,7 +13455,7 @@ ground current values are important attributes. &lt;/p&gt;
 <part name="IC3" library="SparkFun" deviceset="V_REG_LM1117" device="SOT223" value="3.3V"/>
 <part name="+3V8" library="supply1" deviceset="+3V3" device=""/>
 <part name="C12" library="rcl" deviceset="CPOL-US" device="SMCB" value="33uF"/>
-<part name="BEC" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="BYP | REG"/>
+<part name="BEC" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="REG | BYP | 5VIN"/>
 <part name="+3V2" library="supply1" deviceset="+3V3" device=""/>
 <part name="U1" library="bt_regulator" deviceset="LD29150" device="DT" value="LD29150DT50R"/>
 <part name="C10" library="rcl" deviceset="C-US" device="C1206" value="106">
@@ -13497,6 +13497,7 @@ ground current values are important attributes. &lt;/p&gt;
 <text x="53.34" y="96.52" size="1.778" layer="97">ENCODER CONNECTORS</text>
 <text x="76.2" y="208.28" size="2.54" layer="97">LPXpresso / MBED</text>
 <text x="302.26" y="88.9" size="1.778" layer="97">POWER SUPPLY</text>
+<text x="248.92" y="63.5" size="1.778" layer="97" rot="R90">Select power source</text>
 </plain>
 <instances>
 <instance part="SUPPLY3" gate="GND" x="15.24" y="182.88"/>
