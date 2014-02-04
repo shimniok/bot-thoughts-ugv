@@ -47,11 +47,12 @@
 
 = Power =
 
-You can power your !RoverBaseboard in two ways.
+You can power your !RoverBaseboard in the following ways.
 
  * Power with an external 5V supply
-   * Connect 5V to the 5V POWER input
+   * Connect the 5VIN/GND port to your 5V supply
+   * jumper 5VIN to 5V
  * Power with your ESC's BEC
-   * If your BEC is 5V, put the BECSEL jumper on 5V
-   * If your BEC is 6V (up to 25V for UA7805C), put BECSEL jumper on 6V
+   * If your BEC is 5V, jumper VBEC to 5V
+   * If your BEC is 6V, jumper VBEC to REG
    * Connect CONTROL:SPEED to your ESC through RoverMux
