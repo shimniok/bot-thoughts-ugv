@@ -3,6 +3,7 @@
 <img width=300 src="https://lh4.googleusercontent.com/-tSzBPdrjxIE/Um6uP9VCtII/AAAAAAAAJfo/0txrJVlQONE/s800/Photo%2520Oct%252028%252C%252012%252028%252018%2520PM.jpg" />
 
 These instructions apply to Rev 0.4
+
 [RCMultiplexer Older Rev 0.3 RoverMux Wiki]
 
 = Introduction =
