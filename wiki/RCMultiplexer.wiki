@@ -2,6 +2,10 @@
 
 <img width=300 src="https://lh4.googleusercontent.com/-tSzBPdrjxIE/Um6uP9VCtII/AAAAAAAAJfo/0txrJVlQONE/s800/Photo%2520Oct%252028%252C%252012%252028%252018%2520PM.jpg" />
 
+These are the Rev 0.3 Instructions.
+
+[RoverMux Newer Rev 0.4 RoverMux instructions]
+
 = Introduction =
 
 When your robot is about to crash, the !RoverMux lets you take control of your self-driving robot. The 3-channel multiplexer is a dedicated board that keeps running even if your MCU doesn't.
