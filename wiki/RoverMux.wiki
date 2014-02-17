@@ -1,6 +1,6 @@
 #summary RoverMux: An RC Multiplexer for Self-Driving Rovers
 
-<img width=300 src="https://lh4.googleusercontent.com/-tSzBPdrjxIE/Um6uP9VCtII/AAAAAAAAJfo/0txrJVlQONE/s800/Photo%2520Oct%252028%252C%252012%252028%252018%2520PM.jpg" />
+<img width=400 src="https://lh3.googleusercontent.com/-CKUIEDf3U2c/UwKSRZ7fnMI/AAAAAAAAJ1k/QKhl_csmRLE/w1024-h682-no/IMG_9923.JPG" />
 
 These instructions apply to Rev 0.4
 
