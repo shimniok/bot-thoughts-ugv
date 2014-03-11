@@ -13280,7 +13280,7 @@ ground current values are important attributes. &lt;/p&gt;
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V1" library="supply1" deviceset="+3V3" device=""/>
 <part name="SUPPLY1" library="supply2" deviceset="GND" device=""/>
-<part name="JP15" library="pinhead-2" deviceset="PINHD-1X04" device="_2.54-S" value="ENCODERS">
+<part name="JP15" library="pinhead-2" deviceset="PINHD-1X04" device="_2.54-S" value="A">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
@@ -13361,7 +13361,7 @@ ground current values are important attributes. &lt;/p&gt;
 <attribute name="OC_NEWARK" value="98K2621"/>
 </part>
 <part name="P+5" library="supply1" deviceset="+5V" device=""/>
-<part name="JP2" library="pinhead-2" deviceset="PINHD-1X04" device="_2.54-S" value="ENCODERS">
+<part name="JP2" library="pinhead-2" deviceset="PINHD-1X04" device="_2.54-S" value="B">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
@@ -13376,12 +13376,12 @@ ground current values are important attributes. &lt;/p&gt;
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="JP10" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="PWM">
+<part name="JP10" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="P1">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="JP11" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="PWM">
+<part name="JP11" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="P2">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
@@ -13389,51 +13389,51 @@ ground current values are important attributes. &lt;/p&gt;
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="SUPPLY5" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY10" library="supply2" deviceset="GND" device=""/>
-<part name="JP1" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="IO">
+<part name="JP1" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="D0">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
 <part name="+3V6" library="supply1" deviceset="+3V3" device=""/>
-<part name="JP13" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="IO">
+<part name="JP13" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="D1">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="JP14" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="DIGITAL">
+<part name="JP14" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="D2">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
 <part name="U$1" library="LPCXpresso" deviceset="LPCXPRESSO_NO_PAD" device="_1768_REVB" value="LPCXPRESSO"/>
-<part name="JP16" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="ADC">
+<part name="JP16" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="A0">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="JP17" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="ADC">
+<part name="JP17" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="A1">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="JP18" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="ADC">
+<part name="JP18" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="A2">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="JP19" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="ADC">
+<part name="JP19" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="A3">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
 <part name="+3V7" library="supply1" deviceset="+3V3" device=""/>
 <part name="SUPPLY9" library="supply2" deviceset="GND" device=""/>
-<part name="JP28" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="DIGITAL">
+<part name="JP28" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="D7">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
 </part>
-<part name="JP29" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="DIGITAL">
+<part name="JP29" library="pinhead-2" deviceset="PINHD-1X03" device="_2.54-S" value="D8">
 <attribute name="MF" value=""/>
 <attribute name="MPN" value=""/>
 <attribute name="OC_NEWARK" value="unknown"/>
@@ -14571,11 +14571,11 @@ ground current values are important attributes. &lt;/p&gt;
 <pinref part="R8" gate="G$1" pin="2"/>
 </segment>
 </net>
-<net name="ENC2" class="0">
+<net name="ENCB_RIGHT" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="2"/>
-<wire x1="71.12" y1="55.88" x2="53.34" y2="55.88" width="0.1524" layer="91"/>
-<label x="53.34" y="55.88" size="1.778" layer="95"/>
+<wire x1="71.12" y1="55.88" x2="43.18" y2="55.88" width="0.1524" layer="91"/>
+<label x="43.18" y="55.88" size="1.778" layer="95"/>
 </segment>
 <segment>
 <wire x1="124.46" y1="139.7" x2="157.48" y2="139.7" width="0.1524" layer="91"/>
@@ -14583,11 +14583,11 @@ ground current values are important attributes. &lt;/p&gt;
 <pinref part="U$1" gate="G$1" pin="P2.6"/>
 </segment>
 </net>
-<net name="ENC3" class="0">
+<net name="ENCB_LEFT" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="3"/>
-<wire x1="71.12" y1="53.34" x2="53.34" y2="53.34" width="0.1524" layer="91"/>
-<label x="53.34" y="53.34" size="1.778" layer="95"/>
+<wire x1="71.12" y1="53.34" x2="43.18" y2="53.34" width="0.1524" layer="91"/>
+<label x="43.18" y="53.34" size="1.778" layer="95"/>
 </segment>
 <segment>
 <wire x1="124.46" y1="137.16" x2="157.48" y2="137.16" width="0.1524" layer="91"/>
@@ -14647,7 +14647,7 @@ ground current values are important attributes. &lt;/p&gt;
 <junction x="416.56" y="63.5"/>
 </segment>
 </net>
-<net name="ENC0" class="0">
+<net name="ENCA_LEFT" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="P0.4/CAN_RX2"/>
 <wire x1="124.46" y1="165.1" x2="157.48" y2="165.1" width="0.1524" layer="91"/>
@@ -14655,11 +14655,11 @@ ground current values are important attributes. &lt;/p&gt;
 </segment>
 <segment>
 <pinref part="JP15" gate="A" pin="3"/>
-<wire x1="71.12" y1="73.66" x2="53.34" y2="73.66" width="0.1524" layer="91"/>
-<label x="53.34" y="73.66" size="1.778" layer="95"/>
+<wire x1="71.12" y1="73.66" x2="43.18" y2="73.66" width="0.1524" layer="91"/>
+<label x="43.18" y="73.66" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="ENC1" class="0">
+<net name="ENCA_RIGHT" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="P0.5/CAN_TX2"/>
 <wire x1="124.46" y1="162.56" x2="157.48" y2="162.56" width="0.1524" layer="91"/>
@@ -14667,8 +14667,8 @@ ground current values are important attributes. &lt;/p&gt;
 </segment>
 <segment>
 <pinref part="JP15" gate="A" pin="2"/>
-<wire x1="71.12" y1="76.2" x2="53.34" y2="76.2" width="0.1524" layer="91"/>
-<label x="53.34" y="76.2" size="1.778" layer="95"/>
+<wire x1="71.12" y1="76.2" x2="43.18" y2="76.2" width="0.1524" layer="91"/>
+<label x="43.18" y="76.2" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="D3" class="0">
