@@ -4,13 +4,7 @@
  */
 package botthoughtsgcs;
 
-import chrriis.common.UIUtils;
-import chrriis.dj.nativeswing.NativeSwing;
-import chrriis.dj.nativeswing.swtimpl.NativeInterface;
-import com.colorfulwolf.webcamapplet.OpenCVWebCam;
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Image;
+import java.awt.Dimension;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,101 +15,156 @@ import javax.swing.SwingWorker;
  *
  * @author Michael Shimniok
  */
-public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Parser {
-
+public class MainWindow extends JFrame implements VehicleStatus {
+    private final GaugeNeedle voltmeterNeedle;
+    private final GaugeNeedle ammeterNeedle;
+    private final GaugeNeedle batteryNeedle;
+    private final GaugeNeedle speedometerNeedle;
+    private final GaugeNeedle compassNeedle;
+    private final GaugeNeedle bearingNeedle;
+    private final GaugeNeedle topNeedle;
+    private final GaugeNeedle hourNeedle;
+    private final GaugeNeedle minuteNeedle;
+    private final GaugeNeedle secondNeedle;
+    private final DoubleProperty hourProperty;
+    private final DoubleProperty minuteProperty;
+    private final DoubleProperty secondProperty;
+    private final DoubleProperty voltage;
+    private final DoubleProperty current;
+    private final DoubleProperty battery;
+    private final DoubleProperty speed;
+    private final DoubleProperty bearing;
+    private final DoubleProperty heading;
+    private final DoubleProperty longitude;
+    private final DoubleProperty latitude;
+    private final DoubleProperty distance;
+    
     /**
      * Creates new form mainWindow
      */
-    public mainWindow() {
+    public MainWindow() {
         initComponents();
  
-        NativeSwing.initialize();
+        speedometerPanel.setSize(new Dimension(310, 310));
+        System.out.println(speedometerPanel.getSize());
+        //NativeSwing.initialize();
 
         this.setTitle("Bot Thoughts GCS");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        vStat = new VehicleStatus();
-        vStat.setBattery(4000.0);
-        vStat.setHeading(90.0);
-        vStat.setCurrent(0.0);
 
-        voltmeterPanel.setFaceImage("/botthoughtsgcs/resources/voltmeter1.png");
-        voltmeterPanel.setNeedleImage("/botthoughtsgcs/resources/voltmeterneedle1.png");
-        voltmeterPanel.setNeedleCenter(139.0/270.0, 189.0/269.0);
-        voltmeterPanel.calibrate(0, 4.0, 12.0, 1.475);
-        voltmeterPanel.setValue(vStat.getVoltage());
+        // Set the handler for serial panel to parse data
+        // This parser points to our model, vehicleStatus
+        serialPanel.setHandler(new TelemetryParser(this));
 
-        ammeterPanel.setFaceImage("/botthoughtsgcs/resources/ammeter2.png");
-        ammeterPanel.setNeedleImage("/botthoughtsgcs/resources/ammeterneedle2.png");
-        ammeterPanel.setNeedleCenter(262.0/536.0, 382.0/536.0);
-        ammeterPanel.calibrate(0, 0.0, 60.0, -0.775);
-        ammeterPanel.setValue(vStat.getCurrent());
-        ammeterPanel.setDamping(0.2);
+        latitude = new DoubleProperty(0);
+        longitude = new DoubleProperty(0);
+        distance = new DoubleProperty(0);
+        
+        voltmeterPanel.setImage("/botthoughtsgcs/resources/voltmeter1.png");
+        voltmeterNeedle = new GaugeNeedle();
+        voltmeterPanel.addNeedle(voltmeterNeedle);
+        voltmeterNeedle.setDamping(1.0);
+        voltmeterNeedle.setImage("/botthoughtsgcs/resources/voltmeterneedle1.png");
+        voltmeterNeedle.setRotationCenter(139.0/270.0, 189.0/269.0);
+        voltmeterNeedle.calibrate(4.0, 12.0, 1.475);
+        voltage = new DoubleProperty(0);
+        voltage.addListener((ChangeListener) voltmeterNeedle);
+        voltage.set(0.0);
+        
+        ammeterPanel.setImage("/botthoughtsgcs/resources/ammeter2.png");
+        ammeterNeedle = new GaugeNeedle();
+        ammeterPanel.addNeedle(ammeterNeedle);
+        ammeterNeedle.setDamping(0.2);
+        ammeterNeedle.setImage("/botthoughtsgcs/resources/ammeterneedle2.png");
+        ammeterNeedle.setRotationCenter(262.0/536.0, 382.0/536.0);
+        ammeterNeedle.calibrate(0.0, 60.0, -0.775);
+        current = new DoubleProperty(0);
+        current.addListener((ChangeListener) ammeterNeedle);
+        current.set(0);
+        
+        batteryPanel.setImage("/botthoughtsgcs/resources/fuel1.png");
+        batteryNeedle = new GaugeNeedle();
+        batteryPanel.addNeedle(batteryNeedle);
+        batteryNeedle.setImage("/botthoughtsgcs/resources/fuelneedle1.png");
+        batteryNeedle.calibrate(200.0, 4000.0, 1.5);
+        batteryNeedle.setRotationCenter(159.0/310.0, 219.0/308.0);
+        battery = new DoubleProperty(0);
+        battery.addListener((ChangeListener) batteryNeedle);
+        battery.set(0); // TODO: parameterize this, turn into percentage somehow?
+                
+        speedometerPanel.setImage("/botthoughtsgcs/resources/speedometer1.png");
+        speedometerNeedle = new GaugeNeedle();
+        speedometerPanel.addNeedle(speedometerNeedle);
+        speedometerNeedle.setImage("/botthoughtsgcs/resources/speedometerneedle1.png");
+        speedometerNeedle.setRotationCenter(0.5, 0.5);
+        speedometerNeedle.calibrate(0, 120.0, 4.7);
+        speedometerNeedle.setDamping(0.3);
+        speed = new DoubleProperty(0);
+        speed.addListener((ChangeListener) speedometerNeedle);
+        speed.set(0);
+        
+        compassPanel.setImage("/botthoughtsgcs/resources/compass.png");
+        compassNeedle = new GaugeNeedle();
+        compassPanel.addNeedle(compassNeedle);
+        compassNeedle.setImage("/botthoughtsgcs/resources/compassneedle.png");
+        compassNeedle.setRotationCenter(0.5, 0.5);
+        compassNeedle.calibrate(0, 360, -6.2832);
+        heading = new DoubleProperty(0);
+        heading.addListener((ChangeListener) compassNeedle);
+        heading.set(0);
+        
+        bearingNeedle = new GaugeNeedle();
+        compassPanel.addNeedle(bearingNeedle);
+        bearingNeedle.setImage("/botthoughtsgcs/resources/compassbearing.png");
+        bearingNeedle.setRotationCenter(0.5, 0.5);
+        bearingNeedle.calibrate(1, 360, 6.2832);
+        bearing = new DoubleProperty(0);
+        bearing.addListener((ChangeListener) bearingNeedle);
+        bearing.set(0);
+        
+        topNeedle = new GaugeNeedle();
+        compassPanel.addNeedle(topNeedle);
+        topNeedle.setImage("/botthoughtgcs/resources/compasstop.png");
+        topNeedle.setRotationCenter(0.5, 0.5);
+        topNeedle.calibrate(1, 360, 6.2832);
+        DoubleProperty topProperty = new DoubleProperty(0);
+        topProperty.addListener((ChangeListener) topNeedle);
+        topProperty.set(0);
 
-        /*
-        ammeterPanel.setFaceImage("/botthoughtsgcs/resources/ammeter1.png");
-        ammeterPanel.setNeedleImage("/botthoughtsgcs/resources/ammeterneedle1.png");
-        ammeterPanel.setNeedleCenter(295.0/596.0, 406.0/593.0);
-        ammeterPanel.calibrate(0, -16.0, 15.0, 5.0);
-        ammeterPanel.setValue(vStat.getCurrent());
-        ammeterPanel.setDamping(0.2);
-        */
+        clockPanel.setImage("/botthoughtsgcs/resources/clock.png");
+        hourNeedle = new GaugeNeedle();
+        clockPanel.addNeedle(hourNeedle);
+        hourNeedle.setImage("/botthoughtsgcs/resources/clockhour.png");
+        hourNeedle.setRotationCenter(0.5, 0.5);
+        hourNeedle.calibrate(12, 6.2832);
+        hourProperty = new DoubleProperty(0);
+        hourProperty.addListener((ChangeListener) hourNeedle);
 
+        minuteNeedle = new GaugeNeedle();
+        clockPanel.addNeedle(minuteNeedle);
+        minuteNeedle.setImage("/botthoughtsgcs/resources/clockminute.png");
+        minuteNeedle.setRotationCenter(0.5, 0.5);
+        minuteNeedle.calibrate(60, 6.2832);
+        minuteProperty = new DoubleProperty(0);
+        minuteProperty.addListener((ChangeListener) minuteNeedle);
         
-        battPanel.setFaceImage("/botthoughtsgcs/resources/fuel1.png");
-        battPanel.setNeedleImage("/botthoughtsgcs/resources/fuelneedle1.png");
-        battPanel.calibrate(0, 200.0, 4000.0, 1.5);
-        battPanel.setNeedleCenter(159.0/310.0, 219.0/308.0);
-        battPanel.setValue(vStat.getBattery());
+        secondNeedle = new GaugeNeedle();
+        clockPanel.addNeedle(secondNeedle);
+        secondNeedle.setImage("/botthoughtsgcs/resources/clocksecond.png");
+        secondNeedle.setRotationCenter(0.5, 0.5);
+        secondNeedle.calibrate(60, 6.2832);
+        secondProperty = new DoubleProperty(0);
+        secondProperty.addListener((ChangeListener) secondNeedle);
         
-        speedometerPanel.setFaceImage("/botthoughtsgcs/resources/speedometer1.png");
-        speedometerPanel.setNeedleImage("/botthoughtsgcs/resources/speedometerneedle1.png");
-        speedometerPanel.setNeedleCenter(0.5, 0.5);
-        speedometerPanel.calibrate(0, 120.0, 4.7);
-        speedometerPanel.setValue(vStat.getSpeed());
-        speedometerPanel.setDamping(0.3);
-        /* Speedometer Panel */
-        
-        compassPanel.setFaceImage("/botthoughtsgcs/resources/compass.png");
-        compassPanel.setNeedleImage(0, "/botthoughtsgcs/resources/compassneedle.png");
-        compassPanel.setNeedleCenter(0, 0.5, 0.5);
-        compassPanel.calibrate(0, 360, -6.2832);
-        compassPanel.setValue(0, vStat.getHeading());
-        compassPanel.setNeedleImage(1, "/botthoughtsgcs/resources/compassbearing.png");
-        compassPanel.setNeedleCenter(1, 0.5, 0.5);
-        compassPanel.calibrate(1, 360, 6.2832);
-        compassPanel.setValue(1, 0);
-        compassPanel.setNeedleImage(2, "/botthoughtsgcs/resources/compasstop.png");
-        compassPanel.setNeedleAngle(2, 0);
-        compassPanel.setDamping(0.5);
-        
-        clockPanel.setFaceImage("/botthoughtsgcs/resources/clock.png");
-        clockPanel.setNeedleImage(0, "/botthoughtsgcs/resources/clockhour.png");
-        clockPanel.setNeedleCenter(0, 0.5, 0.5);
-        clockPanel.calibrate(0, 12, 6.2832);
-        clockPanel.setValue(0, 4 + (25.0/60.0));
-        clockPanel.setNeedleImage(1, "/botthoughtsgcs/resources/clockminute.png");
-        clockPanel.setNeedleCenter(1, 0.5, 0.5);
-        clockPanel.calibrate(1, 60, 6.2832);
-        clockPanel.setValue(1, 25 + (10.0/60.0));
-        clockPanel.setNeedleImage(2, "/botthoughtsgcs/resources/clocksecond.png");
-        clockPanel.setNeedleCenter(2, 0.5, 0.5);
-        clockPanel.calibrate(2, 60, 6.2832);
-        clockPanel.setValue(2, 10);
-
         ClockUpdater cu = new ClockUpdater();
         try {
             cu.doInBackground();
         } catch (Exception ex) {
-            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        buffer = "";
-        serialPanel1.setHandler(this);
-        logPanel1.setHandler(this);
     }
 
-     
+
     /** updates clock
      *
      */
@@ -124,31 +173,27 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
         private TimerTask clkTask;
         private Timer clkTimer = new Timer(true);
         
-        private void setClock(int h, int m, int s) {
-            clockPanel.setValue(0, h + m/60.0);
-            clockPanel.setValue(1, m + s/60.0);
-            clockPanel.setValue(2, s);
-        }
-        
         public void pause() {
             clkTimer.cancel();
         }
         
         public void start() {
-            clkTimer.scheduleAtFixedRate(clkTask, 0, 200);
+            clkTimer.scheduleAtFixedRate(clkTask, 0, 1000);
         }
         
         @Override
         protected Void doInBackground() throws Exception {
             // Setup clock updater
             clkTask = new TimerTask() {
+                @Override
                 public void run() {
                     cal.setTime(new Date());
                     int hour = cal.get(Calendar.HOUR);
                     int min = cal.get(Calendar.MINUTE);
                     int sec = cal.get(Calendar.SECOND);
-                    setClock(hour, min, sec);
-                    //System.out.println("Updating clock "+Integer.toString(hour)+":"+Integer.toString(min)+":"+Integer.toString(sec));
+                    hourProperty.set(hour + min/60.0);
+                    minuteProperty.set(min + sec/60.0);
+                    secondProperty.set(sec);                
                 };
             };
             start();
@@ -158,84 +203,19 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
     
     public void initializeUI() {
         try {
-            gePanel.initView();
+            //gePanel.initView();
             Thread.sleep(500);
-            Double homeLat = 39.597751;
-            Double homeLon = -104.933216;
-            gePanel.setHome(homeLat, homeLon);
+            //Double homeLat = 39.597751;
+            //Double homeLon = -104.933216;
+            //gePanel.setHome(homeLat, homeLon);
             initialized = true;
         } catch (InterruptedException ex) {
-            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    @Override
-    public void parseData(String data) {
-        int begin;
-        int end;
-        boolean done = false;
-        
-        buffer += data;
-        //System.out.println("buf: <"+buffer+">");
 
-        // TODO: incorporate time into the data stream
-        while (!done) {
-            begin = buffer.indexOf(SOH); // look for start of transmission
-            if (begin == -1) break;     // If we don't have a start yet, wait until next time
-
-            String sentence = buffer.substring(begin); // peel off text after SOT
-            end = sentence.indexOf(EOT);                 // look for end of transmission
-            if (end == -1) break;                       // if we don't have an end yet, wait until next time
-
-            buffer = sentence.substring(end+1);        // peel off sentence part of substring
-            sentence = sentence.substring(1, end);       // peel off the text before EOT
-            
-            String volts = sentence.substring(0,3);
-            String amps = sentence.substring(3,7);
-            String speed = sentence.substring(7,10);
-            String heading = sentence.substring(10,14);
-            String lat = sentence.substring(14,23);
-            char ns = sentence.charAt(23);
-            String lon = sentence.substring(24,33);
-            char ew = sentence.charAt(33);
-            String brg = sentence.substring(34,38);
-            String dst = sentence.substring(38,42);
-
-            if (ns == 'S') lat = "-" + lat;
-            if (ew == 'W') lon = "-" + lon;
-
-            /*
-            System.out.println("volts = " + volts);
-            System.out.println("amps = " + amps);
-            System.out.println("speed = " + speed);
-            System.out.println("heading = " + heading);
-            System.out.println("lat = " + lat);
-            System.out.println("lon = " + lon);
-            System.out.println("brg = " + brg);
-            System.out.println("dst = " + dst);
-            * 
-            */
-
-            try {
-                vStat.setVoltage( Double.parseDouble(volts) / 10.0 );
-                vStat.setCurrent( Double.parseDouble(amps) / 10.0 );
-                vStat.setHeading( Double.parseDouble(heading) / 10.0 );
-                vStat.setSpeed( 2.23694 * Double.parseDouble(speed) / 10.0 ); // convert m/s to mph
-                vStat.setLatitude( Double.parseDouble(lat) / 10e5 );
-                vStat.setLongitude( Double.parseDouble(lon) / 10e5 );
-                vStat.setBearing( Double.parseDouble(brg) / 10.0 );
-                vStat.setDistance( Double.parseDouble(dst) / 10.0 );
-                updateDisplay();
-            } catch (Exception e) {
-                // parsing error 
-            }
-
-            done = true;
-        }
-    }
-    
-    
     public void updateDisplay() {
+    /*
         voltmeterPanel.updateValueDamped(vStat.getVoltage());
         ammeterPanel.updateValueDamped(vStat.getCurrent());
         speedometerPanel.updateValueDamped(vStat.getSpeed());
@@ -248,9 +228,99 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
         if (initialized == false) {
             initializeUI();
         }
-        gePanel.setPose(vStat.getLatitude(), vStat.getLongitude(), vStat.getHeading());        
+        //gePanel.setPose(vStat.getLatitude(), vStat.getLongitude(), vStat.getHeading());        
+        */
     }
     
+    @Override
+    public double getVoltage() {
+        return voltage.get();
+    }
+
+    @Override
+    public double getCurrent() {
+        return current.get();
+    }
+
+    @Override
+    public double getBattery() {
+        return battery.get();
+    }
+
+    @Override
+    public double getSpeed() {
+        return speed.get();
+    }
+
+    @Override
+    public double getHeading() {
+        return heading.get();
+    }
+
+    @Override
+    public double getLatitude() {
+        return latitude.get();
+    }
+
+    @Override
+    public double getLongitude() {
+        return longitude.get();
+    }
+
+    @Override
+    public double getBearing() {
+        return bearing.get();
+    }
+
+    @Override
+    public double getDistance() {
+        return distance.get();
+    }
+
+        @Override
+    public void setVoltage(double v) {
+        voltage.set(v);
+    }
+
+    @Override
+    public void setCurrent(double v) {
+        current.set(v);        
+    }
+
+    @Override
+    public void setBattery(double v) {
+        battery.set(v);
+    }
+
+    @Override
+    public void setSpeed(double v) {
+        speed.set(v);
+    }
+
+    @Override
+    public void setHeading(double v) {
+        heading.set(v);
+    }
+
+    @Override
+    public void setLatitude(double v) {
+        latitude.set(v);
+    }
+
+    @Override
+    public void setLongitude(double v) {
+        longitude.set(v);
+    }
+
+    @Override
+    public void setBearing(double v) {
+        bearing.set(v);
+    }
+
+    @Override
+    public void setDistance(double v) {
+        distance.set(v);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -265,19 +335,19 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
         backgroundPanel = new BackgroundPanel("/botthoughtsgcs/resources/background.jpg");
         speedometerPanel = new botthoughtsgcs.GaugePanel();
         voltmeterPanel = new botthoughtsgcs.GaugePanel();
-        battPanel = new botthoughtsgcs.GaugePanel();
+        batteryPanel = new botthoughtsgcs.GaugePanel();
         ammeterPanel = new botthoughtsgcs.GaugePanel();
         clockPanel = new botthoughtsgcs.GaugePanel();
         compassPanel = new botthoughtsgcs.GaugePanel();
         controlPanel = new javax.swing.JPanel();
-        serialPanel1 = new com.botthoughts.SerialPanel();
-        logPanel1 = new botthoughtsgcs.LogPanel();
+        serialPanel = new com.botthoughts.SerialPanel();
+        logPanel = new botthoughtsgcs.LogPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
-        setMaximumSize(new java.awt.Dimension(1000, 450));
-        setMinimumSize(new java.awt.Dimension(1000, 450));
-        setPreferredSize(new java.awt.Dimension(1000, 450));
+        setMaximumSize(new java.awt.Dimension(950, 400));
+        setMinimumSize(new java.awt.Dimension(950, 400));
+        setPreferredSize(new java.awt.Dimension(950, 400));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -317,7 +387,7 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
         voltmeterPanel.setBackground(new java.awt.Color(204, 204, 204));
         voltmeterPanel.setMaximumSize(new java.awt.Dimension(150, 150));
         voltmeterPanel.setMinimumSize(new java.awt.Dimension(150, 150));
-        voltmeterPanel.setName("");
+        voltmeterPanel.setName(""); // NOI18N
         voltmeterPanel.setPreferredSize(new java.awt.Dimension(150, 150));
         voltmeterPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -338,31 +408,31 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
 
         backgroundPanel.add(voltmeterPanel, new java.awt.GridBagConstraints());
 
-        battPanel.setBackground(new java.awt.Color(204, 204, 204));
-        battPanel.setMaximumSize(new java.awt.Dimension(150, 150));
-        battPanel.setMinimumSize(new java.awt.Dimension(150, 150));
-        battPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-        battPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        batteryPanel.setBackground(new java.awt.Color(204, 204, 204));
+        batteryPanel.setMaximumSize(new java.awt.Dimension(150, 150));
+        batteryPanel.setMinimumSize(new java.awt.Dimension(150, 150));
+        batteryPanel.setPreferredSize(new java.awt.Dimension(150, 150));
+        batteryPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 gaugePanelMouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout battPanelLayout = new javax.swing.GroupLayout(battPanel);
-        battPanel.setLayout(battPanelLayout);
-        battPanelLayout.setHorizontalGroup(
-            battPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout batteryPanelLayout = new javax.swing.GroupLayout(batteryPanel);
+        batteryPanel.setLayout(batteryPanelLayout);
+        batteryPanelLayout.setHorizontalGroup(
+            batteryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 150, Short.MAX_VALUE)
         );
-        battPanelLayout.setVerticalGroup(
-            battPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        batteryPanelLayout.setVerticalGroup(
+            batteryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 150, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        backgroundPanel.add(battPanel, gridBagConstraints);
+        backgroundPanel.add(batteryPanel, gridBagConstraints);
 
         ammeterPanel.setMaximumSize(new java.awt.Dimension(150, 150));
         ammeterPanel.setMinimumSize(new java.awt.Dimension(150, 150));
@@ -428,12 +498,12 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
         getContentPane().add(backgroundPanel, new java.awt.GridBagConstraints());
 
         controlPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        controlPanel.setMaximumSize(new java.awt.Dimension(1000, 60));
-        controlPanel.setMinimumSize(new java.awt.Dimension(1000, 60));
-        controlPanel.setPreferredSize(new java.awt.Dimension(1000, 60));
+        controlPanel.setMaximumSize(new java.awt.Dimension(10000, 10000));
+        controlPanel.setMinimumSize(new java.awt.Dimension(900, 60));
+        controlPanel.setPreferredSize(new java.awt.Dimension(900, 60));
         controlPanel.setLayout(new java.awt.GridBagLayout());
-        controlPanel.add(serialPanel1, new java.awt.GridBagConstraints());
-        controlPanel.add(logPanel1, new java.awt.GridBagConstraints());
+        controlPanel.add(serialPanel, new java.awt.GridBagConstraints());
+        controlPanel.add(logPanel, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
@@ -447,16 +517,18 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
     }//GEN-LAST:event_formWindowClosing
 
     private void gaugePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gaugePanelMouseClicked
-        GaugePanel gaugePanel = (GaugePanel) evt.getComponent();
-        gaugePanel.setNeedleAngle(gaugePanel.getNeedleAngle() + 0.05);
-        gaugePanel.repaint();
+//TODO Remove this
+//        GaugePanel gaugePanel = (GaugePanel) evt.getComponent();
+//        gaugePanel.setNeedleAngle(gaugePanel.getNeedleAngle() + 0.05);
+//        gaugePanel.repaint();
     }//GEN-LAST:event_gaugePanelMouseClicked
 
     private void clockPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clockPanelMouseClicked
-        GaugePanel gaugePanel = (GaugePanel) evt.getComponent();
-        gaugePanel.setNeedleAngle(0, gaugePanel.getNeedleAngle(1) / 10);
-        gaugePanel.setNeedleAngle(1, gaugePanel.getNeedleAngle(1) + 5 * (0.105));
-        gaugePanel.repaint();
+//TODO Remove this
+//        GaugePanel gaugePanel = (GaugePanel) evt.getComponent();
+//        gaugePanel.setNeedleAngle(0, gaugePanel.getNeedleAngle(1) / 10);
+//        gaugePanel.setNeedleAngle(1, gaugePanel.getNeedleAngle(1) + 5 * (0.105));
+//        gaugePanel.repaint();
     }//GEN-LAST:event_clockPanelMouseClicked
        
     /**
@@ -479,14 +551,8 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -497,14 +563,15 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
 
             @Override
             public void run() {
-                new mainWindow().setVisible(true);
-
+                new MainWindow().setVisible(true);
+                
                 // Setup DJ NativeSwing web browser
-                UIUtils.setPreferredLookAndFeel();
-                NativeInterface.open();
+                //UIUtils.setPreferredLookAndFeel();
+                //NativeInterface.open();
 
-                gePanel = new GEPanel();
+                //gePanel = new GoogleEarthPanel();
                 System.out.println("in run");
+                /*
                 JFrame gef = new JFrame("Google Earth View");
                 gef.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gef.getContentPane().add(gePanel, BorderLayout.CENTER);
@@ -524,8 +591,8 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
                     }
                 };
                 new Thread(loader).start();                
-                
-                //                cvPanel = new OpenCVWebCam(0, 800, 600);
+                */
+                //cvPanel = new OpenCVWebCam(0, 800, 600);
             }
         });
     }
@@ -535,21 +602,17 @@ public class mainWindow extends javax.swing.JFrame implements com.botthoughts.Pa
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private botthoughtsgcs.GaugePanel ammeterPanel;
     private javax.swing.JPanel backgroundPanel;
-    private botthoughtsgcs.GaugePanel battPanel;
+    private botthoughtsgcs.GaugePanel batteryPanel;
     private botthoughtsgcs.GaugePanel clockPanel;
     private botthoughtsgcs.GaugePanel compassPanel;
     private javax.swing.JPanel controlPanel;
-    private botthoughtsgcs.LogPanel logPanel1;
-    private com.botthoughts.SerialPanel serialPanel1;
+    private botthoughtsgcs.LogPanel logPanel;
+    private com.botthoughts.SerialPanel serialPanel;
     private botthoughtsgcs.GaugePanel speedometerPanel;
     private botthoughtsgcs.GaugePanel voltmeterPanel;
     // End of variables declaration//GEN-END:variables
-    private static botthoughtsgcs.GEPanel gePanel;
-    private static OpenCVWebCam cvPanel;
-    private static WebCamWindow cvf;
-    String buffer;
-    static char SOH=0x01;
-    static char EOT='\n';
-    VehicleStatus vStat;
+    //private static botthoughtsgcs.GoogleEarthPanel gePanel;
+    //private static OpenCVWebCam cvPanel;
+    //private static WebCamWindow cvf;
     boolean initialized=false;
 }
