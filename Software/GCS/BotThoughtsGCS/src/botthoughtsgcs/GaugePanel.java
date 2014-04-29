@@ -4,125 +4,54 @@
  */
 package botthoughtsgcs;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Michael Shimniok
  */
-public class GaugePanel extends javax.swing.JLayeredPane {
-
+public final class GaugePanel extends JLayeredPane {
     private int myWidth;
     private int myHeight;
-    private Image faceImage;
-    private JPanel faceLayer = new JPanel();
-    private static final int LAYERS=3;
-    private Image[] layerImage;
-    private JPanel[] layer;
-    private double[] needleAngle;
-    private double[] needleX;
-    private double[] needleY;
-    private double[] sweepMax;
-    private double[] min;
-    private double[] max;
-    private double[] spread;
-    private boolean[] wrap;
-    private double[] value;
-    private double damping;
+    private Image image;
+    private JPanel facePanel;
+    private JLabel faceLabel;
+    private ArrayList<GaugeNeedle> needle;
+    private int currentLayer;
     
     /** Instantiates a new GaugePanel
      * 
      */
     public GaugePanel() {
         initComponents();
-
-        layer = new JPanel[LAYERS];
-        layerImage = new Image[LAYERS];
-        needleAngle = new double[LAYERS];
-        needleX = new double[LAYERS];
-        needleY = new double[LAYERS];
-        sweepMax = new double[LAYERS];
-        min = new double[LAYERS];
-        max = new double[LAYERS];
-        spread = new double[LAYERS];
-        value = new double[LAYERS];
-        wrap = new boolean[LAYERS];
-        damping = 1.0;
-
-        for (int i=0; i < LAYERS; i++) {
-            layer[i] = new JPanel();
-            this.add(layer[i], new Integer(i));      // add needle panel in foreground
-        }
-        this.add(faceLayer, new Integer(LAYERS));    // add face in background
-        
-        
+        currentLayer = 0;
+        needle = new ArrayList<>();
     }
 
-    /** returns the default needle angle
-     * 
-     * @return angle of the default needle
-     */
-    public double getNeedleAngle() {
-        return getNeedleAngle(0);
+    public void addNeedle(GaugeNeedle n) {
+        needle.add(n); // add needle to list of needles
+        n.setSize(this.getSize());
+        this.add(n, new Integer(++currentLayer)); // add needle (JPanel) to JLayeredPane
     }
     
-    
-    /** returns the specified needle angle
-     * 
-     * @param i
-     * @return angle of the ith needle
+
+    /**
+     * This returns a count of needles on the gauge
+     * @return (int) count of needles
      */
-    public double getNeedleAngle(int i) {
-        return needleAngle[i];
-    }
-    
-    
-    /** sets the angle of the default needle
-     * 
-     * @param angle 
-     */
-    public void setNeedleAngle(double angle) {
-        setNeedleAngle(0, angle);
-    }
-    
-    
-    /** sets the angle of the specified needle
-     * 
-     * @param i
-     * @param angle 
-     */
-    public void setNeedleAngle(int i, double angle) {
-        needleAngle[i] = angle;
-        //System.out.println("Needle "+i+" angle "+angle);
-    }
-    
-    
-    /** sets the center of rotation for the default needle
-     * 
-     * @param x is the horizontal position of center normalized to image size
-     * @param y is the vertical position of center normalized to image size
-     */
-    public void setNeedleCenter(double x, double y) {
-        setNeedleCenter(0, x, y);
-    }
-    
-    
-    /** sets the center of rotation for the specified needle
-     * 
-     * @param i the needle to set
-     * @param x is the horizontal position of center normalized to image size
-     * @param y is the vertical position of center normalized to image size
-     */
-    public void setNeedleCenter(int i, double x, double y) {
-        if ( i >= 0 && i < LAYERS) {
-            needleX[i] = x;
-            needleY[i] = y;
-        }
+    public int getNeedleCount() {
+        return this.needle.size();
     }
     
     
@@ -149,173 +78,16 @@ public class GaugePanel extends javax.swing.JLayeredPane {
         }
         return myImage;
     }
-        
     
-    /** assumes the needle image is in the 0 position
-     * 
-     * @param minValue
-     * @param maxValue
-     * @param sweepMax 
-     */
-    
-    //public void calibrate(double minValue, double maxValue, double sweepMax) {
-    //    calibrate(0, minValue, maxValue, sweepMax);
-    //}
-
-    /** calibrate a continuous/wraparound gauge like a compass
-     * 
-     * @param maxValue maximum value/wrap point
-     * @param maxSweep maximum sweep in radians
-     */
-    //public void calibrate(double maxValue, double maxSweep) {
-    //    calibrate(0, 0.0, maxValue, maxSweep, true);
-    //}
-
-    
-    /** calibrate a continuous/wraparound gauge like a compass
-     * 
-     * @param i
-     * @param maxValue maximum value/wrap point
-     * @param maxSweep maximum sweep in radians
-     */
-    public void calibrate(int i, double maxValue, double maxSweep) {
-        calibrate(i, 0.0, maxValue, maxSweep, true);
-    }
-    
-    /** calibrate a standard gauge like speedometer
-     * 
-     * @param i
-     * @param minValue
-     * @param maxValue
-     * @param maxSweep 
-     */
-    public void calibrate(int i, double minValue, double maxValue, double maxSweep) {
-        calibrate(i, minValue, maxValue, maxSweep, false);
-    }
-
-    /** calibrate a standard gauge like speedometer
-     * 
-     * @param i
-     * @param minValue
-     * @param maxValue
-     * @param maxSweep 
-     * @param doWrap
-     */
-    public void calibrate(int i, double minValue, double maxValue, double maxSweep, boolean doWrap) {
-        if ( i >= 0 && i < LAYERS) {
-            min[i] = minValue;
-            max[i] = maxValue;
-            spread[i] = maxValue - minValue;
-            sweepMax[i] = maxSweep;
-            wrap[i] = doWrap;
-        }
-    }
-
-    
-    public void setDamping(double d) {
-        damping = d;
-    }
-    
-    public void setValue(double value) {
-        setValue(0, value);
-    }
-            
-    public void updateValueDamped(double newValue) {
-        updateValueDamped(0, newValue);
-    }
-    
-    /** updates the value with some damping */
-    public void updateValueDamped(int i, double newValue) {
-        if ( i >= 0 && i < LAYERS) {
-            if (wrap[i]) {
-                while (newValue >= max[i]) {
-                    newValue -= spread[i];
-                }
-                while (newValue < min[i]) {
-                    newValue += spread[i];
-                }
-            }
-            /* if you run the algebra on: value = (1-damp)*value + damp*new
-             * you get: value = value + damp(new - value)
-             * That sets us up to handle a wraparound (modulus) case like
-             * 0-360, where we can adjust the delta value to between -180 and 180
-             */
-            System.out.println("1. newValue="+Double.toString(newValue));
-            System.out.println("2. value["+Integer.toString(i)+"]="+Double.toString(value[i]));
-            double delta = newValue - value[i];
-            System.out.println("3. delta=" + Double.toString(delta));
-            if (wrap[i]) {
-                /* e.g. if delta < -180, delta += 360 */
-                if (delta < -spread[i]/2.0) {
-                    delta += spread[i];
-                }
-                /* e.g., if delta > 180, delta -= 360 */
-                if (delta > spread[i]/2.0) {
-                    delta -= spread[i];
-                }
-                System.out.println("4. delta=" + Double.toString(delta));
-            }
-            /* algebraically equivalent to value[i] = (1-damping) * value[i] + damping * newValue; */
-            double theValue = value[i] + delta * damping;
-            if (wrap[i]) {
-                while (theValue >= max[i]) {
-                    theValue -= spread[i];
-                }
-                while (theValue < min[i]) {
-                    theValue += spread[i];
-                }
-            }
-            setValue(i, theValue);
-            System.out.println();
-        }
-    }
-    
-    public void setValue(int i, double newValue) {
-        if ( i >= 0 && i < LAYERS) {
-            value[i] = newValue;
-            if (value[i] < min[i]) {
-                value[i] = 0.8 * min[i];
-            }
-            if (value[i] > max[i]) {
-                value[i] = 1.2 * max[i];
-            }
-            setNeedleAngle(i, ( value[i] - min[i] ) * sweepMax[i] / ( max[i] - min[i] ));
-        }
-        this.repaint();
-    }
-    
-    /**
-     * 
-     * @param filename 
-     */
-    public void setNeedleImage(String filename) {
-        setNeedleImage(0, filename);
-    }
-    
-    
-    /**
-     * 
-     * @param i
-     * @param filename 
-     */
-    public void setNeedleImage(int i, String filename) {
-        if ( i >= 0 && i < LAYERS) {
-            layerImage[i] = loadImage(filename);
-            myWidth = this.getWidth();
-            myHeight = this.getHeight();
-        }
-    }
     
     
     /**
      * Creates new form GaugePanel
      */
-    public void setFaceImage(String filename) {
-        faceImage = loadImage(filename);
-        myWidth = this.getWidth();
-        myHeight = this.getHeight();
+    public void setImage(String filename) {
+        image = loadImage(filename);
     }
-    
+
     
     /**
      * 
@@ -325,23 +97,12 @@ public class GaugePanel extends javax.swing.JLayeredPane {
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         
-        if (faceImage != null) {
-            g2d.drawImage(faceImage, 0, 0, myWidth, myHeight, faceLayer);
-            faceLayer.repaint();
-        }
-
-        for (int i=0; i < LAYERS; i++) {
-            if (layerImage[i] != null) {
-                //g2d.translate(needleX, needleY);
-                //g2d.rotate(needleAngle, myWidth*140/272, myHeight*189/272);
-                g2d.rotate(needleAngle[i], myWidth*needleX[i], myHeight*needleY[i]);
-                g2d.drawImage(layerImage[i], 0, 0, myWidth, myHeight, layer[i]);
-                g2d.rotate(-needleAngle[i], myWidth*needleX[i], myHeight*needleY[i]);
-                layer[i].repaint();
-            }
+        super.paintComponent(g);
+        if (image != null) {
+            g2d.drawImage(image, 0, 0, myWidth, myHeight, facePanel);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -364,4 +125,49 @@ public class GaugePanel extends javax.swing.JLayeredPane {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    /** updates GaugePanel
+     *
+     */
+//    private final class GaugePanelUpdater extends SwingWorker<Void, String> implements ChangeListener<DoubleProperty> {
+//        private TimerTask clkTask;
+//        private Timer clkTimer = new Timer(true);
+//        double value;
+//        
+//        public void pause() {
+//            clkTimer.cancel();
+//        }
+//        
+//        public void start(DoubleProperty property) {
+//            try {
+//                this.doInBackground();
+//                clkTimer.scheduleAtFixedRate(clkTask, 0, 200);
+//            } catch (Exception ex) {
+//                Logger.getLogger(GaugePanel.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        
+//        @Override
+//        protected Void doInBackground() throws Exception {
+//            // Setup clock updater
+//            clkTask = new TimerTask() {
+//                @Override
+//                public void run() {
+//                    updateValueDamped(value);
+//                };
+//            };
+//            return null;        
+//        }
+//
+//        /**
+//         * Listens for changes to the associated property and updates itself
+//         * accordingly
+//         *
+//         * @param property is the property for which we're listening for changes
+//         */
+//        @Override
+//        public void changed(DoubleProperty property) {
+//            value = property.get();
+//        }
+//    }
 }
