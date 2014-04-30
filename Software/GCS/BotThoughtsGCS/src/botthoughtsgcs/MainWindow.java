@@ -123,7 +123,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         compassNeedle.setImage("/botthoughtsgcs/resources/compassneedle.png");
         compassNeedle.setDamping(0.3);
         compassNeedle.setRotationCenter(0.5, 0.5);
-        compassNeedle.calibrate(0, 360, -6.2832);
+        compassNeedle.calibrate(0, 360, -6.2832, true);
         heading = new DoubleProperty(0);
         heading.addListener((ChangeListener) compassNeedle);
         heading.set(0);
@@ -132,7 +132,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         compassPanel.addNeedle(bearingNeedle);
         bearingNeedle.setImage("/botthoughtsgcs/resources/compassbearing.png");
         bearingNeedle.setRotationCenter(0.5, 0.5);
-        bearingNeedle.calibrate(0, 360, 6.2832);
+        bearingNeedle.calibrate(0, 360, 6.2832, true);
         bearing = new DoubleProperty(0);;
         bearing.addListener((ChangeListener) bearingNeedle);
         bearing.set(0);

@@ -187,20 +187,20 @@ public final class GaugeNeedle extends JPanel implements ChangeListener<DoublePr
          * That sets us up to handle a wraparound (modulus) case like
          * 0-360, where we can adjust the delta value to between -180 and 180
          */
-//        System.out.println("1. newValue=" + Double.toString(newValue));
-//        System.out.println("2. value=" + Double.toString(value));
+        System.out.println("1. newValue=" + Double.toString(newValue));
+        System.out.println("2. value=" + Double.toString(value));
         double delta = newValue - value;
-//        System.out.println("3. delta=" + Double.toString(delta));
+        System.out.println("3. delta=" + Double.toString(delta));
         if (wrap) {
+            /* e.g., if delta > 180, delta -= 360 */
+            if (delta >= spread/2.0) {
+                delta -= spread;
+            }
             /* e.g. if delta < -180, delta += 360 */
             if (delta < -spread/2.0) {
                 delta += spread;
             }
-            /* e.g., if delta > 180, delta -= 360 */
-            if (delta > spread/2.0) {
-                delta -= spread;
-            }
-//            System.out.println("4. delta=" + Double.toString(delta));
+            System.out.println("4. delta=" + Double.toString(delta));
         }
         /* algebraically equivalent to value = (1-damping) * value[i] + damping * newValue; */
         double theValue = this.value + delta * damping;
@@ -213,7 +213,7 @@ public final class GaugeNeedle extends JPanel implements ChangeListener<DoublePr
             }
         }
         setValue(theValue);
-//        System.out.println();
+        System.out.println();
     }
 
     /**
