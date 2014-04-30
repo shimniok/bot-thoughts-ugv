@@ -18,7 +18,7 @@ import javax.swing.SwingWorker;
 public class MainWindow extends JFrame implements VehicleStatus {
     private final GaugeNeedle voltmeterNeedle;
     private final GaugeNeedle ammeterNeedle;
-    private final GaugeNeedle batteryNeedle;
+    private final GaugeNeedle gpsNeedle;
     private final GaugeNeedle speedometerNeedle;
     private final GaugeNeedle compassNeedle;
     private final GaugeNeedle bearingNeedle;
@@ -31,7 +31,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
     private final DoubleProperty secondProperty;
     private final DoubleProperty voltage;
     private final DoubleProperty current;
-    private final DoubleProperty battery;
+    private final DoubleProperty satcount;
     private final DoubleProperty speed;
     private final DoubleProperty bearing;
     private final DoubleProperty heading;
@@ -39,6 +39,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
     private final DoubleProperty latitude;
     private final DoubleProperty distance;
     private final DoubleProperty topProperty;
+    private final DoubleProperty battery;
     
     /**
      * Creates new form mainWindow
@@ -64,7 +65,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         voltmeterPanel.setImage("/botthoughtsgcs/resources/voltmeter1.png");
         voltmeterNeedle = new GaugeNeedle();
         voltmeterPanel.addNeedle(voltmeterNeedle);
-        voltmeterNeedle.setDamping(1.0);
+        voltmeterNeedle.setDamping(0.3);
         voltmeterNeedle.setImage("/botthoughtsgcs/resources/voltmeterneedle1.png");
         voltmeterNeedle.setRotationCenter(139.0/270.0, 189.0/269.0);
         voltmeterNeedle.calibrate(7.0, 9.0, 1.475);
@@ -82,16 +83,28 @@ public class MainWindow extends JFrame implements VehicleStatus {
         current = new DoubleProperty(0);
         current.addListener((ChangeListener) ammeterNeedle);
         current.set(0);
+  
+        gpsPanel.setImage("/botthoughtsgcs/resources/gps.png");
+        gpsNeedle = new GaugeNeedle();
+        gpsPanel.addNeedle(gpsNeedle);
+        gpsNeedle.setDamping(0.4);
+        gpsNeedle.setImage("/botthoughtsgcs/resources/gpsneedle.png");
+        gpsNeedle.setRotationCenter(261.0/536.0, 381.0/536.0);
+        gpsNeedle.calibrate(0.0, 14.0, 1.475);
+        satcount = new DoubleProperty(0);
+        satcount.addListener((ChangeListener) gpsNeedle);
+        satcount.set(0); // TODO: parameterize this, turn into percentage somehow?
+
         
-        batteryPanel.setImage("/botthoughtsgcs/resources/fuel1.png");
-        batteryNeedle = new GaugeNeedle();
-        batteryPanel.addNeedle(batteryNeedle);
-        batteryNeedle.setImage("/botthoughtsgcs/resources/fuelneedle1.png");
-        batteryNeedle.calibrate(200.0, 4000.0, 1.5);
-        batteryNeedle.setRotationCenter(159.0/310.0, 219.0/308.0);
+//        batteryPanel.setImage("/botthoughtsgcs/resources/fuel1.png");
+//        batteryNeedle = new GaugeNeedle();
+//        batteryPanel.addNeedle(batteryNeedle);
+//        batteryNeedle.setImage("/botthoughtsgcs/resources/fuelneedle1.png");
+//        batteryNeedle.calibrate(200.0, 4000.0, 1.5);
+//        batteryNeedle.setRotationCenter(159.0/310.0, 219.0/308.0);
         battery = new DoubleProperty(0);
-        battery.addListener((ChangeListener) batteryNeedle);
-        battery.set(0); // TODO: parameterize this, turn into percentage somehow?
+//        battery.addListener((ChangeListener) batteryNeedle);
+        battery.set(4000); // TODO: parameterize this, turn into percentage somehow?
                 
         speedometerPanel.setImage("/botthoughtsgcs/resources/speedometer1.png");
         speedometerNeedle = new GaugeNeedle();
@@ -99,7 +112,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         speedometerNeedle.setImage("/botthoughtsgcs/resources/speedometerneedle1.png");
         speedometerNeedle.setRotationCenter(0.5, 0.5);
         speedometerNeedle.calibrate(0, 60.0, 4.7);
-        speedometerNeedle.setDamping(0.8);
+        speedometerNeedle.setDamping(0.3);
         speed = new DoubleProperty(0);
         speed.addListener((ChangeListener) speedometerNeedle);
         speed.set(0);
@@ -108,7 +121,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         compassNeedle = new GaugeNeedle();
         compassPanel.addNeedle(compassNeedle);
         compassNeedle.setImage("/botthoughtsgcs/resources/compassneedle.png");
-        compassNeedle.setDamping(0.5);
+        compassNeedle.setDamping(0.3);
         compassNeedle.setRotationCenter(0.5, 0.5);
         compassNeedle.calibrate(0, 360, -6.2832);
         heading = new DoubleProperty(0);
@@ -120,19 +133,19 @@ public class MainWindow extends JFrame implements VehicleStatus {
         bearingNeedle.setImage("/botthoughtsgcs/resources/compassbearing.png");
         bearingNeedle.setRotationCenter(0.5, 0.5);
         bearingNeedle.calibrate(0, 360, 6.2832);
-        bearing = new DoubleProperty(0);
+        bearing = new DoubleProperty(0);;
         bearing.addListener((ChangeListener) bearingNeedle);
         bearing.set(0);
-        
+
         topNeedle = new GaugeNeedle();
         compassPanel.addNeedle(topNeedle);
-        topNeedle.setImage("/botthoughtgcs/resources/compasstop.png");
+        topNeedle.setImage("/botthoughtsgcs/resources/compasstop.png");
         topNeedle.setRotationCenter(0.5, 0.5);
         topNeedle.calibrate(0, 360, 6.2832);
         topProperty = new DoubleProperty(0);
         topProperty.addListener((ChangeListener) topNeedle);
         topProperty.set(0);
-
+        
         clockPanel.setImage("/botthoughtsgcs/resources/clock.png");
         hourNeedle = new GaugeNeedle();
         clockPanel.addNeedle(hourNeedle);
@@ -246,7 +259,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
 
     @Override
     public double getBattery() {
-        return battery.get();
+        return satcount.get();
     }
 
     @Override
@@ -267,6 +280,11 @@ public class MainWindow extends JFrame implements VehicleStatus {
     @Override
     public double getLongitude() {
         return longitude.get();
+    }
+
+    @Override
+    public double getSatCount() {
+        return satcount.get();
     }
 
     @Override
@@ -291,7 +309,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
 
     @Override
     public void setBattery(double v) {
-        battery.set(v);
+        satcount.set(v);
     }
 
     @Override
@@ -315,6 +333,11 @@ public class MainWindow extends JFrame implements VehicleStatus {
     }
 
     @Override
+    public void setSatCount(double v) {
+        satcount.set(v);
+    }
+    
+    @Override
     public void setBearing(double v) {
         bearing.set(v);
     }
@@ -337,7 +360,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         backgroundPanel = new BackgroundPanel("/botthoughtsgcs/resources/background.jpg");
         speedometerPanel = new botthoughtsgcs.GaugePanel();
         voltmeterPanel = new botthoughtsgcs.GaugePanel();
-        batteryPanel = new botthoughtsgcs.GaugePanel();
+        gpsPanel = new botthoughtsgcs.GaugePanel();
         ammeterPanel = new botthoughtsgcs.GaugePanel();
         clockPanel = new botthoughtsgcs.GaugePanel();
         compassPanel = new botthoughtsgcs.GaugePanel();
@@ -347,9 +370,9 @@ public class MainWindow extends JFrame implements VehicleStatus {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
-        setMaximumSize(new java.awt.Dimension(950, 400));
-        setMinimumSize(new java.awt.Dimension(950, 400));
-        setPreferredSize(new java.awt.Dimension(950, 400));
+        setMaximumSize(new java.awt.Dimension(1000, 400));
+        setMinimumSize(new java.awt.Dimension(1000, 400));
+        setPreferredSize(new java.awt.Dimension(1000, 400));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -410,31 +433,31 @@ public class MainWindow extends JFrame implements VehicleStatus {
 
         backgroundPanel.add(voltmeterPanel, new java.awt.GridBagConstraints());
 
-        batteryPanel.setBackground(new java.awt.Color(204, 204, 204));
-        batteryPanel.setMaximumSize(new java.awt.Dimension(150, 150));
-        batteryPanel.setMinimumSize(new java.awt.Dimension(150, 150));
-        batteryPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-        batteryPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        gpsPanel.setBackground(new java.awt.Color(204, 204, 204));
+        gpsPanel.setMaximumSize(new java.awt.Dimension(150, 150));
+        gpsPanel.setMinimumSize(new java.awt.Dimension(150, 150));
+        gpsPanel.setPreferredSize(new java.awt.Dimension(150, 150));
+        gpsPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 gaugePanelMouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout batteryPanelLayout = new javax.swing.GroupLayout(batteryPanel);
-        batteryPanel.setLayout(batteryPanelLayout);
-        batteryPanelLayout.setHorizontalGroup(
-            batteryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout gpsPanelLayout = new javax.swing.GroupLayout(gpsPanel);
+        gpsPanel.setLayout(gpsPanelLayout);
+        gpsPanelLayout.setHorizontalGroup(
+            gpsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 150, Short.MAX_VALUE)
         );
-        batteryPanelLayout.setVerticalGroup(
-            batteryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        gpsPanelLayout.setVerticalGroup(
+            gpsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 150, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        backgroundPanel.add(batteryPanel, gridBagConstraints);
+        backgroundPanel.add(gpsPanel, gridBagConstraints);
 
         ammeterPanel.setMaximumSize(new java.awt.Dimension(150, 150));
         ammeterPanel.setMinimumSize(new java.awt.Dimension(150, 150));
@@ -604,10 +627,10 @@ public class MainWindow extends JFrame implements VehicleStatus {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private botthoughtsgcs.GaugePanel ammeterPanel;
     private javax.swing.JPanel backgroundPanel;
-    private botthoughtsgcs.GaugePanel batteryPanel;
     private botthoughtsgcs.GaugePanel clockPanel;
     private botthoughtsgcs.GaugePanel compassPanel;
     private javax.swing.JPanel controlPanel;
+    private botthoughtsgcs.GaugePanel gpsPanel;
     private botthoughtsgcs.LogPanel logPanel;
     private com.botthoughts.SerialPanel serialPanel;
     private botthoughtsgcs.GaugePanel speedometerPanel;

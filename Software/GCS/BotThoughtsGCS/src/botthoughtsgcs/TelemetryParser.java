@@ -51,6 +51,7 @@ public class TelemetryParser implements Parser {
                     vehicleStatus.setHeading(Double.parseDouble(result[3]));
                     vehicleStatus.setLatitude(Double.parseDouble(result[4]));
                     vehicleStatus.setLongitude(Double.parseDouble(result[5]));
+                    vehicleStatus.setSatCount(Double.parseDouble(result[7]));
                     vehicleStatus.setSpeed(2.23694 * Double.parseDouble(result[8])); // convert m/s to mph
                     vehicleStatus.setBearing(Double.parseDouble(result[9]));
                     vehicleStatus.setDistance(Double.parseDouble(result[10]));
