@@ -38,6 +38,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
     private final DoubleProperty longitude;
     private final DoubleProperty latitude;
     private final DoubleProperty distance;
+    private final DoubleProperty topProperty;
     
     /**
      * Creates new form mainWindow
@@ -66,18 +67,18 @@ public class MainWindow extends JFrame implements VehicleStatus {
         voltmeterNeedle.setDamping(1.0);
         voltmeterNeedle.setImage("/botthoughtsgcs/resources/voltmeterneedle1.png");
         voltmeterNeedle.setRotationCenter(139.0/270.0, 189.0/269.0);
-        voltmeterNeedle.calibrate(4.0, 12.0, 1.475);
+        voltmeterNeedle.calibrate(7.0, 9.0, 1.475);
         voltage = new DoubleProperty(0);
         voltage.addListener((ChangeListener) voltmeterNeedle);
-        voltage.set(0.0);
+        voltage.set(0.1);
         
-        ammeterPanel.setImage("/botthoughtsgcs/resources/ammeter2.png");
+        ammeterPanel.setImage("/botthoughtsgcs/resources/ammeter3.png");
         ammeterNeedle = new GaugeNeedle();
         ammeterPanel.addNeedle(ammeterNeedle);
         ammeterNeedle.setDamping(0.2);
-        ammeterNeedle.setImage("/botthoughtsgcs/resources/ammeterneedle2.png");
-        ammeterNeedle.setRotationCenter(262.0/536.0, 382.0/536.0);
-        ammeterNeedle.calibrate(0.0, 60.0, -0.775);
+        ammeterNeedle.setImage("/botthoughtsgcs/resources/ammeterneedle3.png");
+        ammeterNeedle.setRotationCenter(139.0/270.0, 189.0/269.0);
+        ammeterNeedle.calibrate(0.0, 10.0, -0.7375);
         current = new DoubleProperty(0);
         current.addListener((ChangeListener) ammeterNeedle);
         current.set(0);
@@ -97,8 +98,8 @@ public class MainWindow extends JFrame implements VehicleStatus {
         speedometerPanel.addNeedle(speedometerNeedle);
         speedometerNeedle.setImage("/botthoughtsgcs/resources/speedometerneedle1.png");
         speedometerNeedle.setRotationCenter(0.5, 0.5);
-        speedometerNeedle.calibrate(0, 120.0, 4.7);
-        speedometerNeedle.setDamping(0.3);
+        speedometerNeedle.calibrate(0, 60.0, 4.7);
+        speedometerNeedle.setDamping(0.8);
         speed = new DoubleProperty(0);
         speed.addListener((ChangeListener) speedometerNeedle);
         speed.set(0);
@@ -107,6 +108,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         compassNeedle = new GaugeNeedle();
         compassPanel.addNeedle(compassNeedle);
         compassNeedle.setImage("/botthoughtsgcs/resources/compassneedle.png");
+        compassNeedle.setDamping(0.5);
         compassNeedle.setRotationCenter(0.5, 0.5);
         compassNeedle.calibrate(0, 360, -6.2832);
         heading = new DoubleProperty(0);
@@ -117,7 +119,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         compassPanel.addNeedle(bearingNeedle);
         bearingNeedle.setImage("/botthoughtsgcs/resources/compassbearing.png");
         bearingNeedle.setRotationCenter(0.5, 0.5);
-        bearingNeedle.calibrate(1, 360, 6.2832);
+        bearingNeedle.calibrate(0, 360, 6.2832);
         bearing = new DoubleProperty(0);
         bearing.addListener((ChangeListener) bearingNeedle);
         bearing.set(0);
@@ -126,8 +128,8 @@ public class MainWindow extends JFrame implements VehicleStatus {
         compassPanel.addNeedle(topNeedle);
         topNeedle.setImage("/botthoughtgcs/resources/compasstop.png");
         topNeedle.setRotationCenter(0.5, 0.5);
-        topNeedle.calibrate(1, 360, 6.2832);
-        DoubleProperty topProperty = new DoubleProperty(0);
+        topNeedle.calibrate(0, 360, 6.2832);
+        topProperty = new DoubleProperty(0);
         topProperty.addListener((ChangeListener) topNeedle);
         topProperty.set(0);
 
@@ -193,7 +195,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
                     int sec = cal.get(Calendar.SECOND);
                     hourProperty.set(hour + min/60.0);
                     minuteProperty.set(min + sec/60.0);
-                    secondProperty.set(sec);                
+                    secondProperty.set(sec);   
                 };
             };
             start();
