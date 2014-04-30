@@ -23,8 +23,11 @@ public interface VehicleStatus {
     public void setLatitude(double v);
     public double getLongitude();
     public void setLongitude(double v);
+    public double getSatCount();
+    public void setSatCount(double parseDouble);
     public double getBearing();
     public void setBearing(double v);
     public double getDistance();
     public void setDistance(double v);
+
 }

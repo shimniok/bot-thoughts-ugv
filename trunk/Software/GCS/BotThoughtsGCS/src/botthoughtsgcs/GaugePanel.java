@@ -42,7 +42,10 @@ public final class GaugePanel extends JLayeredPane {
     public void addNeedle(GaugeNeedle n) {
         needle.add(n); // add needle to list of needles
         n.setSize(this.getSize());
+        System.out.print("currentLayer=");
+        System.out.println(currentLayer);
         this.add(n, new Integer(++currentLayer)); // add needle (JPanel) to JLayeredPane
+        this.setVisible(true);
     }
     
 
@@ -126,48 +129,4 @@ public final class GaugePanel extends JLayeredPane {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    /** updates GaugePanel
-     *
-     */
-//    private final class GaugePanelUpdater extends SwingWorker<Void, String> implements ChangeListener<DoubleProperty> {
-//        private TimerTask clkTask;
-//        private Timer clkTimer = new Timer(true);
-//        double value;
-//        
-//        public void pause() {
-//            clkTimer.cancel();
-//        }
-//        
-//        public void start(DoubleProperty property) {
-//            try {
-//                this.doInBackground();
-//                clkTimer.scheduleAtFixedRate(clkTask, 0, 200);
-//            } catch (Exception ex) {
-//                Logger.getLogger(GaugePanel.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        
-//        @Override
-//        protected Void doInBackground() throws Exception {
-//            // Setup clock updater
-//            clkTask = new TimerTask() {
-//                @Override
-//                public void run() {
-//                    updateValueDamped(value);
-//                };
-//            };
-//            return null;        
-//        }
-//
-//        /**
-//         * Listens for changes to the associated property and updates itself
-//         * accordingly
-//         *
-//         * @param property is the property for which we're listening for changes
-//         */
-//        @Override
-//        public void changed(DoubleProperty property) {
-//            value = property.get();
-//        }
-//    }
 }
