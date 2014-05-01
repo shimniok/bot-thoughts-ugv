@@ -588,6 +588,10 @@ public class MainWindow extends JFrame implements VehicleStatus {
 
             @Override
             public void run() {
+
+                System.setProperty("java.library.path", "/");
+                System.out.println(System.getProperty("java.library.path"));
+                
                 new MainWindow().setVisible(true);
                 
                 // Setup DJ NativeSwing web browser
