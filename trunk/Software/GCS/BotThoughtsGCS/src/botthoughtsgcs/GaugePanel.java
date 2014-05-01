@@ -4,16 +4,12 @@
  */
 package botthoughtsgcs;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -26,7 +22,6 @@ public final class GaugePanel extends JLayeredPane {
     private int myHeight;
     private Image image;
     private JPanel facePanel;
-    private JLabel faceLabel;
     private ArrayList<GaugeNeedle> needle;
     private int currentLayer;
     
@@ -42,15 +37,15 @@ public final class GaugePanel extends JLayeredPane {
     public void addNeedle(GaugeNeedle n) {
         needle.add(n); // add needle to list of needles
         n.setSize(this.getSize());
-        System.out.print("currentLayer=");
-        System.out.println(currentLayer);
+//        System.out.print("currentLayer=");
+//        System.out.println(currentLayer);
         this.add(n, new Integer(++currentLayer)); // add needle (JPanel) to JLayeredPane
         this.setVisible(true);
     }
     
 
     /**
-     * This returns a count of needles on the gauge
+     * This returns a count of needles on the gauge.
      * @return (int) count of needles
      */
     public int getNeedleCount() {
@@ -58,10 +53,10 @@ public final class GaugePanel extends JLayeredPane {
     }
     
     
-    /**
+    /** loads the specified image as an Image
      * 
-     * @param filename
-     * @return 
+     * @param filename is the name of the image file
+     * @return Image loaded from the filename
      */
     private Image loadImage(String filename) {
         Image myImage = null;
