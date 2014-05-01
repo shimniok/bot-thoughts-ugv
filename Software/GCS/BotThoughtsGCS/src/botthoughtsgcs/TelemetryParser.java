@@ -34,12 +34,13 @@ public class TelemetryParser implements Parser {
      */
     @Override
     public void parseData(String data) {
+        System.out.println("parseData() enter");
         buffer += data;
         begin = buffer.lastIndexOf(SOH); // look for start of transmission
         end = buffer.indexOf(EOT);
         if (begin >= 0 && end >= 0) {
             String sentence = buffer.substring(begin+1, end); // peel off text after SOT
-            System.out.format("sentence: <%s>\n", sentence);
+//            System.out.format("sentence: <%s>\n", sentence);
             buffer = buffer.substring(end+1);
 
             String[] result = sentence.split(",\\s*");
@@ -55,32 +56,22 @@ public class TelemetryParser implements Parser {
                     vehicleStatus.setSpeed(2.23694 * Double.parseDouble(result[8])); // convert m/s to mph
                     vehicleStatus.setBearing(Double.parseDouble(result[9]));
                     vehicleStatus.setDistance(Double.parseDouble(result[10]));
+                    System.out.print("v="+result[1]);
+                    System.out.print(" a="+result[2]);
+                    System.out.print(" h="+result[3]);
+                    System.out.println();
+                    System.out.print("lat="+result[4]);
+                    System.out.print(" lon="+result[5]);
+                    System.out.println();
+                    System.out.println();
+                           
                 } catch (NumberFormatException e) {
                     System.out.println("Number format exception");
                 }
             } else {
-                System.out.println("Something wrong with result");
+                System.out.println("Too few fields: "+Integer.toString(result.length));
             }
         }       
-             
-//
-//            if (latitude.charAt(latitude.length()) == 'S') {
-//                latitude = "-" + latitude;
-//            }
-//            if (longitude.charAt(longitude.length()) == 'W') {
-//                longitude = "-" + longitude;
-//            }
-//
-//            vehicleStatus.setVoltage(Double.parseDouble(voltage) / 10.0);
-//            vehicleStatus.setCurrent(Double.parseDouble(current) / 10.0);
-//            vehicleStatus.setHeading(Double.parseDouble(heading) / 10.0);
-//            vehicleStatus.setSpeed(2.23694 * Double.parseDouble(speed) / 10.0); // convert m/s to mph
-//            vehicleStatus.setLatitude(Double.parseDouble(latitude) / 10e5);
-//            vehicleStatus.setLongitude(Double.parseDouble(longitude) / 10e5);
-//            vehicleStatus.setBearing(Double.parseDouble(bearing) / 10.0);
-//            vehicleStatus.setDistance(Double.parseDouble(distance) / 10.0);
-//
-//            done = true;
-//        }
+        System.out.println("parseData() exit");
     }
 }
