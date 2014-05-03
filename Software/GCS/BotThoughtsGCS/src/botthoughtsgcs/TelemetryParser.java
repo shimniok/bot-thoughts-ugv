@@ -45,7 +45,6 @@ public class TelemetryParser implements Parser {
 
             String[] result = sentence.split(",\\s*");
 
-            if (result.length >= 11) {
                 try {
                     vehicleStatus.setVoltage(Double.parseDouble(result[1]));
                     vehicleStatus.setCurrent(Double.parseDouble(result[2]));
@@ -68,9 +67,6 @@ public class TelemetryParser implements Parser {
                 } catch (NumberFormatException e) {
                     System.out.println("Number format exception");
                 }
-            } else {
-                System.out.println("Too few fields: "+Integer.toString(result.length));
-            }
         }       
         System.out.println("parseData() exit");
     }
