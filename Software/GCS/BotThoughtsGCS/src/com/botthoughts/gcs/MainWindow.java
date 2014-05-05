@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package botthoughtsgcs;
+package com.botthoughts.gcs;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -360,15 +360,15 @@ public class MainWindow extends JFrame implements VehicleStatus {
         java.awt.GridBagConstraints gridBagConstraints;
 
         backgroundPanel = new BackgroundPanel("/botthoughtsgcs/resources/background.jpg");
-        speedometerPanel = new botthoughtsgcs.GaugePanel();
-        voltmeterPanel = new botthoughtsgcs.GaugePanel();
-        gpsPanel = new botthoughtsgcs.GaugePanel();
-        ammeterPanel = new botthoughtsgcs.GaugePanel();
-        clockPanel = new botthoughtsgcs.GaugePanel();
-        compassPanel = new botthoughtsgcs.GaugePanel();
+        speedometerPanel = new com.botthoughts.gcs.GaugePanel();
+        voltmeterPanel = new com.botthoughts.gcs.GaugePanel();
+        gpsPanel = new com.botthoughts.gcs.GaugePanel();
+        ammeterPanel = new com.botthoughts.gcs.GaugePanel();
+        clockPanel = new com.botthoughts.gcs.GaugePanel();
+        compassPanel = new com.botthoughts.gcs.GaugePanel();
         controlPanel = new javax.swing.JPanel();
         serialPanel = new com.botthoughts.SerialPanel();
-        logPanel = new botthoughtsgcs.LogPanel();
+        logPanel = new com.botthoughts.gcs.LogPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
@@ -632,16 +632,16 @@ public class MainWindow extends JFrame implements VehicleStatus {
  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private botthoughtsgcs.GaugePanel ammeterPanel;
+    private com.botthoughts.gcs.GaugePanel ammeterPanel;
     private javax.swing.JPanel backgroundPanel;
-    private botthoughtsgcs.GaugePanel clockPanel;
-    private botthoughtsgcs.GaugePanel compassPanel;
+    private com.botthoughts.gcs.GaugePanel clockPanel;
+    private com.botthoughts.gcs.GaugePanel compassPanel;
     private javax.swing.JPanel controlPanel;
-    private botthoughtsgcs.GaugePanel gpsPanel;
-    private botthoughtsgcs.LogPanel logPanel;
+    private com.botthoughts.gcs.GaugePanel gpsPanel;
+    private com.botthoughts.gcs.LogPanel logPanel;
     private com.botthoughts.SerialPanel serialPanel;
-    private botthoughtsgcs.GaugePanel speedometerPanel;
-    private botthoughtsgcs.GaugePanel voltmeterPanel;
+    private com.botthoughts.gcs.GaugePanel speedometerPanel;
+    private com.botthoughts.gcs.GaugePanel voltmeterPanel;
     // End of variables declaration//GEN-END:variables
     //private static botthoughtsgcs.GoogleEarthPanel gePanel;
     //private static OpenCVWebCam cvPanel;

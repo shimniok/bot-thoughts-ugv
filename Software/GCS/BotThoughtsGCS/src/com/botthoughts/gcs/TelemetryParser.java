@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package botthoughtsgcs;
+package com.botthoughts.gcs;
 
 import com.botthoughts.Parser;
 import java.util.ArrayList;
