@@ -4,6 +4,8 @@
  */
 package botthoughtsgcs;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.*;
 import java.util.logging.Level;
@@ -46,7 +48,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
      */
     public MainWindow() {
         initComponents();
- 
+        
         speedometerPanel.setSize(new Dimension(310, 310));
         System.out.println(speedometerPanel.getSize());
         //NativeSwing.initialize();
@@ -585,6 +587,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            private Component gePanel;
 
             @Override
             public void run() {
@@ -598,15 +601,15 @@ public class MainWindow extends JFrame implements VehicleStatus {
                 //UIUtils.setPreferredLookAndFeel();
                 //NativeInterface.open();
 
-                //gePanel = new GoogleEarthPanel();
+                gePanel = new GoogleEarthPanel();
                 System.out.println("in run");
-                /*
                 JFrame gef = new JFrame("Google Earth View");
                 gef.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gef.getContentPane().add(gePanel, BorderLayout.CENTER);
                 gef.setSize(800, 600);
                 gef.setLocationByPlatform(true);
                 gef.setVisible(true);
+                /*
                 //NativeInterface.runEventPump(); // this doesn't seem to want to work
                 cvf = new WebCamWindow();
                 Runnable loader = new Runnable() {
