@@ -6,6 +6,7 @@ package botthoughtsgcs;
 
 //import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -25,9 +26,9 @@ public class GoogleEarthPanel extends javax.swing.JPanel {
      * Creates new form GEPanel
      */
     public GoogleEarthPanel() {
-        /*
         super(new BorderLayout());
         JPanel webBrowserPanel = new JPanel(new BorderLayout());
+        /*
         webBrowser = new JWebBrowser();
         webBrowser.setBarsVisible(false);
         try {

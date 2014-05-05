@@ -74,6 +74,11 @@ public final class GaugeNeedle extends JPanel implements ChangeListener<DoublePr
     public void setCalibration(double minValue, double maxValue, double maxSweep) {
         setCalibration(minValue, maxValue, maxSweep, false);
     }
+    
+    // TODO: create an optional 'Off' value so the needle goes < min when gauge is
+    // 'turned off' or at least when not connected to serial or replaying a log
+    
+    // TODO: add warning LEDs for various values.
 
     /**
      * calibrate a standard needle like speedometer
@@ -130,10 +135,10 @@ public final class GaugeNeedle extends JPanel implements ChangeListener<DoublePr
     public void setValue(double newValue) {
         value = newValue;
         if (value < min) {
-            value = min - 0.1*(max-min);
+            value = min;
         }
         if (value > max) {
-            value = max + 0.9*(max-min);
+            value = max;
         }
         setAngle((value - min) * sweepMax / (max - min));
     }
