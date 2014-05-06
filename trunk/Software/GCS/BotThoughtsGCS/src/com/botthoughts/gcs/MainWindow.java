@@ -64,10 +64,10 @@ public class MainWindow extends JFrame implements VehicleStatus {
         longitude = new DoubleProperty(0);
         distance = new DoubleProperty(0);
         
-        voltmeterPanel.setImage("/botthoughtsgcs/resources/voltmeter1.png");
+        voltmeterPanel.setImage("resources/voltmeter1.png");
         voltmeterNeedle = new GaugeNeedle();
         voltmeterPanel.addNeedle(voltmeterNeedle);
-        voltmeterNeedle.setImage("/botthoughtsgcs/resources/voltmeterneedle1.png");
+        voltmeterNeedle.setImage("resources/voltmeterneedle1.png");
         voltmeterNeedle.setRotationCenter(139.0/270.0, 189.0/269.0);
         voltmeterNeedle.setCalibration(7.0, 9.0, 1.475);
         voltage = new DoubleProperty(0);
@@ -75,10 +75,10 @@ public class MainWindow extends JFrame implements VehicleStatus {
         voltage.set(7);
         voltmeterNeedle.setDamping(0.3);
         
-        ammeterPanel.setImage("/botthoughtsgcs/resources/ammeter3.png");
+        ammeterPanel.setImage("resources/ammeter3.png");
         ammeterNeedle = new GaugeNeedle();
         ammeterPanel.addNeedle(ammeterNeedle);
-        ammeterNeedle.setImage("/botthoughtsgcs/resources/ammeterneedle3.png");
+        ammeterNeedle.setImage("resources/ammeterneedle3.png");
         ammeterNeedle.setRotationCenter(139.0/270.0, 189.0/269.0);
         ammeterNeedle.setCalibration(0.0, 10.0, -0.7375);
         current = new DoubleProperty(0);
@@ -86,10 +86,10 @@ public class MainWindow extends JFrame implements VehicleStatus {
         current.set(0);
         ammeterNeedle.setDamping(0.2);
   
-        gpsPanel.setImage("/botthoughtsgcs/resources/gps.png");
+        gpsPanel.setImage("resources/gps.png");
         gpsNeedle = new GaugeNeedle();
         gpsPanel.addNeedle(gpsNeedle);
-        gpsNeedle.setImage("/botthoughtsgcs/resources/gpsneedle.png");
+        gpsNeedle.setImage("resources/gpsneedle.png");
         gpsNeedle.setRotationCenter(261.0/536.0, 381.0/536.0);
         gpsNeedle.setCalibration(0.0, 14.0, 1.475);
         satcount = new DoubleProperty(0);
@@ -98,20 +98,20 @@ public class MainWindow extends JFrame implements VehicleStatus {
         gpsNeedle.setDamping(0.4);
 
         
-//        batteryPanel.setImage("/botthoughtsgcs/resources/fuel1.png");
+//        batteryPanel.setImage("resources/fuel1.png");
 //        batteryNeedle = new GaugeNeedle();
 //        batteryPanel.addNeedle(batteryNeedle);
-//        batteryNeedle.setImage("/botthoughtsgcs/resources/fuelneedle1.png");
+//        batteryNeedle.setImage("resources/fuelneedle1.png");
 //        batteryNeedle.calibrate(200.0, 4000.0, 1.5);
 //        batteryNeedle.setRotationCenter(159.0/310.0, 219.0/308.0);
         battery = new DoubleProperty(0);
 //        battery.addListener((ChangeListener) batteryNeedle);
         battery.set(4000); // TODO: parameterize this, turn into percentage somehow?
                 
-        speedometerPanel.setImage("/botthoughtsgcs/resources/speedometer1.png");
+        speedometerPanel.setImage("resources/speedometer1.png");
         speedometerNeedle = new GaugeNeedle();
         speedometerPanel.addNeedle(speedometerNeedle);
-        speedometerNeedle.setImage("/botthoughtsgcs/resources/speedometerneedle1.png");
+        speedometerNeedle.setImage("resources/speedometerneedle1.png");
         speedometerNeedle.setRotationCenter(0.5, 0.5);
         speedometerNeedle.setCalibration(0, 60.0, 4.7);
         speed = new DoubleProperty(0);
@@ -119,10 +119,10 @@ public class MainWindow extends JFrame implements VehicleStatus {
         speed.set(0);
         speedometerNeedle.setDamping(0.3);
         
-        compassPanel.setImage("/botthoughtsgcs/resources/compass.png");
+        compassPanel.setImage("resources/compass.png");
         compassNeedle = new GaugeNeedle();
         compassPanel.addNeedle(compassNeedle);
-        compassNeedle.setImage("/botthoughtsgcs/resources/compassneedle.png");
+        compassNeedle.setImage("resources/compassneedle.png");
         compassNeedle.setRotationCenter(0.5, 0.5);
         compassNeedle.setCalibration(0, 360, -6.2832, true);
         heading = new DoubleProperty(0);
@@ -132,7 +132,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         
         bearingNeedle = new GaugeNeedle();
         compassPanel.addNeedle(bearingNeedle);
-        bearingNeedle.setImage("/botthoughtsgcs/resources/compassbearing.png");
+        bearingNeedle.setImage("resources/compassbearing.png");
         bearingNeedle.setRotationCenter(0.5, 0.5);
         bearingNeedle.setCalibration(0, 360, 6.2832, true);
         bearing = new DoubleProperty(0);
@@ -141,17 +141,17 @@ public class MainWindow extends JFrame implements VehicleStatus {
 
         topNeedle = new GaugeNeedle();
         compassPanel.addNeedle(topNeedle);
-        topNeedle.setImage("/botthoughtsgcs/resources/compasstop.png");
+        topNeedle.setImage("resources/compasstop.png");
         topNeedle.setRotationCenter(0.5, 0.5);
         topNeedle.setCalibration(0, 360, 6.2832);
         topProperty = new DoubleProperty(0);
         topProperty.addListener((ChangeListener) topNeedle);
         topProperty.set(0);
         
-        clockPanel.setImage("/botthoughtsgcs/resources/clock.png");
+        clockPanel.setImage("resources/clock.png");
         hourNeedle = new GaugeNeedle();
         clockPanel.addNeedle(hourNeedle);
-        hourNeedle.setImage("/botthoughtsgcs/resources/clockhour.png");
+        hourNeedle.setImage("resources/clockhour.png");
         hourNeedle.setRotationCenter(0.5, 0.5);
         hourNeedle.setCalibration(12, 6.2832);
         hourProperty = new DoubleProperty(0);
@@ -159,7 +159,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
 
         minuteNeedle = new GaugeNeedle();
         clockPanel.addNeedle(minuteNeedle);
-        minuteNeedle.setImage("/botthoughtsgcs/resources/clockminute.png");
+        minuteNeedle.setImage("resources/clockminute.png");
         minuteNeedle.setRotationCenter(0.5, 0.5);
         minuteNeedle.setCalibration(60, 6.2832);
         minuteProperty = new DoubleProperty(0);
@@ -167,7 +167,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         
         secondNeedle = new GaugeNeedle();
         clockPanel.addNeedle(secondNeedle);
-        secondNeedle.setImage("/botthoughtsgcs/resources/clocksecond.png");
+        secondNeedle.setImage("resources/clocksecond.png");
         secondNeedle.setRotationCenter(0.5, 0.5);
         secondNeedle.setCalibration(60, 6.2832);
         secondProperty = new DoubleProperty(0);
@@ -359,7 +359,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        backgroundPanel = new BackgroundPanel("/botthoughtsgcs/resources/background.jpg");
+        backgroundPanel = new BackgroundPanel("/com/botthoughts/gcs/resources/background.jpg");
         speedometerPanel = new com.botthoughts.gcs.GaugePanel();
         voltmeterPanel = new com.botthoughts.gcs.GaugePanel();
         gpsPanel = new com.botthoughts.gcs.GaugePanel();
@@ -601,6 +601,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
                 //UIUtils.setPreferredLookAndFeel();
                 //NativeInterface.open();
 
+                /*
                 gePanel = new GoogleEarthPanel();
                 System.out.println("in run");
                 JFrame gef = new JFrame("Google Earth View");
@@ -609,7 +610,6 @@ public class MainWindow extends JFrame implements VehicleStatus {
                 gef.setSize(800, 600);
                 gef.setLocationByPlatform(true);
                 gef.setVisible(true);
-                /*
                 //NativeInterface.runEventPump(); // this doesn't seem to want to work
                 cvf = new WebCamWindow();
                 Runnable loader = new Runnable() {
