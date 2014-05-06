@@ -35,40 +35,38 @@ public class TelemetryParser implements Parser {
         buffer += data;
         begin = buffer.lastIndexOf(SOH); // look for start of transmission
         end = buffer.indexOf(EOT);
-        if (begin > end) {
-            buffer = "";
-            begin = end = 0;
-        }
 //        System.out.format("%d %d\n", begin, end);
-        if (begin >= 0 && end >= 0) {
+        if (begin >= 0 && end >= 0 && begin < end) {
             String sentence = buffer.substring(begin+1, end); // peel off text after SOT
-            System.out.format("sentence: <%s>\n", sentence);
+//            System.out.format("sentence: <%s>\n", sentence);
             buffer = buffer.substring(end+1);
+            begin = -1; end = -1;
 
             String[] result = sentence.split(",\\s*");
 
-                try {
-                    vehicleStatus.setVoltage(Double.parseDouble(result[1]));
-                    vehicleStatus.setCurrent(Double.parseDouble(result[2]));
-                    vehicleStatus.setHeading(Double.parseDouble(result[3]));
-                    vehicleStatus.setLatitude(Double.parseDouble(result[4]));
-                    vehicleStatus.setLongitude(Double.parseDouble(result[5]));
-                    vehicleStatus.setSatCount(Double.parseDouble(result[7]));
-                    vehicleStatus.setSpeed(2.23694 * Double.parseDouble(result[8])); // convert m/s to mph
-                    vehicleStatus.setBearing(Double.parseDouble(result[9]));
-                    vehicleStatus.setDistance(Double.parseDouble(result[10]));
-                    System.out.print("v="+result[1]);
-                    System.out.print(" a="+result[2]);
-                    System.out.print(" h="+result[3]);
-                    System.out.println();
-                    System.out.print("lat="+result[4]);
-                    System.out.print(" lon="+result[5]);
-                    System.out.println();
-                    System.out.println();
-                           
-                } catch (NumberFormatException e) {
-                    System.out.println("Number format exception");
-                }
+            try {
+                vehicleStatus.setVoltage(Double.parseDouble(result[1]));
+                vehicleStatus.setCurrent(Double.parseDouble(result[2]));
+                vehicleStatus.setHeading(Double.parseDouble(result[3]));
+                vehicleStatus.setLatitude(Double.parseDouble(result[4]));
+                vehicleStatus.setLongitude(Double.parseDouble(result[5]));
+                vehicleStatus.setSatCount(Double.parseDouble(result[7]));
+                vehicleStatus.setSpeed(2.23694 * Double.parseDouble(result[8])); // convert m/s to mph
+                vehicleStatus.setBearing(Double.parseDouble(result[9]));
+                vehicleStatus.setDistance(Double.parseDouble(result[10]));
+                System.out.print("v="+result[1]);
+                System.out.print(" a="+result[2]);
+                System.out.print(" h="+result[3]);
+                System.out.println();
+                System.out.print("lat="+result[4]);
+                System.out.print(" lon="+result[5]);
+                System.out.println();
+                System.out.println();
+                buffer = "";
+
+            } catch (NumberFormatException e) {
+                System.out.println("Number format exception");
+            }
         }       
         System.out.println("parseData() exit");
     }
