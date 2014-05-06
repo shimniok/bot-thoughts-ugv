@@ -5,9 +5,6 @@
 package com.botthoughts.gcs;
 
 import com.botthoughts.Parser;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 /**
  *
@@ -34,13 +31,18 @@ public class TelemetryParser implements Parser {
      */
     @Override
     public void parseData(String data) {
-        System.out.println("parseData() enter");
+//        System.out.println("parseData() enter");
         buffer += data;
         begin = buffer.lastIndexOf(SOH); // look for start of transmission
         end = buffer.indexOf(EOT);
+        if (begin > end) {
+            buffer = "";
+            begin = end = 0;
+        }
+//        System.out.format("%d %d\n", begin, end);
         if (begin >= 0 && end >= 0) {
             String sentence = buffer.substring(begin+1, end); // peel off text after SOT
-//            System.out.format("sentence: <%s>\n", sentence);
+            System.out.format("sentence: <%s>\n", sentence);
             buffer = buffer.substring(end+1);
 
             String[] result = sentence.split(",\\s*");
