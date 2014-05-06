@@ -57,8 +57,7 @@ public class TelemetryParser implements Parser {
                 System.out.print("v="+result[1]);
                 System.out.print(" a="+result[2]);
                 System.out.print(" h="+result[3]);
-                System.out.println();
-                System.out.print("lat="+result[4]);
+                System.out.print(" lat="+result[4]);
                 System.out.print(" lon="+result[5]);
                 System.out.println();
                 System.out.println();
@@ -68,6 +67,6 @@ public class TelemetryParser implements Parser {
                 System.out.println("Number format exception");
             }
         }       
-        System.out.println("parseData() exit");
+//        System.out.println("parseData() exit");
     }
 }
