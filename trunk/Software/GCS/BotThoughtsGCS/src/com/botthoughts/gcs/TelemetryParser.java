@@ -13,8 +13,8 @@ import com.botthoughts.Parser;
 public class TelemetryParser implements Parser {
 
     private String buffer;
-    private static char SOH = '^';
-    private static char EOT = '\n';
+    private static char SOP = '`';
+    private static char EOP = '\n';
     private VehicleStatus vehicleStatus;
     private int begin = -1;
     private int end = -1;
@@ -33,14 +33,15 @@ public class TelemetryParser implements Parser {
     public void parseData(String data) {
 //        System.out.println("parseData() enter");
         buffer += data;
-        begin = buffer.lastIndexOf(SOH); // look for start of transmission
-        end = buffer.indexOf(EOT);
+//        System.out.println("<"+buffer+">");
+        begin = buffer.lastIndexOf(SOP); // look for start of transmission
+        buffer = buffer.substring(begin);
+        end = buffer.indexOf(EOP);
 //        System.out.format("%d %d\n", begin, end);
-        if (begin >= 0 && end >= 0 && begin < end) {
-            String sentence = buffer.substring(begin+1, end); // peel off text after SOT
+        if (begin >= 0 && end >= 0) {
+            String sentence = buffer.substring(1, end); // peel off text after SOT
 //            System.out.format("sentence: <%s>\n", sentence);
             buffer = buffer.substring(end+1);
-            begin = -1; end = -1;
 
             String[] result = sentence.split(",\\s*");
 
@@ -59,6 +60,7 @@ public class TelemetryParser implements Parser {
                 System.out.print(" h="+result[3]);
                 System.out.print(" lat="+result[4]);
                 System.out.print(" lon="+result[5]);
+                System.out.print(" sats="+result[7]);
                 System.out.println();
                 System.out.println();
                 buffer = "";
