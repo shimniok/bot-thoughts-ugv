@@ -42,7 +42,8 @@ public class MainWindow extends JFrame implements VehicleStatus {
     private final DoubleProperty distance;
     private final DoubleProperty topProperty;
     private final DoubleProperty battery;
-    
+    private final BooleanProperty timeout;
+
     /**
      * Creates new form mainWindow
      */
@@ -173,6 +174,17 @@ public class MainWindow extends JFrame implements VehicleStatus {
         secondProperty = new DoubleProperty(0);
         secondProperty.addListener((ChangeListener) secondNeedle);
         
+        timeout = new BooleanProperty(false);
+        TimeoutListener tl = new TimeoutListener();
+        timeout.addListener((ChangeListener) tl);
+        WatchDog wd = new WatchDog(5, timeout);
+        try {
+            wd.doInBackground();
+            wd.start();
+        } catch (Exception ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         ClockUpdater cu = new ClockUpdater();
         try {
             cu.doInBackground();
@@ -181,6 +193,17 @@ public class MainWindow extends JFrame implements VehicleStatus {
         }
     }
 
+    private final class TimeoutListener implements ChangeListener<BooleanProperty> {
+
+        @Override
+        public void changed(BooleanProperty timeout) {
+            if (timeout.get()) {
+                System.out.println(">>>>>>>>>> TIMEOUT >>>>>>>>>>");
+            }
+        }
+        
+    }
+    
 
     /** updates clock
      *
