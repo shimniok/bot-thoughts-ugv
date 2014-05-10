@@ -18,10 +18,12 @@ public class TelemetryParser implements Parser {
     private VehicleStatus vehicleStatus;
     private int begin = -1;
     private int end = -1;
+    private WatchDog watchdog;
 
-    public TelemetryParser(VehicleStatus vs) {
+    public TelemetryParser(VehicleStatus vs, WatchDog wd) {
         vehicleStatus = vs;
         buffer = "";
+        watchdog = wd;
     }
 
     /**
@@ -61,10 +63,12 @@ public class TelemetryParser implements Parser {
                 System.out.print(" lat="+result[4]);
                 System.out.print(" lon="+result[5]);
                 System.out.print(" sats="+result[7]);
-                System.out.println();
+                System.out.print(" SA="+result[11]);
+                System.out.print(" LABrg="+result[12]);
                 System.out.println();
                 buffer = "";
-
+                watchdog.reset();
+                
             } catch (NumberFormatException e) {
                 System.out.println("Number format exception");
             }
