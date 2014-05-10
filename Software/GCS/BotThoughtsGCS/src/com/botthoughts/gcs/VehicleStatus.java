@@ -29,5 +29,4 @@ public interface VehicleStatus {
     public void setBearing(double v);
     public double getDistance();
     public void setDistance(double v);
-
 }

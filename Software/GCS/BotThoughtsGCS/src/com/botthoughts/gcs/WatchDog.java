@@ -34,33 +34,35 @@ public class WatchDog extends SwingWorker<Void, String> {
     }
 
     public void start() {
-        reset();
-        timeoutExceeded.setValue(false);
+        // Start off assuming we've exceeded our timeout
+        count = timeout;
+        timeoutExceeded.set(true);
         clkTimer.scheduleAtFixedRate(clkTask, 0, 1000);
     }
     
     public void reset() {
         count = 0;
+        timeoutExceeded.set(false);
     }
 
     @Override
     protected Void doInBackground() throws Exception {
-            // Setup clock updater
-            clkTask = new TimerTask() {
-                @Override
-                public void run() {
-                    System.out.print("wd run() count=");
-                    System.out.print(count);
-                    System.out.print(" timeout=");
-                    System.out.print(timeout);
-                    System.out.println();
-                    if (count >= timeout) {
-                        timeoutExceeded.set(true);
-                    } else {
-                        count++;
-                    }
-                };
+        // Setup clock updater
+        clkTask = new TimerTask() {
+            @Override
+            public void run() {
+//                System.out.print("wd run() count=");
+//                System.out.print(count);
+//                System.out.print(" timeout=");
+//                System.out.print(timeout);
+//                System.out.println();
+                if (count >= timeout) {
+                    timeoutExceeded.set(true);
+                } else {
+                    count++;
+                }
             };
-            return null;   
+        };
+        return null;   
     }
 }

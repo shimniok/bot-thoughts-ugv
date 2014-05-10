@@ -247,7 +247,7 @@ public final class GaugeNeedle extends JPanel implements ChangeListener<DoublePr
         this.repaint();
     }
     
-        /**
+    /**
      * Load image of the needle.
      * @param filename is the filename of the image to load
      * @return (Image) is the image loaded

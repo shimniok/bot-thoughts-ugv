@@ -4,20 +4,32 @@
  */
 package com.botthoughts.gcs;
 
-import java.awt.BorderLayout;
+import com.botthoughts.SerialPanel;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 /**
  *
  * @author Michael Shimniok
  */
-public class MainWindow extends JFrame implements VehicleStatus {
+public final class MainWindow extends JFrame implements VehicleStatus {
     private final GaugeNeedle voltmeterNeedle;
     private final GaugeNeedle ammeterNeedle;
     private final GaugeNeedle gpsNeedle;
@@ -28,12 +40,17 @@ public class MainWindow extends JFrame implements VehicleStatus {
     private final GaugeNeedle hourNeedle;
     private final GaugeNeedle minuteNeedle;
     private final GaugeNeedle secondNeedle;
+    private final IndicatorLight timeoutIndicator;
+    private final IndicatorLight gpsIndicator;
+    private final IndicatorLight batteryIndicator;
     private final DoubleProperty hourProperty;
     private final DoubleProperty minuteProperty;
     private final DoubleProperty secondProperty;
     private final DoubleProperty voltage;
+    private final BooleanProperty volterr;
     private final DoubleProperty current;
     private final DoubleProperty satcount;
+    private final BooleanProperty gpserr;
     private final DoubleProperty speed;
     private final DoubleProperty bearing;
     private final DoubleProperty heading;
@@ -43,27 +60,72 @@ public class MainWindow extends JFrame implements VehicleStatus {
     private final DoubleProperty topProperty;
     private final DoubleProperty battery;
     private final BooleanProperty timeout;
-
+    private static int largeSize = 300;
+    private static int smallSize = 120;
+    private IndicatorPanel indicatorPanel;
+    private GaugePanel ammeterPanel;
+    private JPanel backgroundPanel;
+    private GaugePanel clockPanel;
+    private GaugePanel compassPanel;
+    private JPanel controlPanel;
+    private GaugePanel gpsPanel;
+    private LogPanel logPanel;
+    private SerialPanel serialPanel;
+    private GaugePanel speedometerPanel;
+    private GaugePanel voltmeterPanel;
+    //private static botthoughtsgcs.GoogleEarthPanel gePanel;
+    //private static OpenCVWebCam cvPanel;
+    //private static WebCamWindow cvf;
+    boolean initialized=false;
+    
     /**
      * Creates new form mainWindow
      */
     public MainWindow() {
         initComponents();
         
-        speedometerPanel.setSize(new Dimension(310, 310));
+        speedometerPanel.setSize(new Dimension(largeSize, largeSize));
         System.out.println(speedometerPanel.getSize());
         //NativeSwing.initialize();
 
         this.setTitle("Bot Thoughts GCS");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Set the handler for serial panel to parse data
-        // This parser points to our model, vehicleStatus
-        serialPanel.setHandler(new TelemetryParser(this));
-
+        
         latitude = new DoubleProperty(0);
         longitude = new DoubleProperty(0);
         distance = new DoubleProperty(0);
+        timeout = new BooleanProperty(false);
+        gpserr = new BooleanProperty(false);
+        volterr = new BooleanProperty(false);
+
+        /* Comm watchdog */
+        WatchDog wd = new WatchDog(3, timeout);
+        try {
+            wd.doInBackground();
+            wd.start();
+        } catch (Exception ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // Set the handler for serial panel to parse data
+        // This parser points to our model, vehicleStatus
+        serialPanel.setHandler(new TelemetryParser(this, wd));       
+        
+        indicatorPanel.setImage("resources/indicatorpanel.png");
+        timeoutIndicator = new IndicatorLight();
+        timeoutIndicator.setImage("resources/indicator_comm_red.png");
+        indicatorPanel.addIndicator(timeoutIndicator);
+        timeout.addListener((ChangeListener) timeoutIndicator);
+        
+        gpsIndicator = new IndicatorLight();
+        gpsIndicator.setImage("resources/indicator_gps_red.png");
+        indicatorPanel.addIndicator(gpsIndicator);
+        gpserr.addListener((ChangeListener) gpsIndicator);
+        
+        batteryIndicator = new IndicatorLight();
+        batteryIndicator.setImage("resources/indicator_batt_red.png");
+        indicatorPanel.addIndicator(batteryIndicator);
+        volterr.addListener((ChangeListener) batteryIndicator);                
         
         voltmeterPanel.setImage("resources/voltmeter1.png");
         voltmeterNeedle = new GaugeNeedle();
@@ -73,7 +135,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         voltmeterNeedle.setCalibration(7.0, 9.0, 1.475);
         voltage = new DoubleProperty(0);
         voltage.addListener((ChangeListener) voltmeterNeedle);
-        voltage.set(7);
+        setVoltage(0);
         voltmeterNeedle.setDamping(0.3);
         
         ammeterPanel.setImage("resources/ammeter3.png");
@@ -95,7 +157,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         gpsNeedle.setCalibration(0.0, 14.0, 1.475);
         satcount = new DoubleProperty(0);
         satcount.addListener((ChangeListener) gpsNeedle);
-        satcount.set(0); // TODO: parameterize this, turn into percentage somehow?
+        setSatCount(0);
         gpsNeedle.setDamping(0.4);
 
         
@@ -104,7 +166,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
 //        batteryPanel.addNeedle(batteryNeedle);
 //        batteryNeedle.setImage("resources/fuelneedle1.png");
 //        batteryNeedle.calibrate(200.0, 4000.0, 1.5);
-//        batteryNeedle.setRotationCenter(159.0/310.0, 219.0/308.0);
+//        batteryNeedle.setRotationCenter(159.0/largeSize.0, 219.0/308.0);
         battery = new DoubleProperty(0);
 //        battery.addListener((ChangeListener) batteryNeedle);
         battery.set(4000); // TODO: parameterize this, turn into percentage somehow?
@@ -173,17 +235,6 @@ public class MainWindow extends JFrame implements VehicleStatus {
         secondNeedle.setCalibration(60, 6.2832);
         secondProperty = new DoubleProperty(0);
         secondProperty.addListener((ChangeListener) secondNeedle);
-        
-        timeout = new BooleanProperty(false);
-        TimeoutListener tl = new TimeoutListener();
-        timeout.addListener((ChangeListener) tl);
-        WatchDog wd = new WatchDog(5, timeout);
-        try {
-            wd.doInBackground();
-            wd.start();
-        } catch (Exception ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         ClockUpdater cu = new ClockUpdater();
         try {
@@ -254,23 +305,6 @@ public class MainWindow extends JFrame implements VehicleStatus {
         }
     }
 
-    public void updateDisplay() {
-    /*
-        voltmeterPanel.updateValueDamped(vStat.getVoltage());
-        ammeterPanel.updateValueDamped(vStat.getCurrent());
-        speedometerPanel.updateValueDamped(vStat.getSpeed());
-        compassPanel.updateValueDamped(0, vStat.getHeading());
-        Double relbrg = vStat.getBearing() - vStat.getHeading();
-        if (relbrg < 0) relbrg -= 360.0;
-        if (relbrg >= 360) relbrg -= 360.0;
-        compassPanel.updateValueDamped(1, relbrg);
-
-        if (initialized == false) {
-            initializeUI();
-        }
-        //gePanel.setPose(vStat.getLatitude(), vStat.getLongitude(), vStat.getHeading());        
-        */
-    }
     
     @Override
     public double getVoltage() {
@@ -322,9 +356,10 @@ public class MainWindow extends JFrame implements VehicleStatus {
         return distance.get();
     }
 
-        @Override
+    @Override
     public void setVoltage(double v) {
         voltage.set(v);
+        volterr.set(v < 3.5 * 2); // TODO: parametric thresholds
     }
 
     @Override
@@ -360,6 +395,8 @@ public class MainWindow extends JFrame implements VehicleStatus {
     @Override
     public void setSatCount(double v) {
         satcount.set(v);
+        // too few satellites?
+        gpserr.set( v < 4 ); // TODO: parametric thresholds
     }
     
     @Override
@@ -380,207 +417,190 @@ public class MainWindow extends JFrame implements VehicleStatus {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
-        backgroundPanel = new BackgroundPanel("/com/botthoughts/gcs/resources/background.jpg");
-        speedometerPanel = new com.botthoughts.gcs.GaugePanel();
-        voltmeterPanel = new com.botthoughts.gcs.GaugePanel();
-        gpsPanel = new com.botthoughts.gcs.GaugePanel();
-        ammeterPanel = new com.botthoughts.gcs.GaugePanel();
-        clockPanel = new com.botthoughts.gcs.GaugePanel();
-        compassPanel = new com.botthoughts.gcs.GaugePanel();
-        controlPanel = new javax.swing.JPanel();
-        serialPanel = new com.botthoughts.SerialPanel();
-        logPanel = new com.botthoughts.gcs.LogPanel();
+        backgroundPanel = new BackgroundPanel("resources/background.jpg");
+        speedometerPanel = new GaugePanel();
+        voltmeterPanel = new GaugePanel();
+        gpsPanel = new GaugePanel();
+        ammeterPanel = new GaugePanel();
+        clockPanel = new GaugePanel();
+        compassPanel = new GaugePanel();
+        controlPanel = new JPanel();
+        serialPanel = new SerialPanel();
+        logPanel = new LogPanel();
+        indicatorPanel = new IndicatorPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(102, 102, 102));
-        setMaximumSize(new java.awt.Dimension(1000, 400));
-        setMinimumSize(new java.awt.Dimension(1000, 400));
-        setPreferredSize(new java.awt.Dimension(1000, 400));
-        setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new Color(102, 102, 102));
+        setMaximumSize(new Dimension(1500, 600));
+        setMinimumSize(new Dimension(500, 200));
+        setPreferredSize(new Dimension(1000, 400));
+        setResizable(true);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        getContentPane().setLayout(new GridBagLayout());
 
-        backgroundPanel.setLayout(new java.awt.GridBagLayout());
+        backgroundPanel.setLayout(new GridBagLayout());
 
-        speedometerPanel.setMaximumSize(new java.awt.Dimension(310, 310));
-        speedometerPanel.setMinimumSize(new java.awt.Dimension(310, 310));
-        speedometerPanel.setPreferredSize(new java.awt.Dimension(310, 310));
-        speedometerPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                gaugePanelMouseClicked(evt);
-            }
-        });
+        speedometerPanel.setMaximumSize(new Dimension(largeSize, largeSize));
+        speedometerPanel.setMinimumSize(new Dimension(largeSize, largeSize));
+        speedometerPanel.setPreferredSize(new Dimension(largeSize, largeSize));
 
-        javax.swing.GroupLayout speedometerPanelLayout = new javax.swing.GroupLayout(speedometerPanel);
+        GroupLayout speedometerPanelLayout = new GroupLayout(speedometerPanel);
         speedometerPanel.setLayout(speedometerPanelLayout);
         speedometerPanelLayout.setHorizontalGroup(
-            speedometerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 310, Short.MAX_VALUE)
+            speedometerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, largeSize, Short.MAX_VALUE)
         );
         speedometerPanelLayout.setVerticalGroup(
-            speedometerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 310, Short.MAX_VALUE)
+            speedometerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, largeSize, Short.MAX_VALUE)
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridheight = 3;
         backgroundPanel.add(speedometerPanel, gridBagConstraints);
 
-        voltmeterPanel.setBackground(new java.awt.Color(204, 204, 204));
-        voltmeterPanel.setMaximumSize(new java.awt.Dimension(150, 150));
-        voltmeterPanel.setMinimumSize(new java.awt.Dimension(150, 150));
+        indicatorPanel.setMaximumSize(new Dimension(smallSize*2, 40));
+        indicatorPanel.setMinimumSize(new Dimension(smallSize*2, 40));
+        indicatorPanel.setPreferredSize(new Dimension(smallSize*2, 40));
+        indicatorPanel.setName(""); // NOI18N
+        GroupLayout indicatorPanelLayout = new GroupLayout(indicatorPanel);
+        indicatorPanel.setLayout(indicatorPanelLayout);
+        indicatorPanelLayout.setHorizontalGroup(
+            indicatorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        indicatorPanelLayout.setVerticalGroup(
+            indicatorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;   
+        backgroundPanel.add(indicatorPanel, gridBagConstraints);
+        
+        voltmeterPanel.setBackground(new Color(204, 204, 204));
+        voltmeterPanel.setMaximumSize(new Dimension(smallSize, smallSize));
+        voltmeterPanel.setMinimumSize(new Dimension(smallSize, smallSize));
         voltmeterPanel.setName(""); // NOI18N
-        voltmeterPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-        voltmeterPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                gaugePanelMouseClicked(evt);
-            }
-        });
+        voltmeterPanel.setPreferredSize(new Dimension(smallSize, smallSize));
 
-        javax.swing.GroupLayout voltmeterPanelLayout = new javax.swing.GroupLayout(voltmeterPanel);
+        GroupLayout voltmeterPanelLayout = new GroupLayout(voltmeterPanel);
         voltmeterPanel.setLayout(voltmeterPanelLayout);
         voltmeterPanelLayout.setHorizontalGroup(
-            voltmeterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            voltmeterPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, smallSize, Short.MAX_VALUE)
         );
         voltmeterPanelLayout.setVerticalGroup(
-            voltmeterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            voltmeterPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, smallSize, Short.MAX_VALUE)
         );
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;   
+        backgroundPanel.add(voltmeterPanel, gridBagConstraints);
 
-        backgroundPanel.add(voltmeterPanel, new java.awt.GridBagConstraints());
-
-        gpsPanel.setBackground(new java.awt.Color(204, 204, 204));
-        gpsPanel.setMaximumSize(new java.awt.Dimension(150, 150));
-        gpsPanel.setMinimumSize(new java.awt.Dimension(150, 150));
-        gpsPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-        gpsPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                gaugePanelMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout gpsPanelLayout = new javax.swing.GroupLayout(gpsPanel);
+        gpsPanel.setBackground(new Color(204, 204, 204));
+        gpsPanel.setMaximumSize(new Dimension(smallSize, smallSize));
+        gpsPanel.setMinimumSize(new Dimension(smallSize, smallSize));
+        gpsPanel.setPreferredSize(new Dimension(smallSize, smallSize));
+        GroupLayout gpsPanelLayout = new GroupLayout(gpsPanel);
         gpsPanel.setLayout(gpsPanelLayout);
         gpsPanelLayout.setHorizontalGroup(
-            gpsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            gpsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, smallSize, Short.MAX_VALUE)
         );
         gpsPanelLayout.setVerticalGroup(
-            gpsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            gpsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, smallSize, Short.MAX_VALUE)
         );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         backgroundPanel.add(gpsPanel, gridBagConstraints);
 
-        ammeterPanel.setMaximumSize(new java.awt.Dimension(150, 150));
-        ammeterPanel.setMinimumSize(new java.awt.Dimension(150, 150));
-        ammeterPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-        ammeterPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                gaugePanelMouseClicked(evt);
-            }
-        });
+        ammeterPanel.setMaximumSize(new Dimension(smallSize, smallSize));
+        ammeterPanel.setMinimumSize(new Dimension(smallSize, smallSize));
+        ammeterPanel.setPreferredSize(new Dimension(smallSize, smallSize));
 
-        javax.swing.GroupLayout ammeterPanelLayout = new javax.swing.GroupLayout(ammeterPanel);
+        GroupLayout ammeterPanelLayout = new GroupLayout(ammeterPanel);
         ammeterPanel.setLayout(ammeterPanelLayout);
         ammeterPanelLayout.setHorizontalGroup(
-            ammeterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            ammeterPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, smallSize, Short.MAX_VALUE)
         );
         ammeterPanelLayout.setVerticalGroup(
-            ammeterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            ammeterPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, smallSize, Short.MAX_VALUE)
         );
-
-        backgroundPanel.add(ammeterPanel, new java.awt.GridBagConstraints());
-
-        clockPanel.setMaximumSize(new java.awt.Dimension(150, 150));
-        clockPanel.setMinimumSize(new java.awt.Dimension(150, 150));
-        clockPanel.setPreferredSize(new java.awt.Dimension(150, 150));
-        clockPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clockPanelMouseClicked(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
+        backgroundPanel.add(ammeterPanel, gridBagConstraints);
+
+        clockPanel.setMaximumSize(new Dimension(smallSize, smallSize));
+        clockPanel.setMinimumSize(new Dimension(smallSize, smallSize));
+        clockPanel.setPreferredSize(new Dimension(smallSize, smallSize));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
         backgroundPanel.add(clockPanel, gridBagConstraints);
 
-        compassPanel.setMaximumSize(new java.awt.Dimension(310, 310));
-        compassPanel.setMinimumSize(new java.awt.Dimension(310, 310));
-        compassPanel.setPreferredSize(new java.awt.Dimension(310, 310));
-        compassPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                gaugePanelMouseClicked(evt);
-            }
-        });
+        compassPanel.setMaximumSize(new Dimension(largeSize, largeSize));
+        compassPanel.setMinimumSize(new Dimension(largeSize, largeSize));
+        compassPanel.setPreferredSize(new Dimension(largeSize, largeSize));
 
-        javax.swing.GroupLayout compassPanelLayout = new javax.swing.GroupLayout(compassPanel);
+        GroupLayout compassPanelLayout = new GroupLayout(compassPanel);
         compassPanel.setLayout(compassPanelLayout);
         compassPanelLayout.setHorizontalGroup(
-            compassPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 310, Short.MAX_VALUE)
+            compassPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, largeSize, Short.MAX_VALUE)
         );
         compassPanelLayout.setVerticalGroup(
-            compassPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 310, Short.MAX_VALUE)
+            compassPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, largeSize, Short.MAX_VALUE)
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridheight = 3;
         backgroundPanel.add(compassPanel, gridBagConstraints);
 
-        getContentPane().add(backgroundPanel, new java.awt.GridBagConstraints());
+        getContentPane().add(backgroundPanel, new GridBagConstraints());
 
-        controlPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        controlPanel.setMaximumSize(new java.awt.Dimension(10000, 10000));
-        controlPanel.setMinimumSize(new java.awt.Dimension(900, 60));
-        controlPanel.setPreferredSize(new java.awt.Dimension(900, 60));
-        controlPanel.setLayout(new java.awt.GridBagLayout());
-        controlPanel.add(serialPanel, new java.awt.GridBagConstraints());
-        controlPanel.add(logPanel, new java.awt.GridBagConstraints());
+        controlPanel.setBorder(BorderFactory.createEtchedBorder());
+        controlPanel.setMaximumSize(new Dimension(10000, 10000));
+        controlPanel.setMinimumSize(new Dimension(900, 60));
+        controlPanel.setPreferredSize(new Dimension(900, 60));
+        controlPanel.setLayout(new GridBagLayout());
+        controlPanel.add(serialPanel, new GridBagConstraints());
+        controlPanel.add(logPanel, new GridBagConstraints());
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridy = 1;
         getContentPane().add(controlPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        //if (serialPanel1 != null) serialPanel1.handleClose();
-    }//GEN-LAST:event_formWindowClosing
-
-    private void gaugePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gaugePanelMouseClicked
-//TODO Remove this
-//        GaugePanel gaugePanel = (GaugePanel) evt.getComponent();
-//        gaugePanel.setNeedleAngle(gaugePanel.getNeedleAngle() + 0.05);
-//        gaugePanel.repaint();
-    }//GEN-LAST:event_gaugePanelMouseClicked
-
-    private void clockPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clockPanelMouseClicked
-//TODO Remove this
-//        GaugePanel gaugePanel = (GaugePanel) evt.getComponent();
-//        gaugePanel.setNeedleAngle(0, gaugePanel.getNeedleAngle(1) / 10);
-//        gaugePanel.setNeedleAngle(1, gaugePanel.getNeedleAngle(1) + 5 * (0.105));
-//        gaugePanel.repaint();
-    }//GEN-LAST:event_clockPanelMouseClicked
+    
+    //<editor-fold defaultstate="collapsed" desc="Deal with window closing">
+    private void formWindowClosing(WindowEvent evt) {
+        // nothing to do at this time
+    }
+    //</editor-fold>
        
+    
     /**
      * @param args the command line arguments
      */
@@ -595,13 +615,13 @@ public class MainWindow extends JFrame implements VehicleStatus {
          * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -609,7 +629,7 @@ public class MainWindow extends JFrame implements VehicleStatus {
         /*
          * Create and display the form
          */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             private Component gePanel;
 
             @Override
@@ -651,23 +671,4 @@ public class MainWindow extends JFrame implements VehicleStatus {
             }
         });
     }
-    
- 
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.botthoughts.gcs.GaugePanel ammeterPanel;
-    private javax.swing.JPanel backgroundPanel;
-    private com.botthoughts.gcs.GaugePanel clockPanel;
-    private com.botthoughts.gcs.GaugePanel compassPanel;
-    private javax.swing.JPanel controlPanel;
-    private com.botthoughts.gcs.GaugePanel gpsPanel;
-    private com.botthoughts.gcs.LogPanel logPanel;
-    private com.botthoughts.SerialPanel serialPanel;
-    private com.botthoughts.gcs.GaugePanel speedometerPanel;
-    private com.botthoughts.gcs.GaugePanel voltmeterPanel;
-    // End of variables declaration//GEN-END:variables
-    //private static botthoughtsgcs.GoogleEarthPanel gePanel;
-    //private static OpenCVWebCam cvPanel;
-    //private static WebCamWindow cvf;
-    boolean initialized=false;
 }
