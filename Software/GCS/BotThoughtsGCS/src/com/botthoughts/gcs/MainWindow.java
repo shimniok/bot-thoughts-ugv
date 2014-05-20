@@ -73,16 +73,20 @@ public final class MainWindow extends JFrame implements VehicleStatus {
     private SerialPanel serialPanel;
     private GaugePanel speedometerPanel;
     private GaugePanel voltmeterPanel;
+    private final MapWindow mapFrame;
     //private static botthoughtsgcs.GoogleEarthPanel gePanel;
     //private static OpenCVWebCam cvPanel;
     //private static WebCamWindow cvf;
     boolean initialized=false;
+    private final IntegerProperty nextWaypoint;
     
     /**
      * Creates new form mainWindow
      */
     public MainWindow() {
         initComponents();
+
+        mapFrame = new MapWindow();
         
         speedometerPanel.setSize(new Dimension(largeSize, largeSize));
         System.out.println(speedometerPanel.getSize());
@@ -97,6 +101,7 @@ public final class MainWindow extends JFrame implements VehicleStatus {
         timeout = new BooleanProperty(false);
         gpserr = new BooleanProperty(false);
         volterr = new BooleanProperty(false);
+        nextWaypoint = new IntegerProperty(0);
 
         /* Comm watchdog */
         WatchDog wd = new WatchDog(3, timeout);
@@ -244,17 +249,6 @@ public final class MainWindow extends JFrame implements VehicleStatus {
         }
     }
 
-    private final class TimeoutListener implements ChangeListener<BooleanProperty> {
-
-        @Override
-        public void changed(BooleanProperty timeout) {
-            if (timeout.get()) {
-                System.out.println(">>>>>>>>>> TIMEOUT >>>>>>>>>>");
-            }
-        }
-        
-    }
-    
 
     /** updates clock
      *
@@ -393,6 +387,21 @@ public final class MainWindow extends JFrame implements VehicleStatus {
     }
 
     @Override
+    public void setPosition(Coordinate v) {
+        mapFrame.setPosition(v.getX(), v.getY());
+    }
+    
+    @Override
+    public void setLookahead(Coordinate v) {
+        mapFrame.setLookAhead(v.getX(), v.getY());
+    }
+        
+    @Override
+    public void setWaypoints(ArrayList<Coordinate> wpt) {
+        mapFrame.setWaypoints(wpt);
+    }
+
+    @Override
     public void setSatCount(double v) {
         satcount.set(v);
         // too few satellites?
@@ -409,6 +418,11 @@ public final class MainWindow extends JFrame implements VehicleStatus {
         distance.set(v);
     }
     
+    @Override
+    public void setNextWaypoint(int v) {
+        mapFrame.setNextWaypoint(v);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

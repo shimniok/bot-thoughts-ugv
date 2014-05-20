@@ -5,6 +5,7 @@
 package com.botthoughts.gcs;
 
 import com.botthoughts.Parser;
+import java.util.ArrayList;
 
 /**
  *
@@ -47,26 +48,73 @@ public class TelemetryParser implements Parser {
 
             String[] result = sentence.split(",\\s*");
 
+            String messageType = result[0];
+            
             try {
-                vehicleStatus.setVoltage(Double.parseDouble(result[1]));
-                vehicleStatus.setCurrent(Double.parseDouble(result[2]));
-                vehicleStatus.setHeading(Double.parseDouble(result[3]));
-                vehicleStatus.setLatitude(Double.parseDouble(result[4]));
-                vehicleStatus.setLongitude(Double.parseDouble(result[5]));
-                vehicleStatus.setSatCount(Double.parseDouble(result[7]));
-                vehicleStatus.setSpeed(2.23694 * Double.parseDouble(result[8])); // convert m/s to mph
-                vehicleStatus.setBearing(Double.parseDouble(result[9]));
-                vehicleStatus.setDistance(Double.parseDouble(result[10]));
-                System.out.print("v="+result[1]);
-                System.out.print(" a="+result[2]);
-                System.out.print(" h="+result[3]);
-                System.out.print(" lat="+result[4]);
-                System.out.print(" lon="+result[5]);
-                System.out.print(" sats="+result[7]);
-                System.out.print(" SA="+result[11]);
-                System.out.print(" LABrg="+result[12]);
-                System.out.println();
-                buffer = "";
+                
+                if ("00".equals(messageType)) { // standard status message
+
+//                    String millis = result[1];
+                    String voltage = result[2];
+                    String current = result[3];
+                    String heading = result[4];
+//                    String latitude = result[5];
+//                    String longitude = result[6];
+                    String x = result[5];
+                    String y = result[6];
+                    String sats = result[8];
+                    String speed_ms = result[9];
+                    String nextWaypoint = result[10];
+                    String bearing = result[11];
+                    String distance = result[12];
+                    String steerAngle = result[13];
+                    String LAbrg = result[14];
+                    String LAx = result[15];
+                    String LAy = result[16];
+                    
+                    vehicleStatus.setVoltage(Double.parseDouble(voltage));
+                    vehicleStatus.setCurrent(Double.parseDouble(current));
+                    vehicleStatus.setHeading(Double.parseDouble(heading));
+    //                vehicleStatus.setLatitude(Double.parseDouble(result[4]));
+    //                vehicleStatus.setLongitude(Double.parseDouble(result[5]));
+                    vehicleStatus.setPosition(new Coordinate(Double.parseDouble(x), Double.parseDouble(y)));
+                    vehicleStatus.setNextWaypoint(Integer.parseInt(nextWaypoint));
+                    vehicleStatus.setLookahead(
+                            new Coordinate(Double.parseDouble(LAx), Double.parseDouble(LAy))
+                            );
+                    vehicleStatus.setSatCount(Double.parseDouble(sats));
+                    vehicleStatus.setSpeed(2.23694 * Double.parseDouble(speed_ms)); // convert m/s to mph
+                    vehicleStatus.setBearing(Double.parseDouble(bearing));
+                    vehicleStatus.setDistance(Double.parseDouble(distance));
+                    System.out.print("v="+voltage);
+                    System.out.print(" a="+current);
+                    System.out.print(" h="+heading);
+                    System.out.print(" brg="+bearing);
+                    System.out.print(" x="+x);
+                    System.out.print(" y="+y);
+                    System.out.print(" sats="+sats);
+                    System.out.print(" SA="+steerAngle);
+                    System.out.print(" LAbrg="+LAbrg);
+                    System.out.print(" LAx="+LAx);
+                    System.out.print(" LAy="+LAy);
+                    System.out.println();
+                    buffer = "";
+                } else if ("01".equals(messageType)) {
+                    int count = Integer.parseInt(result[1]);
+                    int i = 2;
+                    ArrayList<Coordinate> wpt = new ArrayList<>();
+                    System.out.println("Waypoints");
+                    while (count-- > 0) {
+                        Coordinate c = new Coordinate();
+                        c.setX(Double.parseDouble(result[i++]));
+                        c.setY(Double.parseDouble(result[i++]));
+                        wpt.add(c);
+                        System.out.print(c.getX());
+                        System.out.print(", ");
+                        System.out.println(c.getY());
+                    }
+                    vehicleStatus.setWaypoints(wpt);
+                }
                 watchdog.reset();
                 
             } catch (NumberFormatException e) {

@@ -4,29 +4,35 @@
  */
 package com.botthoughts.gcs;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Michael Shimniok
  */
 public interface VehicleStatus {
     public double getVoltage();
-    public void setVoltage(double v);
     public double getCurrent();
-    public void setCurrent(double v);
     public double getBattery();
-    public void setBattery(double v);
     public double getSpeed();
-    public void setSpeed(double v);
     public double getHeading();
-    public void setHeading(double v);
     public double getLatitude();
-    public void setLatitude(double v);
     public double getLongitude();
-    public void setLongitude(double v);
     public double getSatCount();
-    public void setSatCount(double parseDouble);
     public double getBearing();
-    public void setBearing(double v);
     public double getDistance();
+    public void setVoltage(double v);
+    public void setCurrent(double v);
+    public void setBattery(double v);
+    public void setSpeed(double v);
+    public void setHeading(double v);
+    public void setLatitude(double v);
+    public void setLongitude(double v);
+    public void setPosition(Coordinate v);
+    public void setLookahead(Coordinate v);
+    public void setWaypoints(ArrayList<Coordinate> wpt);
+    public void setSatCount(double parseDouble);
+    public void setBearing(double v);
     public void setDistance(double v);
+    public void setNextWaypoint(int v);
 }
