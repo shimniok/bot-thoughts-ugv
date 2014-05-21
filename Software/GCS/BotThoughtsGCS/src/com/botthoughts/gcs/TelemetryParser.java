@@ -88,6 +88,7 @@ public class TelemetryParser implements Parser {
                     vehicleStatus.setDistance(Double.parseDouble(distance));
                     System.out.print("v="+voltage);
                     System.out.print(" a="+current);
+                    System.out.print(" s="+speed_ms);
                     System.out.print(" h="+heading);
                     System.out.print(" brg="+bearing);
                     System.out.print(" x="+x);
@@ -115,10 +116,11 @@ public class TelemetryParser implements Parser {
                     }
                     vehicleStatus.setWaypoints(wpt);
                 }
-                watchdog.reset();
                 
             } catch (NumberFormatException e) {
                 System.out.println("Number format exception");
+            } finally {
+                watchdog.reset();
             }
         }       
 //        System.out.println("parseData() exit");
