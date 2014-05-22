@@ -15,7 +15,7 @@ foreach $key (sort keys %ENTRY)
 {
   $val = $ENTRY{$key};
   ($lon, $lat) = split(/\s*,\s*/, $val->{Point}{coordinates}); 
-  printf "W,%.8f,%.8f, %s\n", $lat, $lon, $key;
+  printf "wpt,%.8f,%.8f,0,0, %s\n", $lat, $lon, $key;
 }
 
 exit;
