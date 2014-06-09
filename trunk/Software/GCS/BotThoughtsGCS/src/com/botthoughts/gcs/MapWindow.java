@@ -106,6 +106,7 @@ public class MapWindow extends JPanel implements ComponentListener {
             ymin = Math.min(c.getY(), ymin);
         }
         adjustScale();
+        // TODO 2: does not properly adjust scale when receiving new waypoints.
     }
     
     public void adjustScale() {

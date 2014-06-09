@@ -11,13 +11,17 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
@@ -29,7 +33,7 @@ import javax.swing.WindowConstants;
  *
  * @author Michael Shimniok
  */
-public final class MainWindow extends JFrame implements VehicleStatus {
+public final class MainWindow extends JFrame implements VehicleStatus, ActionListener {
     private final GaugeNeedle voltmeterNeedle;
     private final GaugeNeedle ammeterNeedle;
     private final GaugeNeedle gpsNeedle;
@@ -80,13 +84,14 @@ public final class MainWindow extends JFrame implements VehicleStatus {
     //private static WebCamWindow cvf;
     boolean initialized=false;
     private final IntegerProperty nextWaypoint;
+    private JButton reset;
     
     /**
      * Creates new form mainWindow
      */
     public MainWindow() {
         initComponents();
-       
+        
         speedometerPanel.setSize(new Dimension(largeSize, largeSize));
         System.out.println(speedometerPanel.getSize());
         //NativeSwing.initialize();
@@ -248,6 +253,17 @@ public final class MainWindow extends JFrame implements VehicleStatus {
         }
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source.getClass() == JButton.class) {
+            JButton b = (JButton) source;
+            if (b.getName() == "reset") {
+                System.out.println("Reset!!");
+            }
+        }
+    }
+
 
     /** updates clock
      *
@@ -298,6 +314,7 @@ public final class MainWindow extends JFrame implements VehicleStatus {
         }
     }
 
+    
     
     @Override
     public double getVoltage() {
@@ -425,7 +442,7 @@ public final class MainWindow extends JFrame implements VehicleStatus {
 
 
     private void initComponents() {
-        GridBagConstraints gridBagConstraints;
+        GridBagConstraints c;
 
         backgroundPanel = new BackgroundPanel("resources/background.jpg");
         speedometerPanel = new GaugePanel();
@@ -436,9 +453,9 @@ public final class MainWindow extends JFrame implements VehicleStatus {
         compassPanel = new GaugePanel();
         controlPanel = new JPanel();
         serialPanel = new SerialPanel();
-        logPanel = new LogPanel();
+//        logPanel = new LogPanel();
         indicatorPanel = new IndicatorPanel();
-
+        
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(102, 102, 102));
         setMaximumSize(new Dimension(1500, 600));
@@ -451,10 +468,10 @@ public final class MainWindow extends JFrame implements VehicleStatus {
                 formWindowClosing(evt);
             }
         });
-        getContentPane().setLayout(new GridBagLayout());
-
+//        getContentPane().setLayout(new GridBagLayout());
+        
         backgroundPanel.setLayout(new GridBagLayout());
-
+        
         speedometerPanel.setMaximumSize(new Dimension(largeSize, largeSize));
         speedometerPanel.setMinimumSize(new Dimension(largeSize, largeSize));
         speedometerPanel.setPreferredSize(new Dimension(largeSize, largeSize));
@@ -470,11 +487,11 @@ public final class MainWindow extends JFrame implements VehicleStatus {
             .addGap(0, largeSize, Short.MAX_VALUE)
         );
 
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 3;
-        backgroundPanel.add(speedometerPanel, gridBagConstraints);
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 3;
+        backgroundPanel.add(speedometerPanel, c);
 
         indicatorPanel.setMaximumSize(new Dimension(smallSize*2, 40));
         indicatorPanel.setMinimumSize(new Dimension(smallSize*2, 40));
@@ -490,11 +507,11 @@ public final class MainWindow extends JFrame implements VehicleStatus {
             indicatorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, 50, Short.MAX_VALUE)
         );
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;   
-        backgroundPanel.add(indicatorPanel, gridBagConstraints);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = 2;   
+        backgroundPanel.add(indicatorPanel, c);
         
         voltmeterPanel.setBackground(new Color(204, 204, 204));
         voltmeterPanel.setMaximumSize(new Dimension(smallSize, smallSize));
@@ -512,10 +529,10 @@ public final class MainWindow extends JFrame implements VehicleStatus {
             voltmeterPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, smallSize, Short.MAX_VALUE)
         );
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;   
-        backgroundPanel.add(voltmeterPanel, gridBagConstraints);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 1;  
+        backgroundPanel.add(voltmeterPanel, c);
 
         gpsPanel.setBackground(new Color(204, 204, 204));
         gpsPanel.setMaximumSize(new Dimension(smallSize, smallSize));
@@ -531,10 +548,10 @@ public final class MainWindow extends JFrame implements VehicleStatus {
             gpsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, smallSize, Short.MAX_VALUE)
         );
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        backgroundPanel.add(gpsPanel, gridBagConstraints);
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 2;
+        backgroundPanel.add(gpsPanel, c);
 
         ammeterPanel.setMaximumSize(new Dimension(smallSize, smallSize));
         ammeterPanel.setMinimumSize(new Dimension(smallSize, smallSize));
@@ -550,18 +567,18 @@ public final class MainWindow extends JFrame implements VehicleStatus {
             ammeterPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, smallSize, Short.MAX_VALUE)
         );
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        backgroundPanel.add(ammeterPanel, gridBagConstraints);
+        c = new GridBagConstraints();
+        c.gridx = 2;
+        c.gridy = 1;
+        backgroundPanel.add(ammeterPanel, c);
 
         clockPanel.setMaximumSize(new Dimension(smallSize, smallSize));
         clockPanel.setMinimumSize(new Dimension(smallSize, smallSize));
         clockPanel.setPreferredSize(new Dimension(smallSize, smallSize));
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        backgroundPanel.add(clockPanel, gridBagConstraints);
+        c = new GridBagConstraints();
+        c.gridx = 2;
+        c.gridy = 2;
+        backgroundPanel.add(clockPanel, c);
 
         compassPanel.setMaximumSize(new Dimension(largeSize, largeSize));
         compassPanel.setMinimumSize(new Dimension(largeSize, largeSize));
@@ -578,13 +595,14 @@ public final class MainWindow extends JFrame implements VehicleStatus {
             .addGap(0, largeSize, Short.MAX_VALUE)
         );
 
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 3;
-        backgroundPanel.add(compassPanel, gridBagConstraints);
+        c = new GridBagConstraints();
+        c.gridx = 3;
+        c.gridy = 0;
+        c.gridheight = 3;
+        backgroundPanel.add(compassPanel, c);
 
-        getContentPane().add(backgroundPanel, new GridBagConstraints());
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        getContentPane().add(backgroundPanel);
 
         controlPanel.setBorder(BorderFactory.createEtchedBorder());
         controlPanel.setMaximumSize(new Dimension(10000, 10000));
@@ -592,15 +610,22 @@ public final class MainWindow extends JFrame implements VehicleStatus {
         controlPanel.setPreferredSize(new Dimension(900, 60));
         controlPanel.setLayout(new GridBagLayout());
         controlPanel.add(serialPanel, new GridBagConstraints());
-        controlPanel.add(logPanel, new GridBagConstraints());
+//        controlPanel.add(logPanel, new GridBagConstraints());
 
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridy = 1;
-        getContentPane().add(controlPanel, gridBagConstraints);
+        reset = new JButton("Reset");
+        reset.setName("reset");
+        controlPanel.add(reset);
+        reset.addActionListener(this);
 
+//        c = new GridBagConstraints();
+//        c.gridy = 1;
+        getContentPane().add(controlPanel);
+
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     
     //<editor-fold defaultstate="collapsed" desc="Deal with window closing">
     private void formWindowClosing(WindowEvent evt) {
