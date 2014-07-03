@@ -41,18 +41,15 @@
  # Red 11-pin header on rearmost port with 11 pins, 3.3V
  # Black 11-pin header on rearmost port with 11 pins, GND
 
-== Install 5V Regulator ==
-
- # Rev 0.5 boards: don't install the regulator.
-
 = Power =
 
-You can power your !RoverBaseboard in the following ways.
+Power your !RoverBaseboard with an external 5V regulator connected to the POWER:5V and POWER:GND pins. This will supply power to the 5V pins. On the mbed version of the board, 3.3V comes from the mbed's 3.3V regulator connected to Vout. The LPCXpresso version has a 3.3V regulator populated onto the !RoverBaseboard. Both versions have a wire jumper from the POWER:5V pin to VIN.
 
- * Power with an external 5V supply
-   * Connect the 5VIN/GND port to your 5V supply
-   * jumper 5VIN to 5V
- * Power with your ESC's BEC
-   * If your BEC is 5V, jumper VBEC to 5V
-   * If your BEC is 6V, jumper VBEC to REG
-   * Connect CONTROL:SPEED to your ESC through !RoverMux
+== LPCXpresso Power ==
+The LPCXpresso LPCLink board has a 3.3V regulator and can power the LPCXpresso from USB. With the LPCLink disconnected, power is supplied to the LPCXpresso by an onboard 3.3V NCP1117 1A regulator.
+
+== mbed Power ==
+The mbed, unlike the LPCXpresso, already has an onboard 3.3V, 1A regulator, and lacks a diode on the Vout pin. For this reason, the mbed version of the !RoverBaseboard leaves the onboard regulator unpopulated.
+
+== Control Port ==
+The CONTROL port's 5V/6V pins are all connected together but not connected to anything else on the board.
