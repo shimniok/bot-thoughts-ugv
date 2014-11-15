@@ -13,10 +13,11 @@ When your robot is about to crash, the !RoverMux lets you take control of your s
 = Source =
 
  * [https://code.google.com/p/bot-thoughts-ugv/source/browse/#svn%2Ftags%2FRoverMux_0.3 Rev 0.3]
+ * [https://code.google.com/p/bot-thoughts-ugv/source/browse/#svn%2Ftags%2FRoverMux_0.4 Rev 0.4]
 
 = Instructions =
 
- * Use #2 hardware to install
+ * Use #2 / M2 hardware to install
  * Pins are labeled with channel (1, 2, 3)
    * Connect "R/C" ports to the R/C Transmitter (TX)
    * Connect "MCU" ports to the microcontroller (autopilot)
