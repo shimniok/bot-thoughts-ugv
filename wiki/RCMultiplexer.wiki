@@ -13,7 +13,6 @@ When your robot is about to crash, the !RoverMux lets you take control of your s
 = Source =
 
  * [https://code.google.com/p/bot-thoughts-ugv/source/browse/#svn%2Ftags%2FRoverMux_0.3 Rev 0.3]
- * [https://code.google.com/p/bot-thoughts-ugv/source/browse/#svn%2Ftags%2FRoverMux_0.4 Rev 0.4]
 
 = Instructions =
 
