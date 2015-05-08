@@ -13,5 +13,5 @@ The repository contains source code, schematics, board layouts, and documentatio
 * RoverBaseboard/ - a baseboard making it easy to hook up servos and sensors to an mbed/LPCXpresso
 * RoverPower/ - a 5V power supply and battery and current monitor (untested)
 * RoverGyro/ - a breakout for 
-* RoverMeter/ - I2C-based current monitor (untested)
+* [RoverMeter](https://github.com/shimniok/RoverMeter) - I2C-based current monitor (untested)
 * Documentation/ - various supporting documents
