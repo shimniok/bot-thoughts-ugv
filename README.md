@@ -10,7 +10,7 @@ The repository contains source code, schematics, board layouts, and documentatio
 * Hardware/ - various hardware used in building and calibrating
 * Electronics/ - catch-all of circuit/layout designs varying from experiment to tried and tossed
 * [RoverMux](https://github.com/shimniok/RoverMux) tried and true 3 channel R/C Multiplexer
-* RoverBaseboard/ - a baseboard making it easy to hook up servos and sensors to an mbed/LPCXpresso
+* [RoverBaseboard](https://github.com/shimniok/RoverBaseboard) - a baseboard making it easy to hook up servos and sensors to an mbed/LPCXpresso
 * RoverGyro/ - a breakout for low drift gyro (untested)
 * [RoverPower](https://github.com/shimniok/RoverPower) - high current 5V power supply (untested)
 * [RoverMeter](https://github.com/shimniok/RoverMeter) - I2C-based current monitor (untested)
