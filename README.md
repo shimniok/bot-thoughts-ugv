@@ -3,10 +3,11 @@ This is the repository of electronics and software for Data Bus and Troubled Chi
 * [Troubled Child](http://www.bot-thoughts.com/2014/06/avc-sharc-fsv.html) is a 1986 Jeep Grand Wagoneer that took 1st place in the 2014 Sparkfun AVC.
 * [Data Bus](http://www.bot-thoughts.com/p/robot-mag-data-bus.html) is a 1:10 scale RC car that took 3rd place in the 2012 Sparkfun AVC.
 
-The repository contains source code, schematics, board layouts, and documentation. Mostly this is a catch-all for what I worked on in 2010-2012. 
+The repository contains source code, schematics, board layouts, and documentation. Mostly this is a catch-all for what I worked on in 2010-2014.
 
+* [Current Software](https://github.com/shimniok/diyrovers) - updated versions of the mbed software that handles pose estimation, navigation, and path following
+* ```Software/``` - *older* mbed software that handles pose estimation, navigation, path following
 * ```Documentation/``` - various supporting documents
-* ```Software/``` - mbed software that handles pose estimation, navigation, path following
 * ```Hardware/``` - various hardware used in building and calibrating
 * ```Electronics/``` - catch-all of circuit/layout designs varying from experiment to tried and tossed
 
