@@ -1,0 +1,213 @@
+#######################################################################
+## Data Bus AVC Rover Configuration File (2012 Version)
+#######################################################################
+
+
+#######################################################################
+# Navigation & turning behavior settings
+#   Parameters controlling navigation, turning behavior, and path
+#   following
+#
+# N,%f,%f,%f
+#
+# - Intercept distance. A path following parameter, sort of like gain,
+#   representing the distance the robot maintains to the virtual 
+#   "rabbit" it chases along the path. The shorter the distance, the
+#   quicker the path correction, and the greater chance of instability.
+#   See: http://www.bot-thoughts.com/2014/02/avc-path-following_27.html
+# - Waypoint distance. The robot considers the current waypoint reached
+#   when it is within this distance. Prevents the robot from thinking
+#   it missed the waypoint and circling over and over trying to get it
+#   exactly right.
+# - Brake distance. The distance to waypoint at which the robot changes
+#   to Turning Speed (see S)
+# - Minimum turning radius. The smallest turning radius allowable by
+#   steering computations. While this can be set to the robot's
+#   physical minimum turning radius, achieving that at the specified
+#   Turning Speed may lead to the robot exceeding its performance
+#   envelope leading to tire slip, increased actual turning radius, or
+#   total loss of control.
+#
+#N,2.5,3.0
+N,2.5,5.0,6.0,3.5
+
+
+#######################################################################
+# Speed (throttle) config
+#   Settings for Electronic Speed Controller (ESC), the PID control
+#   software (PID = Proportional-Integral-Derivative), and PID target
+#   speeds.
+#
+# S,%d,%d,%d,%f,%f,%f,%f,%f,%f
+#
+# ESC minimum. The ESC value to use when braking (in pulsewidth ms,
+#   usually in the range of 1000-2000). Too much of this can cause
+#   problems. I usually set this just slightly below the coasting
+#   setting, applying very minimal braking force.
+# ESC coast. The value in pulsewidth ms representing no throttle
+#   applied; coasting.
+# ESC maximum. The ESC maximum value, full throttle. This affects how
+#   quickly the robot accelerates to cruise speed.
+# Cruise speed. The PID controller is instructed to target this cruise
+#   speed when traveling between waypoints. In m/s
+# Turn speed. The PID controller is instructed to use this speed when
+#   the robot is within the Brake Distance to the waypoint. Allows for
+#   slowing down for turns. In m/s
+# Start speed. Specifies to PID controller to use this speed in the
+#   first few seconds after first starting the race. In m/s.
+# PID proportional gain. The [P]roportional gain for PID controller
+# PID integral gain. The [I]ntegral gain for PID controller
+# PID derivative gain. The [D]erivative gain for PID controller
+#
+# Speeds vs. ESC maximum values:
+# ~4m/s (9mph)  515
+# ~5m/s (11mph) 530
+# ~6m/s (13mph) 550
+# ~9m/s (20mph) 830
+#
+# working 6/14/2012
+#S,399,400,800,6.0,5.0,60.0,20.0,0.0
+# working 6/14/2012
+#S,398,400,830,9.0,7.5,60.0,30.0,0.0
+# 6/16/2012
+#S,398,400,830,9.0,7.5,3.5,60.0,30.0,0.0
+# 5/8/2013
+S,399,400,515,5.0,5.0,60.0,20.0,0.0
+
+
+#######################################################################
+# Steering config
+#
+#		R,center,gain,gain angle,cte Ki,alg -- center servo setting,
+#     steering gain (overcomes steering slop, hills, etc), angle below
+#     which gain takes effect, Ki gain for cte, alg=1 -> pure pursuit, alg=0 -> reg
+#
+# Steering Configuration
+#   Steering servo ranges, straight-line steering gain, and path
+#   following parameters.
+#
+# R,%f,%f,%f,%f,%d
+#
+# - Servo center steering. The servo value that represents "straight"
+# - Gain. The gain multiplier for straight line steering, to overcome
+#   steering slop, side hills, etc.
+# - Gain angle. Computed steering angle below which gain is applied.
+# - Cross track integral - not used
+# - Path following algorithm. Set to 1 to use the pure pursuit path
+#   following algorithm. Set to 0 to compute steering angle solely
+#   based on relative bearing to next waypoint.
+#
+R,0.5,2.0,5.0,0.05,0
+#R,0.5,1.0,99.0,0.05,0
+
+
+#######################################################################
+# GPS settings
+#
+#	G,%d,%d
+#
+# - Baud rate. The baud rate used to communicate with the GPS (e.g.,
+#   115200, 9600, 38400)
+# - Type of GPS. Which maker of GPS to expect (1=SIRF, 2=MTK, 3=VENUS)
+#
+G,38400,3
+
+
+#######################################################################
+# Curb Avoid Settings
+#   Specifies parameters for curb avoidance (a side-mounted long range
+#   distance sensor detects the curb).
+#
+#	B,%f,%f
+#
+# - Distance Threshold. When the curb is detected a distance less than
+#   this threshold, the curb avoidance maneuver is enacted.
+# - Steering gain. Specifies a multiplier which causes the robot to
+#   steer away from the curb. Higher numbers result in more radical
+#   avoidance. Set to 0 to disable.
+#
+#B,110.0,0.25
+B,110.0,0.0
+
+
+#######################################################################
+# Waypoint
+#   Specifies each of the waypoints for the race course. List
+#   multiple waypoints in correct order, with the start location
+#   listed first and the finish location listed last
+#
+# W,%f,%f
+#
+# - Latitude
+# - Longitude
+#
+## SFE
+#
+#W,40.06521186,-105.21009061, SFE0
+#W,40.0652083,-105.2097806, SFE1
+#W,40.0644944,-105.2097556, SFE2
+#W,40.06449444,-105.21037778, SFE3
+##W,40.0649989,-105.2104594, SFE4A
+#W,40.0651625,-105.2104583, SFE4
+#W,40.0652111,-105.2099861, SFE5
+
+## Home
+#
+W,39.59757810,-104.93288688, Home0
+W,39.59757811,-104.93277335, Home1
+W,39.59766238,-104.93277255, Home2
+W,39.59766277,-104.93286340, Home3
+W,39.59757810,-104.93288688, Home0
+
+## Lois Lenski Site A
+#
+#W,39.60190828304393,-104.9300340108308, Lois0
+#W,39.60199380125789,-104.9297035759416, Lois1
+#W,39.60205448990281,-104.9294879645527, Lois4
+#W,39.60217894370677,-104.9295470675055, Lois5
+#W,39.60212159504833,-104.9297629546202, Lois2
+#W,39.60203214807867,-104.9300884688197, Lois3
+#W,39.60190828304393,-104.9300340108308, Lois0
+
+## Lois Lenski Site B
+#
+#W,39.60109649159095,-104.9293399142697, Lois B0
+#W,39.6013984472574,-104.9293280134205, Lois B1
+#W,39.60163039281531,-104.9293616254805, Lois B2
+#W,39.60176316301077,-104.929611488928, Lois B3
+#W,39.60172755450789,-104.9298413279445, Lois B4
+#W,39.60151172051469,-104.9301062454527, Lois B5
+#W,39.60139989455227,-104.9301647457795, Lois B6
+#W,39.60121868447038,-104.930126915248, Lois B7
+
+
+############################ DEPRECATED ###############################
+
+
+#######################################################################
+# Error correction gains (deprecated)
+#
+# E,%f,%f
+# - Compass error correction gain.
+# - Yaw  error correction gain.
+
+#######################################################################
+# Declination (deprecated)
+#   Magnetic compass declination (vs. true north)
+#
+# D,%f
+#
+# - Declination (degrees). Magnetic compass declination, positive or
+#   negative. (e.g., 9.2, -3.4).
+#
+
+#######################################################################
+# Gyro settings (deprecated)
+#
+#	Y,x,y,z,x,y,z					-- gyro offsets (float ok) and scaling factors
+
+#######################################################################
+# Magnetometer settings (deprecated)
+#
+# M,x,y,z,x,y,z					-- magnetometer offsets and scales in raw values
+
