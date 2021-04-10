@@ -106,7 +106,7 @@ void setup()
   print("h0=");
   println(hdg);
 
-  size(sizeX,sizeY);
+  size(800,600);
   background(0);
   noStroke();
   smooth();
